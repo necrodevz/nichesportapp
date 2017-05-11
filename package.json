@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "express": "4.13.3",
+    "fs": "0.0.2",
     "apollo-client": "^0.5.0",
     "graphql-anywhere": "^0.3.0",
     "material-ui": "^0.18.0",
@@ -20,5 +22,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+
   }
 }
