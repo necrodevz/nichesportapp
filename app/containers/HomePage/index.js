@@ -9,7 +9,7 @@ import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-
+import { push } from 'react-router-redux';
 import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
 import H2 from 'components/H2';
 import H3 from 'components/H3';
@@ -25,6 +25,8 @@ import { changeUsername } from './actions';
 import { makeSelectUsername } from './selectors';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import RaisedButton from 'material-ui/RaisedButton';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   /**
@@ -36,6 +38,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       error: React.PropTypes.object,
       Trainer: React.PropTypes.object,
     }).isRequired,
+  }
+
+  LogInSubmit() {
+    this.props.GoToDashboard();
   }
 
   componentDidMount() {
@@ -62,6 +68,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     };
 
     return (
+      <MuiThemeProvider>
       <article>
         <Helmet
           title="Home Page"
@@ -77,22 +84,39 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             <H3>Hey {this.props.data.Trainer.name}, there are {this.props.data.Trainer.ownedPokemons.length} Players in your account</H3>
           </CenteredSection>
           <Section>
+          <CenteredSection>
             <Form onSubmit={this.props.onSubmitForm}>
               <label htmlFor="username">
                 <FormattedMessage {...messages.startProjectMessage} />
                 <Input
                   id="username"
                   type="text"
-                  placeholder="mxstbr"
+                  placeholder="enter your username"
                   value={this.props.username}
                   onChange={this.props.onChangeUsername}
                 />
               </label>
+              <br/>
+              <br/>
+              <label htmlFor="password">
+              <FormattedMessage {...messages.startProjectMessage} />
+              <Input
+                id="password"
+                type="password"
+                value={this.props.password}
+                onChange={this.props.password}
+              />
+              </label>
+              <br/>
+              <br/>
+              <RaisedButton label="LogIn/SignUp" onClick={()=>this.LogInSubmit()} primary={true} />
             </Form>
+          </CenteredSection>
             <ReposList {...reposListProps} />
           </Section>
         </div>
       </article>
+      </MuiThemeProvider>
     );
   }
 }
@@ -115,6 +139,7 @@ HomePage.propTypes = {
 export function mapDispatchToProps(dispatch) {
   return {
     onChangeUsername: (evt) => dispatch(changeUsername(evt.target.value)),
+    GoToDashboard: () => dispatch(push('/adminDashboard')),
     onSubmitForm: (evt) => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadRepos());
@@ -126,7 +151,7 @@ const mapStateToProps = createStructuredSelector({
   repos: makeSelectRepos(),
   username: makeSelectUsername(),
   loading: makeSelectLoading(),
-  error: makeSelectError(),
+  error: makeSelectError()
 });
 
 const TrainerQuery = gql`query TrainerQuery($name: String!) {
