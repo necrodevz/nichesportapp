@@ -12,10 +12,23 @@ import Header from 'components/Header';
 import Footer from 'components/Footer';
 import withProgressBar from 'components/ProgressBar';
 
+const AppStyle = {
+  display: 'flex !important',
+    minHeight: '100vh !important',
+    flexDirection: 'column !important',
+};
+
+
+const ContentStyle = {
+  flex: '1 1 auto !important',
+    marginTop: '2em !important',
+    marginBottom: '2em !important',
+};
+
 
 export function App(props) {
   return (
-    <div>
+    <div style={AppStyle}>
       <Helmet
         titleTemplate="%s - React.js Boilerplate"
         defaultTitle="React.js Boilerplate"
@@ -24,7 +37,9 @@ export function App(props) {
         ]}
       />
       <Header />
+      <div style={ContentStyle}>
       {React.Children.toArray(props.children)}
+      </div>
       <Footer />
     </div>
   );

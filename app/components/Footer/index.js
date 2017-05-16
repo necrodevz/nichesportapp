@@ -15,11 +15,11 @@ const nearbyIcon = <IconLocationOn />;
  * state (for instance, by the URL).
  */
 
-const StyleFooter = {
-  bottom: 0,
-  position: 'absolute',
-  width: '100%',
-};
+// const StyleFooter = {
+//   bottom: 0,
+//   position: 'absolute',
+//   width: '100%',
+// };
 
 class Footer extends Component {
   state = {
@@ -32,7 +32,7 @@ class Footer extends Component {
     return (
       <MuiThemeProvider>
         <Paper zDepth={1}>
-          <div style={StyleFooter}>
+          <div>
             <BottomNavigation selectedIndex={this.state.selectedIndex}>
               <BottomNavigationItem
                 label="Recents"
