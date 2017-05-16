@@ -1,0 +1,147 @@
+# project: cj2pprgbbs1lw0103drosaalq
+# version: 34
+
+type AdminSetting implements Node {
+  createdAt: DateTime!
+  dayInvitePendingByCoach: Int! @defaultValue(value: 3)
+  id: ID! @isUnique
+  maxTeamsCanAssign: Int! @defaultValue(value: 1)
+  termsAndCondition: String!
+  updatedAt: DateTime!
+}
+
+type Athlete implements Node {
+  createdAt: DateTime!
+  createdBy: User @relation(name: "CreatedAthlete")
+  graduation: String
+  graduationProgramLength: String
+  graduationUniversity: String
+  graduationYear: Int
+  hightSchool: String
+  hightSchoolUniversity: String
+  hightSchoolYear: Int
+  id: ID! @isUnique
+  status: AthleteStatus! @defaultValue(value: APPROVED)
+  updatedAt: DateTime!
+  user: User! @relation(name: "UserOnAthlete")
+}
+
+enum AthleteStatus {
+  APPROVED
+  MANAGER_PENDING
+}
+
+type Coache implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  institute: Institute! @relation(name: "CoacheOnInstitute")
+  updatedAt: DateTime!
+  user: User! @relation(name: "CoacheOnUser")
+}
+
+type File implements Node {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type Institute implements Node {
+  coache: [Coache!]! @relation(name: "CoacheOnInstitute")
+  country: String
+  createdAt: DateTime!
+  id: ID! @isUnique
+  instituteSport: [InstituteSport!]! @relation(name: "InstituteSportOnInstitute")
+  manager: [Manager!]! @relation(name: "ManagerOnInstitute")
+  name: String!
+  owner: User! @relation(name: "InstituteOnUser")
+  status: InstituteStatus!
+  typeOfInstitute: String
+  updatedAt: DateTime!
+}
+
+type InstituteSport implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  institute: Institute! @relation(name: "InstituteSportOnInstitute")
+  sport: Sport! @relation(name: "SportOnInstitute")
+  updatedAt: DateTime!
+}
+
+enum InstituteStatus {
+  ACTIVE
+  PENDING
+  DEACTIVATE
+}
+
+type Manager implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  institute: Institute! @relation(name: "ManagerOnInstitute")
+  updatedAt: DateTime!
+  user: User! @relation(name: "ManagerOnUser")
+}
+
+type ResetPassword implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  token: String!
+  updatedAt: DateTime!
+  user: User! @relation(name: "ResetPasswordOnUser")
+}
+
+type Sport implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  instituteSport: [InstituteSport!]! @relation(name: "SportOnInstitute")
+  name: String!
+  updatedAt: DateTime!
+}
+
+type User implements Node {
+  address: String
+  athlete: Athlete @relation(name: "UserOnAthlete")
+  auth0UserId: String @isUnique
+  bio: String
+  coache: Coache @relation(name: "CoacheOnUser")
+  country: String
+  createdAt: DateTime!
+  createdAthletes: [Athlete!]! @relation(name: "CreatedAthlete")
+  dob: DateTime
+  email: String! @isUnique
+  emailVerified: Boolean! @defaultValue(value: false)
+  firstName: String!
+  gender: String
+  height: Float
+  id: ID! @isUnique
+  instituteOwner: Institute @relation(name: "InstituteOnUser")
+  isActive: Boolean! @defaultValue(value: false)
+  isFirstTimeLogin: Boolean! @defaultValue(value: false)
+  lastName: String!
+  manager: Manager @relation(name: "ManagerOnUser")
+  messageCount: Int! @defaultValue(value: 0)
+  mobileNumber: String
+  mobileVerificationCode: String
+  mobileVerified: Boolean! @defaultValue(value: false)
+  nationality: String
+  notificationCount: Int! @defaultValue(value: 0)
+  password: String
+  profileImage: String
+  resetPassword: ResetPassword @relation(name: "ResetPasswordOnUser")
+  role: UserRole!
+  timeZone: String
+  updatedAt: DateTime!
+  weight: Float
+}
+
+enum UserRole {
+  ATHLETE
+  OWNER
+  COACHE
+  MANAGER
+  ADMIN
+}
