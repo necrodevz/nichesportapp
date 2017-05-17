@@ -36,7 +36,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     data: React.PropTypes.shape({
       loading: React.PropTypes.bool,
       error: React.PropTypes.object,
-      Trainer: React.PropTypes.object,
+      User: React.PropTypes.object,
     }).isRequired,
   }
 
@@ -81,7 +81,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             <H2>
               <FormattedMessage {...messages.startProjectHeader} />
             </H2>
-            <H3>Hey {this.props.data.Trainer.name}, there are {this.props.data.Trainer.ownedPokemons.length} Players in your account</H3>
+            <H3>Hey , there are {this.props.data.allUsers.length} Players in your account</H3>
           </CenteredSection>
           <Section>
           <CenteredSection>
@@ -154,25 +154,13 @@ const mapStateToProps = createStructuredSelector({
   error: makeSelectError()
 });
 
-const TrainerQuery = gql`query TrainerQuery($name: String!) {
-  Trainer(name: $name) {
-    name
-    ownedPokemons {
-      id
-      name
-      url
-    }
+const UserQuery = gql`query UserQuery {
+  allUsers {
+    email
   }
 }`
 
-const PokedexWithData = graphql(TrainerQuery, {
-  options: {
-      variables: {
-        name: 'vgurnani@isystango.com'
-      }
-    }
-  }
-)(HomePage)
+const PokedexWithData = graphql(UserQuery)(HomePage);
 
 // Wrap the component to inject dispatch and state into it
 export default connect(mapStateToProps, mapDispatchToProps)(PokedexWithData);

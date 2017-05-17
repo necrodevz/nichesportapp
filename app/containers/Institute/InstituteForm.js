@@ -18,6 +18,8 @@ import {
 import countryList from './countryList'
 import RaisedButton from 'material-ui/RaisedButton'
 import CenteredSection from '../../containers/HomePage/CenteredSection'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);
@@ -27,11 +29,18 @@ const institute_email = value =>
     : undefined);
 
 class InstituteForm extends Component {
-  componentDidMount() {
-    this.refs.institute_name // the Field
-      .getRenderedComponent() // on Field, returns ReduxFormMaterialUITextField
-      .getRenderedComponent() // on ReduxFormMaterialUITextField, returns TextField
-      .focus(); // on TextField
+  static propTypes = {
+    addPost: React.PropTypes.func,
+  }
+
+   submitInstituteForm = async () => {
+    //const {description, imageUrl} = this.state
+    await this.props.addPost({variables: {name: this.props.InstituteName,
+                    country: this.props.InstituteCountry,
+                    typeOfInstitute: this.props.instituteType,
+                    status: "ACTIVE",
+                   ownerId: "cj2q1u2hg5yvq0175zo5ymafv" }
+                 })
   }
 
   render() {
@@ -45,8 +54,6 @@ class InstituteForm extends Component {
             hintText="Institute Name"
             floatingLabelText="Institute Name"
             validate={required}
-            ref="institute_name"
-            withRef
           />
         </div>
         <div>
@@ -59,6 +66,15 @@ class InstituteForm extends Component {
           >
             {countryList.map(country => (<MenuItem value={country[1]} primaryText={country[0]} key={country[1]} />))}
           </Field>
+        </div>
+        <div>
+          <Field
+            name="institute_type"
+            component={TextField}
+            hintText="Institute Type"
+            floatingLabelText="Institute Type"
+            validate={required}
+          />
         </div>
         <label>Choose Sports:</label>
         <div>
@@ -77,8 +93,6 @@ class InstituteForm extends Component {
             hintText="Institute Email"
             floatingLabelText="Institute Email"
             validate={[required, institute_email]}
-            ref="institute_email"
-            withRef
           />
         </div>
         <div>
@@ -89,12 +103,10 @@ class InstituteForm extends Component {
             type="password"
             floatingLabelText="Institute Password"
             validate={required}
-            ref="institute_password"
-            withRef
           />
         </div>
         <div>
-          <RaisedButton label="Submit" disabled={submitting} primary={true} />
+          <RaisedButton label="Submit" disabled={submitting} onClick={()=> this.submitInstituteForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </div>
       </form>
@@ -106,10 +118,26 @@ const selector = formValueSelector('institute_form');
 
 InstituteForm = connect(state => ({
   InstituteName: selector(state, 'institute_name'),
+  InstituteCountry: selector(state, 'institute_country'),
+  instituteType: selector(state, 'institute_type')
 }))(InstituteForm);
 
 InstituteForm = reduxForm({
   form: 'institute_form',
 })(InstituteForm);
 
-export default InstituteForm;
+
+const addMutation = gql`
+  mutation addPost($name: String!, $country: String!, $status: INSTITUTE_STATUS!, $typeOfInstitute:String!, $ownerId: ID!) {
+    createInstitute(name: $name, country: $country, status: $status, typeOfInstitute : $typeOfInstitute, ownerId : $ownerId ) {
+      id,
+      name,
+      country,
+      typeOfInstitute
+    }
+  }
+`
+
+const PageWithMutation = graphql(addMutation, {name: 'addPost'})(InstituteForm)
+
+export default PageWithMutation;
