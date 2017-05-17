@@ -6,8 +6,8 @@ import Login from './views/Login'
 
 import {browserHistory, Router, Route, Redirect,IndexRedirect} from 'react-router'
 
-const auth = new AuthService("o4qU6MtD4T33Ggfand88ys2r4hsoMYy6",
- "rajiv.au.auth0.com");
+const auth = new AuthService(process.env.AUTH0_CLIENTID,
+ process.env.AUTH0_DOMAIN);
 
 // onEnter callback to validate authentication in private routes
 const requireAuth = (nextState, replace) => {
