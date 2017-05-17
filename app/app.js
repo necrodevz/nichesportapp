@@ -77,7 +77,7 @@ const isloggedIn = (nextState, replace) => {
 
 
 const client = new ApolloClient({
-  networkInterface: createNetworkInterface({ uri: 'https://api.graph.cool/simple/v1/cj2h8gmfd31i40188fz9ph2zk'})
+  networkInterface: createNetworkInterface({ uri: 'https://api.graph.cool/simple/v1/cj2pprgbbs1lw0103drosaalq'})
 })
 injectTapEventPlugin();
 
