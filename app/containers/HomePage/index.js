@@ -4,7 +4,7 @@
  * This is the first thing users see of our App, at the '/' route
  */
 
-import React from 'react';
+import React, { PropTypes as T } from 'react'
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
@@ -28,10 +28,30 @@ import gql from 'graphql-tag';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+// 
+import AuthService from '../../auth-session/src/auth-utils/AuthService'
+// 
+
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   /**
    * when initial state username is not null, submit the form to load repos
    */
+   
+   static propTypes = {
+    auth: T.instanceOf(AuthService)
+  }
+
+  constructor(props) {
+    super(props)
+    console.log(localStorage.getItem('profile'));
+  }
+
+ logout(){
+    localStorage.removeItem('id_token');
+     localStorage.removeItem('profile');
+    this.props.router.push('/login');
+  }
+
   static propTypes = {
     data: React.PropTypes.shape({
       loading: React.PropTypes.bool,
@@ -81,6 +101,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
             <H2>
               <FormattedMessage {...messages.startProjectHeader} />
             </H2>
+            <button onClick={this.logout.bind(this)}> Logout</button> <br />
+
             <H3>Hey {this.props.data.Trainer.name}, there are {this.props.data.Trainer.ownedPokemons.length} Players in your account</H3>
           </CenteredSection>
           <Section>

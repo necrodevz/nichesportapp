@@ -12,11 +12,18 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
+import { applyRouterMiddleware, Router, browserHistory,browserHistoryoute, Redirect,IndexRedirect } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import FontFaceObserver from 'fontfaceobserver';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
+
+// Authentication Components for Auth 0
+import AppContainer from './auth-session/src/containers/AppContainer'
+import makeRoutes from './auth-session/src/auth-routes'
+import AuthService from './auth-session/src/auth-utils/AuthService'
+// Authentication Components for Auth 0
+
 
 // Import root app
 import App from 'containers/App';
@@ -45,9 +52,29 @@ import './global-styles';
 // Import routes
 import createRoutes from './routes';
 
+// Apolo Client 
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
 import { ApolloProvider } from 'react-apollo'
 import injectTapEventPlugin from 'react-tap-event-plugin';
+// Apolo Client
+
+// Auth0 service intiate and session logic 
+const auth = new AuthService("o4qU6MtD4T33Ggfand88ys2r4hsoMYy6", "rajiv.au.auth0.com");
+
+// onEnter callback to validate authentication in private routes
+const requireAuth = (nextState, replace) => {
+  if (!auth.loggedIn()) {
+    replace({ pathname: '/login' })
+  }
+}
+
+const isloggedIn = (nextState, replace) => {
+  if(auth.loggedIn()){
+    replace({ pathname: '/home' })
+  }
+}
+// Auth0 service intiate and session logic
+
 
 const client = new ApolloClient({
   networkInterface: createNetworkInterface({ uri: 'https://api.graph.cool/simple/v1/cj2h8gmfd31i40188fz9ph2zk'})

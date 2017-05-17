@@ -4,6 +4,11 @@
 // about the code splitting business
 import { getAsyncInjectors } from './utils/asyncInjectors';
 
+
+// Authentication Components for Auth 0
+import AuthService from './auth-session/src/auth-utils/AuthService'
+// Authentication Components for Auth 0
+
 const errorLoading = (err) => {
   console.error('Dynamic page loading failed', err); // eslint-disable-line no-console
 };
@@ -11,6 +16,24 @@ const errorLoading = (err) => {
 const loadModule = (cb) => (componentModule) => {
   cb(null, componentModule.default);
 };
+
+
+const auth = new AuthService("o4qU6MtD4T33Ggfand88ys2r4hsoMYy6",
+ "rajiv.au.auth0.com");
+
+const requireAuth = (nextState, replace) => {
+  if (!auth.loggedIn()) {
+    replace({ pathname: '/login' })
+  }
+}
+
+const isloggedIn = (nextState, replace) => {
+
+  if(auth.loggedIn()){
+    replace({ pathname: '/' })
+  }
+}
+
 
 export default function createRoutes(store) {
   // create reusable async injectors using getAsyncInjectors factory
@@ -20,6 +43,8 @@ export default function createRoutes(store) {
     {
       path: '/',
       name: 'home',
+      auth: auth,
+      onEnter: requireAuth,
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/HomePage/reducer'),
@@ -38,7 +63,8 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, {
+    }, 
+    {
       path: '/adminDashboard',
       name: 'adminDashboard',
       getComponent(nextState, cb) {
@@ -46,7 +72,40 @@ export default function createRoutes(store) {
           .then(loadModule(cb))
           .catch(errorLoading);
       },
-    }, {
+    },
+    {
+      path: '/ss',
+      name: 'Container',
+      auth: auth,
+      getComponent(nextState, cb) {
+        import('./auth-session/src/views/Container')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    },
+    {
+      path: '/asas',
+      name: 'Homeofsession',
+      auth: auth,
+      onEnter: requireAuth,
+      getComponent(nextState, cb) {
+        import('./auth-session/src/views/Home')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      auth: auth,
+      onEnter: isloggedIn,
+      getComponent(nextState, cb) {
+        import('./auth-session/src/views/Login')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, 
+    {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
@@ -54,6 +113,7 @@ export default function createRoutes(store) {
           .then(loadModule(cb))
           .catch(errorLoading);
       },
-    },
+    }
   ];
 }
+
