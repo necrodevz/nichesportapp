@@ -59,7 +59,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 // Apolo Client
 
 // Auth0 service intiate and session logic 
-const auth = new AuthService("o4qU6MtD4T33Ggfand88ys2r4hsoMYy6", "rajiv.au.auth0.com");
+const auth = new AuthService("zRh0pXQER51rFZYi3rrU2HoQgYeU2BYK", " athliche.auth0.com");
 
 // onEnter callback to validate authentication in private routes
 const requireAuth = (nextState, replace) => {
