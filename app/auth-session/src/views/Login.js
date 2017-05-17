@@ -1,6 +1,7 @@
 import React, { PropTypes as T } from 'react'
-import {ButtonToolbar, Button} from 'react-bootstrap'
 import AuthService from '../auth-utils/AuthService'
+import RaisedButton from 'material-ui/RaisedButton'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 export class Login extends React.Component {
   
@@ -16,12 +17,10 @@ export class Login extends React.Component {
   render() {
     const { auth } = this.props
     console.log("ASDadsaasd",this.props.route.auth.login);
-    return (
-      <div>
-        <h2>Login</h2>
-        <ButtonToolbar >
-         <Button bsStyle="primary" onClick={this.props.route.auth.login} >Login </Button>
-        </ButtonToolbar>
+    return (<div>
+        <MuiThemeProvider>
+        <RaisedButton label="LogIn/SignUp" onClick={this.props.route.auth.login} primary={true} />
+      </MuiThemeProvider>
       </div>
     )
   }
