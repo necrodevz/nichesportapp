@@ -109,7 +109,7 @@ class InstituteForm extends Component {
           />
         </div>
         <div>
-          <RaisedButton label="Submit" disabled={submitting} onClick={()=>this.props.onSubmitForm()} primary={true} />
+          <RaisedButton label="Submit" disabled={submitting} onClick={()=>this.props.submitInstituteForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </div>
       </form>

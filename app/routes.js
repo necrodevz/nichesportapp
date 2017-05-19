@@ -17,9 +17,8 @@ const loadModule = (cb) => (componentModule) => {
   cb(null, componentModule.default);
 };
 
-
-const auth = new AuthService("o4qU6MtD4T33Ggfand88ys2r4hsoMYy6",
- "rajiv.au.auth0.com");
+const auth = new AuthService(process.env.AUTH0_CLIENTID,
+ process.env.AUTH0_DOMAIN);
 
 const requireAuth = (nextState, replace) => {
   if (!auth.loggedIn()) {
