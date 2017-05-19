@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react'
 import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
 import {RadioButton} from 'material-ui/RadioButton';
@@ -30,14 +30,14 @@ const institute_email = value =>
 
 class InstituteForm extends Component {
   static propTypes = {
-    addPost: React.PropTypes.func,
+    addPost: React.PropTypes.func
   }
 
    submitInstituteForm = async () => {
     //const {description, imageUrl} = this.state
     await this.props.addPost({variables: {name: this.props.InstituteName,
                     country: this.props.InstituteCountry,
-                    typeOfInstitute: this.props.instituteType,
+                    typeOfInstitute: this.props.InstituteType,
                     status: "ACTIVE",
                    ownerId: "cj2q1u2hg5yvq0175zo5ymafv" }
                  })
@@ -106,7 +106,7 @@ class InstituteForm extends Component {
           />
         </div>
         <div>
-          <RaisedButton label="Submit" disabled={submitting} onClick={()=> this.submitInstituteForm()} primary={true} />
+          <RaisedButton label="Submit" disabled={submitting} onClick={()=>this.submitInstituteForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </div>
       </form>
@@ -119,7 +119,9 @@ const selector = formValueSelector('institute_form');
 InstituteForm = connect(state => ({
   InstituteName: selector(state, 'institute_name'),
   InstituteCountry: selector(state, 'institute_country'),
-  instituteType: selector(state, 'institute_type')
+  InstituteType: selector(state, 'institute_type'),
+  InstituteEmail: selector(state, 'institute_email'),
+  InstitutePassword: selector(state, 'institute_password')
 }))(InstituteForm);
 
 InstituteForm = reduxForm({

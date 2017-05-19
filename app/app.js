@@ -20,7 +20,6 @@ import 'sanitize.css/sanitize.css';
 
 // Authentication Components for Auth 0
 import AppContainer from './auth-session/src/containers/AppContainer'
-import makeRoutes from './auth-session/src/auth-routes'
 import AuthService from './auth-session/src/auth-utils/AuthService'
 // Authentication Components for Auth 0
 

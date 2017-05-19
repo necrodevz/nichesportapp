@@ -74,27 +74,6 @@ export default function createRoutes(store) {
       },
     },
     {
-      path: '/ss',
-      name: 'Container',
-      auth: auth,
-      getComponent(nextState, cb) {
-        import('./auth-session/src/views/Container')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    },
-    {
-      path: '/asas',
-      name: 'Homeofsession',
-      auth: auth,
-      onEnter: requireAuth,
-      getComponent(nextState, cb) {
-        import('./auth-session/src/views/Home')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    },
-    {
       path: '/login',
       name: 'Login',
       auth: auth,
