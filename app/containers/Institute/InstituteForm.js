@@ -3,6 +3,9 @@ import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
 import {RadioButton} from 'material-ui/RadioButton';
 import MenuItem from 'material-ui/MenuItem';
+import { createStructuredSelector } from 'reselect';
+import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
+import { createInstitute } from '../DashboardPage/actions';
 import {AutoComplete as MUIAutoComplete} from 'material-ui';
 import {
   AutoComplete,
@@ -44,7 +47,7 @@ class InstituteForm extends Component {
   }
 
   render() {
-    const {handleSubmit, pristine, InstituteName, reset, submitting} = this.props;
+    const {loading, error, repos, handleSubmit, pristine, InstituteName, reset, submitting} = this.props;
     return (
       <form onSubmit={handleSubmit}>
         <div>
@@ -106,7 +109,7 @@ class InstituteForm extends Component {
           />
         </div>
         <div>
-          <RaisedButton label="Submit" disabled={submitting} onClick={()=>this.submitInstituteForm()} primary={true} />
+          <RaisedButton label="Submit" disabled={submitting} onClick={()=>this.props.onSubmitForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </div>
       </form>
@@ -129,6 +132,33 @@ InstituteForm = reduxForm({
 })(InstituteForm);
 
 
+InstituteForm.propTypes = {
+  loading: React.PropTypes.bool,
+  error: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    React.PropTypes.bool,
+  ]),
+  repos: React.PropTypes.oneOfType([
+    React.PropTypes.array,
+    React.PropTypes.bool,
+  ]),
+  onSubmitForm: React.PropTypes.func,
+};
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    onSubmitForm: () => {
+      dispatch(createInstitute());
+    },
+  };
+}
+
+const mapStateToProps = createStructuredSelector({
+  repos: makeSelectRepos(),
+  loading: makeSelectLoading(),
+  error: makeSelectError(),
+});
+
 const addMutation = gql`
   mutation addPost($name: String!, $country: String!, $status: INSTITUTE_STATUS!, $typeOfInstitute:String!, $ownerId: ID!) {
     createInstitute(name: $name, country: $country, status: $status, typeOfInstitute : $typeOfInstitute, ownerId : $ownerId ) {
@@ -142,4 +172,4 @@ const addMutation = gql`
 
 const PageWithMutation = graphql(addMutation, {name: 'addPost'})(InstituteForm)
 
-export default PageWithMutation;
+export default connect(mapStateToProps, mapDispatchToProps)(PageWithMutation);
