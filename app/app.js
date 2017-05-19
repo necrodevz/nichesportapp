@@ -110,11 +110,10 @@ const rootRoute = {
   component: App,
   childRoutes: createRoutes(store),
 };
-
+//add provider with apollo provider if later there's react-intl issue for provider
 const render = (messages) => {
   ReactDOM.render(
-    <ApolloProvider client={client}>
-    <Provider store={store}>
+    <ApolloProvider client={client} store={store}>
       <LanguageProvider messages={messages}>
         <Router
           history={history}
@@ -126,7 +125,6 @@ const render = (messages) => {
           }
         />
       </LanguageProvider>
-    </Provider>
     </ApolloProvider>,
     document.getElementById('app')
   );
