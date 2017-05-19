@@ -63,15 +63,6 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-    }, 
-    {
-      path: '/adminDashboard',
-      name: 'adminDashboard',
-      getComponent(nextState, cb) {
-        import('containers/DashboardPage')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
     },
     {
       path: '/login',
@@ -85,6 +76,34 @@ export default function createRoutes(store) {
       },
     }, 
     {
+      path: '/adminDashboard',
+      name: 'dashboardPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/DashboardPage/reducer'),
+          import('containers/DashboardPage/sagas'),
+          import('containers/DashboardPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('dashboardPage', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/authorization',
+      name: 'authorization',
+      getComponent(location, cb) {
+        import('containers/Authorization')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {
