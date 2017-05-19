@@ -16,6 +16,9 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import Slider from 'material-ui/Slider';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import InstituteListPage from '../../containers/Institute/InstituteListPage'
+import Athlete from '../../containers/Athlete'
+import Coach from '../../containers/Coach'
+
 
 const styles = {
   headline: {
@@ -27,7 +30,7 @@ const styles = {
 };
 
 function handleActive(tab) {
-  alert(`A tab with this route property ${tab.props['data-route']} was activated.`);
+  console.log(`A tab with this route property ${tab.props['data-route']} was activated.`);
 }
 
 export default class DashboardPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -53,13 +56,10 @@ export default class DashboardPage extends React.Component { // eslint-disable-l
     <InstituteListPage/>
     </Tab>
     <Tab label="Coach" >
+    <Coach />
     </Tab>
-    <Tab
-      label="Athlete"
-      data-route="/home"
-      onActive={handleActive}
-    >
-
+    <Tab label="Athlete" onActive={handleActive}>
+    <Athlete />
     </Tab>
   </Tabs>
   </MuiThemeProvider>
