@@ -20,6 +20,9 @@ const loadModule = (cb) => (componentModule) => {
 const auth = new AuthService(process.env.AUTH0_CLIENTID,
  process.env.AUTH0_DOMAIN);
 
+// const auth = new AuthService("o4qU6MtD4T33Ggfand88ys2r4hsoMYy6",
+//  "rajiv.au.auth0.com");
+
 const requireAuth = (nextState, replace) => {
   if (!auth.loggedIn()) {
     replace({ pathname: '/login' })
@@ -101,6 +104,26 @@ export default function createRoutes(store) {
         import('containers/Authorization')
           .then(loadModule(cb))
           .catch(errorLoading);
+      },
+    }, {
+      path: '/instituteDashboard',
+      name: 'instituteDashboard',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/InstituteDashboard/reducer'),
+          import('containers/InstituteDashboard/sagas'),
+          import('containers/InstituteDashboard'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('instituteDashboard', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
       },
     }, {
       path: '*',
