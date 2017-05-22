@@ -19,16 +19,6 @@ import InstituteListPage from '../../containers/Institute/InstituteListPage'
 import Athlete from '../../containers/Athlete'
 import Coach from '../../containers/Coach'
 
-
-const styles = {
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400,
-  },
-};
-
 function handleActive(tab) {
   console.log(`A tab with this route property ${tab.props['data-route']} was activated.`);
 }
@@ -51,18 +41,18 @@ export default class DashboardPage extends React.Component { // eslint-disable-l
           ]}
         />
         <MuiThemeProvider>
-        <Tabs>
-    <Tab label="Institute" >
-    <InstituteListPage/>
-    </Tab>
-    <Tab label="Coach" >
-    <Coach />
-    </Tab>
-    <Tab label="Athlete" onActive={handleActive}>
-    <Athlete />
-    </Tab>
-  </Tabs>
-  </MuiThemeProvider>
+          <Tabs>
+            <Tab label="Institute" >
+              <InstituteListPage/>
+            </Tab>
+            <Tab label="Coach" >
+              <Coach />
+            </Tab>
+            <Tab label="Athlete" onActive={handleActive}>
+              <Athlete />
+            </Tab>
+          </Tabs>
+        </MuiThemeProvider>
       </div>
     );
   }

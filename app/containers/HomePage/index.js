@@ -42,8 +42,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     }).isRequired,
   }
 
-  dashboardClick() {
-    this.props.GoToDashboard();
+  adminDashboardClick() {
+    this.props.GoToAdminDashboard();
+  }
+
+  instituteDashboardClick() {
+    this.props.GoToInstituteDashboard();
   }
 
   render() {
@@ -66,7 +70,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           </CenteredSection>
           <Section>
           <CenteredSection>
-              <RaisedButton label="Proceed to Dashboard" onClick={()=>this.dashboardClick()} primary={true} />
+              <RaisedButton label="Proceed to Admin Dashboard" onClick={()=>this.adminDashboardClick()} primary={true} />
+              <RaisedButton label="Proceed to Institute Dashboard" onClick={()=>this.instituteDashboardClick()} primary={true} />
           </CenteredSection>
           </Section>
         </div>
@@ -86,7 +91,8 @@ HomePage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    GoToDashboard: () => dispatch(push('/adminDashboard'))
+    GoToAdminDashboard: () => dispatch(push('/adminDashboard')),
+    GoToInstituteDashboard: () => dispatch(push('/instituteDashboard'))
   };
 }
 
