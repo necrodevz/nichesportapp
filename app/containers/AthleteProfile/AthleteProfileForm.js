@@ -53,14 +53,14 @@ class AthleteProfileForm extends Component {
   render() {
     const {loading, error, repos, handleSubmit, pristine, reset, submitting} = this.props;
     return (
-      <div>
+      <form>
        <Avatar size={100} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCBaY5WK0X77jdCctunaXaBRU6a8vDT7-R3zB1xQUVeB2H4sgz_Sd9Yw" />
         <div>
         <IconButton tooltip="Upload Profile Picture">
           <PublishIcon />
         </IconButton>
         </div>
-      <form onSubmit={handleSubmit}>
+      <div>
       <H3>Personal Info
       <IconButton tooltip="Edit Profile Info">
           <EditIcon />
@@ -187,10 +187,9 @@ class AthleteProfileForm extends Component {
         <a href="#">Change Password Link</a>
         <div>
           <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitAthleteProfileForm()} primary={true} />
-          <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </div>
-      </form>
-      <form onSubmit={handleSubmit}>
+      </div>
+      <div>
       <H3>Education History
       <IconButton tooltip="Edit Education Info">
           <EditIcon />
@@ -218,6 +217,13 @@ class AthleteProfileForm extends Component {
             floatingLabelText="University"
             validate={required}
           />
+           <Field
+            name="length_highschool"
+            component={TextField}
+            hintText="Length of Program"
+            floatingLabelText="Length of Program"
+            validate={required}
+          />
           </div>
           <div>
           <Field
@@ -241,25 +247,75 @@ class AthleteProfileForm extends Component {
             floatingLabelText="University"
             validate={required}
           />
-          </div>
-          <div>
-          <Field
-            name="length_program"
+           <Field
+            name="length_graduate"
             component={TextField}
             hintText="Length of Program"
             floatingLabelText="Length of Program"
             validate={required}
           />
           </div>
-          <IconButton tooltip="Edit Education Info">
+        <div>
+          <Field
+            name="academic_year"
+            component={TextField}
+            hintText="Academic Year"
+            floatingLabelText="Academic Year"
+            validate={required}
+          />
+          <Field
+            name="institute"
+            component={TextField}
+            hintText="Institute"
+            floatingLabelText="Institute"
+            validate={required}
+          />
+          <Field
+            name="sport"
+            component={TextField}
+            hintText="Sport"
+            floatingLabelText="Sport"
+            validate={required}
+          />
+          </div>
+           <IconButton tooltip="Add Field">
+          <PlusIcon />
+        </IconButton>
+          <div>
+          <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitAthleteProfileForm()} primary={true} />
+          </div>
+      </div>
+      <div>
+      <H3>Main Sports
+      <IconButton tooltip="Main Sports Info">
+          <EditIcon />
+        </IconButton>
+      </H3>
+        <div>
+          <Field
+            name="sports_played"
+            component={TextField}
+            hintText="What sports do you play?"
+            floatingLabelText="What sports do you play?"
+            validate={required}
+          />
+          <Field
+            name="practice_year"
+            component={DatePicker}
+            hintText="Started Practicing"
+            floatingLabelText="Started Practicing"
+            validate={required}
+          />
+          </div>
+           <IconButton tooltip="Add Certificates">
           <PlusIcon />
         </IconButton>
           <div>
           <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitAthleteProfileForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
           </div>
-      </form>
       </div>
+      </form>
     );
   }
 }
