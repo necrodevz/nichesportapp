@@ -13,7 +13,7 @@ injectTapEventPlugin();
 class App extends Component {
   
   networkInterface = createNetworkInterface({
-    uri: 'https://api.graph.cool/simple/v1/athliche'
+    uri: process.env.REACT_APP_GQL_URI
   })
   
   client = new ApolloClient({
