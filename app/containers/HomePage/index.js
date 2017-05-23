@@ -50,6 +50,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     this.props.GoToInstituteDashboard();
   }
 
+  athleteDashboardClick() {
+    this.props.GoToAthleteDashboard();
+  }
+
   render() {
     if (this.props.data.loading) {
     return (<div>Loading</div>)
@@ -72,6 +76,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <CenteredSection>
               <RaisedButton label="Proceed to Admin Dashboard" onClick={()=>this.adminDashboardClick()} primary={true} />
               <RaisedButton label="Proceed to Institute Dashboard" onClick={()=>this.instituteDashboardClick()} primary={true} />
+              <RaisedButton label="Proceed to Athlete Dashboard" onClick={()=>this.athleteDashboardClick()} primary={true} />
           </CenteredSection>
           </Section>
         </div>
@@ -92,7 +97,8 @@ HomePage.propTypes = {
 export function mapDispatchToProps(dispatch) {
   return {
     GoToAdminDashboard: () => dispatch(push('/adminDashboard')),
-    GoToInstituteDashboard: () => dispatch(push('/instituteDashboard'))
+    GoToInstituteDashboard: () => dispatch(push('/instituteDashboard')),
+    GoToAthleteDashboard: () => dispatch(push('/athleteDashboard'))
   };
 }
 

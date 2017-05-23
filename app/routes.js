@@ -126,6 +126,26 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/athleteDashboard',
+      name: 'athleteDashboard',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/AthleteDashboard/reducer'),
+          import('containers/AthleteDashboard/sagas'),
+          import('containers/AthleteDashboard'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('athleteDashboard', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

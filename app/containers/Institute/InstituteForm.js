@@ -18,7 +18,7 @@ import {
   TextField,
   Toggle
 } from 'redux-form-material-ui';
-import countryList from './countryList'
+import countryList from 'components/countryList';
 import RaisedButton from 'material-ui/RaisedButton'
 import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql } from 'react-apollo'
