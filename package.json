@@ -1,6 +1,6 @@
 {
   "name": "athliche_landing",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "dependencies": {
     "material-ui": "^0.18.1",
