@@ -31,7 +31,7 @@ export class InstituteCalendar extends React.PureComponent { // eslint-disable-l
     return (
       <CenteredSection>
       Institute Events Page
-      {this.state.showEventForm ? <EventForm showEventForm={this.state.showEventForm} toggleEventForm={this.toggleEventForm}/> : <RaisedButton label="Add New Team" onClick={() => this.toggleEventForm(this.state.showEventForm)} primary={true} />}
+      {this.state.showEventForm ? <EventForm showEventForm={this.state.showEventForm} toggleEventForm={this.toggleEventForm}/> : <RaisedButton label="Add New Event" onClick={() => this.toggleEventForm(this.state.showEventForm)} primary={true} />}
       </CenteredSection>
     );
   }

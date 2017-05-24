@@ -31,7 +31,7 @@ export class InstituteCoachPage extends React.PureComponent { // eslint-disable-
     return (
       <CenteredSection>
       Institute Coach Page
-      {this.state.showCoachForm ? <CoachForm showCoachForm={this.state.showCoachForm} toggleCoachForm={this.toggleCoachForm}/> : <RaisedButton label="Add New Team" onClick={() => this.toggleCoachForm(this.state.showCoachForm)} primary={true} />}
+      {this.state.showCoachForm ? <CoachForm showCoachForm={this.state.showCoachForm} toggleCoachForm={this.toggleCoachForm}/> : <RaisedButton label="Add New Coach" onClick={() => this.toggleCoachForm(this.state.showCoachForm)} primary={true} />}
       </CenteredSection>
     );
   }
