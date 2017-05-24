@@ -18,11 +18,6 @@ import FontFaceObserver from 'fontfaceobserver';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 
-// Authentication Components for Auth 0
-import AppContainer from './auth-session/src/containers/AppContainer'
-import AuthService from './auth-session/src/auth-utils/AuthService'
-// Authentication Components for Auth 0
-
 
 // Import root app
 import App from 'containers/App';
@@ -57,27 +52,27 @@ import { ApolloProvider } from 'react-apollo'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // Apolo Client
 
-// Auth0 service intiate and session logic 
-const auth = new AuthService("zRh0pXQER51rFZYi3rrU2HoQgYeU2BYK", " athliche.auth0.com");
+const networkInterface = createNetworkInterface({
+  uri: 'https://api.graph.cool/simple/v1/cj32ti8u8khzz0122jd4cwzh6',
+});
 
-// onEnter callback to validate authentication in private routes
-const requireAuth = (nextState, replace) => {
-  if (!auth.loggedIn()) {
-    replace({ pathname: '/login' })
+networkInterface.use([{
+  applyMiddleware(req, next) {
+    if (!req.options.headers) {
+      req.options.headers = {};  // Create the header object if needed.
+    }
+    // get the authentication token from local storage if it exists
+    const token = localStorage.getItem('token');
+    req.options.headers.authorization = token ? `Bearer ${token}` : null;
+    next();
   }
-}
-
-const isloggedIn = (nextState, replace) => {
-  if(auth.loggedIn()){
-    replace({ pathname: '/home' })
-  }
-}
-// Auth0 service intiate and session logic
-
+}]);
 
 const client = new ApolloClient({
-  networkInterface: createNetworkInterface({ uri: 'https://api.graph.cool/simple/v1/cj2pprgbbs1lw0103drosaalq'})
-})
+  networkInterface,
+});
+
+
 injectTapEventPlugin();
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in

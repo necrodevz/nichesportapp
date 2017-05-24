@@ -25,8 +25,10 @@ import {
 import RaisedButton from 'material-ui/RaisedButton'
 import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql } from 'react-apollo'
+import {Tabs, Tab} from 'material-ui/Tabs';
 import gql from 'graphql-tag'
 import LoginForm from './LoginForm'
+import SignUpForm from './SignUpForm'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const required = value => (value == null ? 'Required' : undefined);
@@ -40,9 +42,14 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
      const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
       <MuiThemeProvider>
-      <CenteredSection>
-      <LoginForm />
-      </CenteredSection>
+       <Tabs>
+            <Tab label="LogIn" >
+              <LoginForm />
+            </Tab>
+            <Tab label="SignUp" >
+            <SignUpForm />
+            </Tab>
+          </Tabs>
       </MuiThemeProvider>
     );
   }

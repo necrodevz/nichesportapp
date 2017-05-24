@@ -12,6 +12,22 @@ const loadModule = (cb) => (componentModule) => {
   cb(null, componentModule.default);
 };
 
+const token = localStorage.getItem('token');
+console.log('aaaaaaaa', token);
+
+const requireAuth = (nextState, replace) => {
+  if (!token ? true: false) {
+    replace({ pathname: '/login' })
+  }
+}
+
+const isloggedIn = (nextState, replace) => {
+
+  if(token ? true : false){
+    replace({ pathname: '/' })
+  }
+}
+
 export default function createRoutes(store) {
   // create reusable async injectors using getAsyncInjectors factory
   const { injectReducer, injectSagas } = getAsyncInjectors(store);
@@ -20,6 +36,7 @@ export default function createRoutes(store) {
     {
       path: '/',
       name: 'home',
+      onEnter: requireAuth,
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/HomePage/reducer'),
@@ -110,6 +127,7 @@ export default function createRoutes(store) {
     }, {
       path: '/login',
       name: 'loginPage',
+      onEnter: isloggedIn,
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/LoginPage/reducer'),

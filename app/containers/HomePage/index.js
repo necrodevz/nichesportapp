@@ -23,7 +23,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
  logout(){
-    this.props.router.push('/login');
+  localStorage.removeItem('token');
+  this.props.router.push('/login');
+  location.reload();
+    
   }
 
   static propTypes = {
@@ -62,7 +65,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
         <div>
           <CenteredSection>
             <RaisedButton label="Logout Dashboard" onClick={this.logout.bind(this)} secondary={true} />
-            <H3>Hey , there are {this.props.data.allUsers.length} Players in your account</H3>
+            <H3>Hey, {this.props.data.user ? this.props.data.user.email : 'no Data'}.</H3>
           </CenteredSection>
           <Section>
           <CenteredSection>
@@ -98,8 +101,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const UserQuery = gql`query UserQuery {
-  allUsers {
-    email
+   user { id email firstName lastName role mobileNumber address profileImage bio nationality country timeZone dob gender height weight
+    isActive isFirstTimeLogin mobileVerified emailVerified messageCount notificationCount
   }
 }`
 

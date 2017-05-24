@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
 import {RadioButton} from 'material-ui/RadioButton';
 import MenuItem from 'material-ui/MenuItem';
-import { push } from 'react-router-redux';
 import { createStructuredSelector } from 'reselect';
 import {
   AutoComplete,
@@ -20,7 +19,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
-import Notifications, {notify} from 'react-notify-toast';
+import { push } from 'react-router-redux';
 
 const required = value => (value == null ? 'Required' : undefined);
 const email = value =>
@@ -28,24 +27,42 @@ const email = value =>
     ? 'Invalid email'
     : undefined);
 
-class LoginForm extends Component {
+class SignUpForm extends Component {
   static propTypes = {
-    LoginUser: React.PropTypes.func
+    SignUpAthlete: React.PropTypes.func
   }
 
-  submitLoginForm = async () => {
-    //const {description, imageUrl} = this.state
-    await this.props.LoginUser({variables: {email: this.props.Email,
-                    password: this.props.Password}
-                 }).then((res)=>localStorage.setItem('token', res.data.signinUser.token)).then(()=> this.props.GoToHome()).then(()=>location.reload()).catch(notify.show('Please SignUp!', 'error'))
+   submitSignUpForm = async () => {
+    await this.props.SignUpAthlete({variables: {firstName: this.props.FirstName,
+                    lastName: this.props.LastName,
+                    email: this.props.Email,
+                   password: this.props.Password}
+                 }).then((res)=>localStorage.setItem('token', res.data.createUser.token)).then(()=> this.props.GoToHome()).then(()=>location.reload())
   }
 
   render() {
     const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
       <CenteredSection>
-      <Notifications />
        <form onSubmit={handleSubmit}>
+       <div>
+          <Field
+            name="first_name"
+            component={TextField}
+            hintText="First Name"
+            floatingLabelText="First Name"
+            validate={required}
+          />
+        </div>
+        <div>
+          <Field
+            name="last_name"
+            component={TextField}
+            hintText="Last Name"
+            floatingLabelText="Last Name"
+            validate={required}
+          />
+        </div>
         <div>
           <Field
             name="email"
@@ -59,14 +76,14 @@ class LoginForm extends Component {
           <Field
             name="password"
             component={TextField}
-            hintText="Password"
             type="password"
+            hintText="Password"
             floatingLabelText="Password"
             validate={required}
           />
         </div>
-       <div>
-          <RaisedButton label="Submit" onClick={()=>this.submitLoginForm()} disabled={submitting} primary={true} />
+        <div>
+          <RaisedButton label="Submit" onClick={()=>this.submitSignUpForm()} disabled={submitting} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </div>
       </form>
@@ -77,17 +94,19 @@ class LoginForm extends Component {
 
 const selector = formValueSelector('login_form');
 
-LoginForm = connect(state => ({
+SignUpForm = connect(state => ({
+  FirstName: selector(state, 'first_name'),
+  LastName: selector(state, 'last_name'),
   Email: selector(state, 'email'),
   Password: selector(state, 'password')
-}))(LoginForm);
+}))(SignUpForm);
 
-LoginForm = reduxForm({
+SignUpForm = reduxForm({
   form: 'login_form',
-})(LoginForm);
+})(SignUpForm);
 
 
-LoginForm.propTypes = {
+SignUpForm.propTypes = {
   loading: React.PropTypes.bool,
   error: React.PropTypes.oneOfType([
     React.PropTypes.object,
@@ -108,15 +127,15 @@ export function mapDispatchToProps(dispatch) {
 
 
 const addMutation = gql`
-  mutation LoginUser ($email: String!, $password: String!) {
-    signinUser(email: {
-     email: $email, password: $password
-  }) {
-    token
-  }
-  }
+  mutation SignUpAthlete ($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
+  createUser(authProvider: {
+    email: {email: $email, password: $password}
+  }, firstName: $firstName, lastName: $lastName, role: ATHLETE, athlete: {}) {
+    id
+}
+}
 `
 
-const LoginMutation = graphql(addMutation, {name: 'LoginUser'})(LoginForm)
+const SignUpMutation = graphql(addMutation, {name: 'SignUpAthlete'})(SignUpForm)
 
-export default connect (null, mapDispatchToProps)(LoginMutation);
+export default connect (null, mapDispatchToProps)(SignUpMutation);
