@@ -1,11 +1,13 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import {mailingReducer} from './reducers'
 import {client} from './apollo'
+import { reducer as formReducer } from 'redux-form'
 
 export const store = createStore(
     combineReducers({
         mailing:mailingReducer,
-        apollo:client.reducer()
+        apollo:client.reducer(),
+        form: formReducer,
     }),
     {},
       compose(

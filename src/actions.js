@@ -7,17 +7,16 @@ export function openModal() {
     }
 }
 
-export function emailUpdate() {
+export function formUpdate(payload) {
     return {
-        type: types.EMAIL_UPDATE
+        type: types.FORM_UPDATE,
+        payload:payload
     }
 }
 
-export function saveEmail(email) {
+export function saveMailingListItem(payload) {
     return {
-        type: types.SAVE_EMAIL,
-        payload: {
-            email: email
-        }
+        type: types.SUBMIT_FORM,
+        payload: payload
     }
 }

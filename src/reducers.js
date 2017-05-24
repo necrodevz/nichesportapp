@@ -1,19 +1,23 @@
 import * as types from './constants'
 
 const initialState={
-    isOpen: false
+    isOpen: false,
+    name: '',
+    email: '',
+    entitytype: 'athlete',
+    entityName:'',
+    entities: ['athlete', 'coach', 'scout', 'team', 'institution']
 }
 
 export function mailingReducer(state=initialState, action) {
     switch(action.type) {
         case types.OPEN_MODAL:
             return Object.assign({}, state, {
-                isOpen: true,
-                email: ''
+                isOpen: true
             })
-        case types.EMAIL_UPDATE:
+        case types.FORM_UPDATE:
             return Object.assign({}, state, {
-                email: action.payload.email
+                [action.payload.id]:action.payload.value
             })
         default:
             return state
