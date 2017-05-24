@@ -15,12 +15,14 @@ const Form = ({mailing:{name, email, entityType, entityName, entities}, checkEnt
               value={name}
               onChange={handleChange}
             />
+            <br />
             <TextField
               floatingLabelText="Email"
               id='email'
               value={email}
               onChange={handleChange}
             />
+            <br />
             <SelectField
               floatingLabelText='Select type of account desired'
               id='entityType'
@@ -33,6 +35,7 @@ const Form = ({mailing:{name, email, entityType, entityName, entities}, checkEnt
                 })
                 }
               </SelectField>
+              <br/>
             <TextField
               floatingLabelText={`Name of ${entityType}`}
               id='entityName'

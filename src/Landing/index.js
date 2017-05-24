@@ -13,6 +13,8 @@ import * as types from '../constants'
 
 const Header = ({handleOpen}) =>
     {
+        
+        
         return(
             <AppBar
                 title='Athliche App Coming Soon'
@@ -33,6 +35,10 @@ class Landing extends Component
         this.handleChange = this.handleChange.bind(this)
         this.checkEntityType = this.checkEntityType.bind(this)
     }
+    styles = {
+            marginLeft: 'auto',
+            marginRight: 'auto'
+        }
     handleSave=()=>{
         this.fields = {...this.props.mailing}
         console.log(this.fields)
@@ -73,7 +79,7 @@ class Landing extends Component
                 modal={true}
                 title="Enter your email address"
                 >
-                    <FormWithDataAndMutations mailing={this.props.mailing} checkEntityType={this.checkEntityType} handleChange={this.handleChange} />
+                    <FormWithDataAndMutations styles={this.styles} mailing={this.props.mailing} checkEntityType={this.checkEntityType} handleChange={this.handleChange} />
                 </Dialog>
             </div>
         )
