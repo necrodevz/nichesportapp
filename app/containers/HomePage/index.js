@@ -14,23 +14,15 @@ import Section from './Section';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import RaisedButton from 'material-ui/RaisedButton';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AuthService from '../../auth-session/src/auth-utils/AuthService' 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'; 
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
-   
-   static propTypes = {
-    auth: T.instanceOf(AuthService)
-  }
 
   constructor(props) {
     super(props)
-    console.log(localStorage.getItem('profile'));
   }
 
  logout(){
-    localStorage.removeItem('id_token');
-     localStorage.removeItem('profile');
     this.props.router.push('/login');
   }
 

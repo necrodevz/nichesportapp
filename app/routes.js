@@ -4,11 +4,6 @@
 // about the code splitting business
 import { getAsyncInjectors } from './utils/asyncInjectors';
 
-
-// Authentication Components for Auth 0
-import AuthService from './auth-session/src/auth-utils/AuthService'
-// Authentication Components for Auth 0
-
 const errorLoading = (err) => {
   console.error('Dynamic page loading failed', err); // eslint-disable-line no-console
 };
@@ -16,26 +11,6 @@ const errorLoading = (err) => {
 const loadModule = (cb) => (componentModule) => {
   cb(null, componentModule.default);
 };
-
-const auth = new AuthService(process.env.AUTH0_CLIENTID,
- process.env.AUTH0_DOMAIN);
-
-// const auth = new AuthService("o4qU6MtD4T33Ggfand88ys2r4hsoMYy6",
-//  "rajiv.au.auth0.com");
-
-const requireAuth = (nextState, replace) => {
-  if (!auth.loggedIn()) {
-    replace({ pathname: '/login' })
-  }
-}
-
-const isloggedIn = (nextState, replace) => {
-
-  if(auth.loggedIn()){
-    replace({ pathname: '/' })
-  }
-}
-
 
 export default function createRoutes(store) {
   // create reusable async injectors using getAsyncInjectors factory
@@ -45,8 +20,6 @@ export default function createRoutes(store) {
     {
       path: '/',
       name: 'home',
-      auth: auth,
-      onEnter: requireAuth,
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/HomePage/reducer'),
@@ -66,17 +39,6 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     },
-    {
-      path: '/login',
-      name: 'Login',
-      auth: auth,
-      onEnter: isloggedIn,
-      getComponent(nextState, cb) {
-        import('./auth-session/src/views/Login')
-          .then(loadModule(cb))
-          .catch(errorLoading);
-      },
-    }, 
     {
       path: '/adminDashboard',
       name: 'dashboardPage',
@@ -139,6 +101,26 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('athleteDashboard', reducer.default);
+          injectSagas(sagas.default);
+          renderRoute(component);
+        });
+
+        importModules.catch(errorLoading);
+      },
+    }, {
+      path: '/login',
+      name: 'loginPage',
+      getComponent(nextState, cb) {
+        const importModules = Promise.all([
+          import('containers/LoginPage/reducer'),
+          import('containers/LoginPage/sagas'),
+          import('containers/LoginPage'),
+        ]);
+
+        const renderRoute = loadModule(cb);
+
+        importModules.then(([reducer, sagas, component]) => {
+          injectReducer('loginPage', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });
