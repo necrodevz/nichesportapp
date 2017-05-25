@@ -3,6 +3,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Link } from 'react-router';
 import HeaderLink from './HeaderLink';
 import AppBar from 'material-ui/Appbar';
+import FlatButton from 'material-ui/FlatButton';
 import { push } from 'react-router-redux';
 
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
