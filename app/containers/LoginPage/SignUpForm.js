@@ -20,6 +20,7 @@ import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { push } from 'react-router-redux';
+import Notifications, {notify} from 'react-notify-toast';
 
 const required = value => (value == null ? 'Required' : undefined);
 const email = value =>
@@ -37,7 +38,7 @@ class SignUpForm extends Component {
                     lastName: this.props.LastName,
                     email: this.props.Email,
                    password: this.props.Password}
-                 }).then((res)=>localStorage.setItem('token', res.data.createUser.token)).then(()=> this.props.GoToHome()).then(()=>location.reload())
+                 }).then(()=> this.props.GoToLogin()).then(()=>location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   render() {
@@ -121,7 +122,7 @@ SignUpForm.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    GoToHome: () => dispatch(push('/'))
+    GoToLogin: () => dispatch(push('/login'))
   };
 }
 
