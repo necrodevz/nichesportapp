@@ -59,6 +59,7 @@ export default function createRoutes(store) {
     {
       path: '/adminDashboard',
       name: 'dashboardPage',
+      onEnter: requireAuth,
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/DashboardPage/reducer'),
@@ -79,6 +80,7 @@ export default function createRoutes(store) {
     }, {
       path: '/authorization',
       name: 'authorization',
+      onEnter: requireAuth,
       getComponent(location, cb) {
         import('containers/Authorization')
           .then(loadModule(cb))
@@ -87,6 +89,7 @@ export default function createRoutes(store) {
     }, {
       path: '/instituteDashboard',
       name: 'instituteDashboard',
+      onEnter: requireAuth,
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/InstituteDashboard/reducer'),
@@ -107,6 +110,7 @@ export default function createRoutes(store) {
     }, {
       path: '/athleteDashboard',
       name: 'athleteDashboard',
+      onEnter: requireAuth,
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/AthleteDashboard/reducer'),
