@@ -5,15 +5,7 @@ import Paper from 'material-ui/Paper';
 import IconLocationOn from 'material-ui/svg-icons/communication/location-on';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-const recentsIcon = <FontIcon className="material-icons">restore</FontIcon>;
-const favoritesIcon = <FontIcon className="material-icons">favorite</FontIcon>;
 const nearbyIcon = <IconLocationOn />;
-
-/**
- * A simple example of `BottomNavigation`, with three labels and icons
- * provided. The selected `BottomNavigationItem` is determined by application
- * state (for instance, by the URL).
- */
 
 // const StyleFooter = {
 //   bottom: 0,
@@ -35,19 +27,29 @@ class Footer extends Component {
           <div>
             <BottomNavigation selectedIndex={this.state.selectedIndex}>
               <BottomNavigationItem
-                label="Recents"
-                icon={recentsIcon}
+                label="Copyright @ Athliche Sports 2017"
+                icon={nearbyIcon}
                 onTouchTap={() => this.select(0)}
               />
               <BottomNavigationItem
-                label="Favorites"
-                icon={favoritesIcon}
+                label="Privacy Policy"
+                icon={nearbyIcon}
                 onTouchTap={() => this.select(1)}
               />
               <BottomNavigationItem
-                label="Nearby"
+                label="Terms & Conditions"
                 icon={nearbyIcon}
                 onTouchTap={() => this.select(2)}
+              />
+              <BottomNavigationItem
+                label="Support"
+                icon={nearbyIcon}
+                onTouchTap={() => this.select(3)}
+              />
+              <BottomNavigationItem
+                label="Contact Us"
+                icon={nearbyIcon}
+                onTouchTap={() => this.select(4)}
               />
             </BottomNavigation>
           </div>

@@ -22,13 +22,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     super(props)
   }
 
- logout(){
-  localStorage.removeItem('token');
-  this.props.router.push('/login');
-  location.reload();
-    
-  }
-
   static propTypes = {
     data: React.PropTypes.shape({
       loading: React.PropTypes.bool,
@@ -64,7 +57,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
       <article>
         <div>
           <CenteredSection>
-            <RaisedButton label="Logout Dashboard" onClick={this.logout.bind(this)} secondary={true} />
             <H3>Hey, {this.props.data.user ? this.props.data.user.email : 'no Data'}.</H3>
           </CenteredSection>
           <Section>
