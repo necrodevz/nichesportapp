@@ -21,7 +21,7 @@ import {
 import countryList from 'components/countryList';
 import RaisedButton from 'material-ui/RaisedButton'
 import CenteredSection from '../../containers/HomePage/CenteredSection'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
 // validation functions
@@ -33,17 +33,21 @@ const institute_email = value =>
 
 class InstituteForm extends Component {
   static propTypes = {
-    addPost: React.PropTypes.func
+    createInstitute: React.PropTypes.func
   }
 
    submitInstituteForm = async () => {
     //const {description, imageUrl} = this.state
-    await this.props.addPost({variables: {name: this.props.InstituteName,
+    await this.props.createInstitute({variables: {name: this.props.InstituteName,
                     country: this.props.InstituteCountry,
                     typeOfInstitute: this.props.InstituteType,
-                    status: "ACTIVE",
-                   ownerId: "cj2q1u2hg5yvq0175zo5ymafv" }
-                 })
+                    email: this.props.InstituteEmail,
+                    password: this.props.InstitutePassword}
+                 }).then(()=>location.reload())
+  }
+
+  componentWillMount() {
+    this.props.GetSportsQuery
   }
 
   render() {
@@ -79,17 +83,19 @@ class InstituteForm extends Component {
             validate={required}
           />
         </div>
-        <label>Choose Sports:</label>
-        <div>
-          <Field name="football" component={Checkbox} label="Football" />
-        </div>
-        <div>
-          <Field name="soccer" component={Checkbox} label="Soccer" />
-        </div>
-        <div>
-          <Field name="rugby" component={Checkbox} label="Rugby" />
-        </div>
-        <div>
+        {this.props.data.allSports ? <div>
+                          <Field
+                            name="sport"
+                            component={SelectField}
+                            hintText="Institute Sport"
+                            floatingLabelText="Institute Sport"
+                            validate={required}
+                          >
+                            {this.props.data.allSports.map(sport => (<MenuItem value={sport.id} primaryText={sport.name} key={sport.id} />))}
+                          </Field>
+                        </div>
+                :""}
+          <div>
           <Field
             name="institute_email"
             component={TextField}
@@ -160,16 +166,23 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const addMutation = gql`
-  mutation addPost($name: String!, $country: String!, $status: INSTITUTE_STATUS!, $typeOfInstitute:String!, $ownerId: ID!) {
-    createInstitute(name: $name, country: $country, status: $status, typeOfInstitute : $typeOfInstitute, ownerId : $ownerId ) {
-      id,
-      name,
-      country,
-      typeOfInstitute
-    }
+  mutation createInstitute ($email: String!, $password: String!, $country: String!, $name: String!, $typeOfInstitute: String!) {
+  createUser(authProvider: {email: {email: $email, password: $password}}, firstName: $name, lastName: $name, role: OWNER, instituteOwner: {country: $country, name: $name, typeOfInstitute: $typeOfInstitute, instituteSport: [{sportId: "cj32w829hbqfo01565f0zeimp"}]}) {
+    id
+  }
   }
 `
+const GetSportsQuery = gql`query GetSportsQuery {
+  allSports {
+    id
+    name
+  }
+}`
 
-const PageWithMutation = graphql(addMutation, {name: 'addPost'})(InstituteForm)
+
+const PageWithMutation = compose(
+  graphql(addMutation, {name: 'createInstitute'}),
+  graphql(GetSportsQuery)
+)(InstituteForm)
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageWithMutation);
