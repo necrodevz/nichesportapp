@@ -21,8 +21,10 @@ import RaisedButton from 'material-ui/RaisedButton'
 import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
+import Notifications, {notify} from 'react-notify-toast';
 
-var sports = [{"id": 1, "value": "Football"}, {"id": 2, "value": "Rugby"}, {"id": 3, "value": "Soccer"}];
+var userID = localStorage.getItem('userID');
+
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);
 const coach_email = value =>
@@ -32,15 +34,16 @@ const coach_email = value =>
 
 class CoachForm extends Component {
   static propTypes = {
-    addPost: React.PropTypes.func
+    createCoach: React.PropTypes.func
   }
 
    submitCoachForm = async () => {
-    await this.props.addPost({variables: {name: this.props.FirstName,
+    await this.props.createCoach({variables: {firstName: this.props.FirstName,
                     lastName: this.props.LastName,
-                    status: "ACTIVE",
-                   ownerId: "cj2q1u2hg5yvq0175zo5ymafv" }
-                 }).then(()=>console.log('form submitted------'))
+                    email: this.props.Email,
+                    instituteId: userID, 
+                   password: this.props.Password }
+                 }).then(()=>location.reload()).catch((res)=>alert(JSON.stringify(res.message)))
   }
 
   render() {
@@ -49,7 +52,7 @@ class CoachForm extends Component {
       <form onSubmit={handleSubmit}>
         <div>
           <Field
-            name="first_name"
+            name="coach_first_name"
             component={TextField}
             hintText="First Name"
             floatingLabelText="First Name"
@@ -58,7 +61,7 @@ class CoachForm extends Component {
         </div>
         <div>
           <Field
-            name="last_name"
+            name="coach_last_name"
             component={TextField}
             hintText="Last Name"
             floatingLabelText="Last Name"
@@ -76,7 +79,7 @@ class CoachForm extends Component {
         </div>
         <div>
           <Field
-            name="event_name"
+            name="coach_password"
             component={TextField}
             type="password"
             hintText="Password"
@@ -85,7 +88,7 @@ class CoachForm extends Component {
           />
         </div>
         <div>
-          <RaisedButton label="Submit" disabled={submitting} onClick={()=>this.submitCoachForm()} primary={true} />
+          <RaisedButton label="Submit" disabled={submitting} onTouchTap={()=>this.submitCoachForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </div>
       </form>
@@ -96,8 +99,10 @@ class CoachForm extends Component {
 const selector = formValueSelector('coach_form');
 
 CoachForm = connect(state => ({
-  FirstName: selector(state, 'event_name'),
-  lastNameame: selector(state, 'sport')
+  FirstName: selector(state, 'coach_first_name'),
+  LastName: selector(state, 'coach_last_name'),
+  Email: selector(state, 'coach_email'),
+  Password: selector(state, 'coach_password')
 }))(CoachForm);
 
 CoachForm = reduxForm({
@@ -118,4 +123,14 @@ CoachForm.propTypes = {
   onSubmitForm: React.PropTypes.func,
 };
 
-export default CoachForm;
+const createCoachMutation = gql`
+  mutation createCoach ($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
+    createUser(authProvider: {email: {email: $email, password: $password}}, firstName: $firstName, lastName: $lastName, role: COACH, coach: {instituteId: "cj32wbdg7mg3a01460zdkcxoi"}) {
+    id
+  }
+  }
+`
+
+const TeamFormMutation = graphql(createCoachMutation, {name: 'createCoach'})(CoachForm)
+
+export default TeamFormMutation;
