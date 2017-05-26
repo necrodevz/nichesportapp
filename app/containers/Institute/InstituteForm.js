@@ -68,6 +68,7 @@ class InstituteForm extends Component {
             name="institute_country"
             component={SelectField}
             hintText="Institute Country"
+            maxHeight={200}
             floatingLabelText="Institute Country"
             validate={required}
           >

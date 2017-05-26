@@ -80,6 +80,7 @@ class AthleteProfileForm extends Component {
             name="country"
             component={SelectField}
             hintText="Country"
+            maxHeight={200}
             floatingLabelText="Country"
             validate={required}
           >
