@@ -31,18 +31,24 @@ const institute_email = value =>
     ? 'Invalid email'
     : undefined);
 
+const sportsObject=[]
+
 class InstituteForm extends Component {
   static propTypes = {
     createInstitute: React.PropTypes.func
   }
 
    submitInstituteForm = async () => {
+    for(var i = 0; i < this.props.InstituteSports.length; i++){
+      sportsObject.push({"sportId": this.props.InstituteSports[i]})
+    }
     //const {description, imageUrl} = this.state
     await this.props.createInstitute({variables: {name: this.props.InstituteName,
                     country: this.props.InstituteCountry,
                     typeOfInstitute: this.props.InstituteType,
                     email: this.props.InstituteEmail,
-                    password: this.props.InstitutePassword}
+                    password: this.props.InstitutePassword,
+                    sport: sportsObject}
                  }).then(()=>location.reload())
   }
 
@@ -86,7 +92,8 @@ class InstituteForm extends Component {
         </div>
         {this.props.data.allSports ? <div>
                           <Field
-                            name="sport"
+                            name="institute_sport"
+                            multiple={true}
                             component={SelectField}
                             hintText="Institute Sport"
                             floatingLabelText="Institute Sport"
@@ -131,7 +138,8 @@ InstituteForm = connect(state => ({
   InstituteCountry: selector(state, 'institute_country'),
   InstituteType: selector(state, 'institute_type'),
   InstituteEmail: selector(state, 'institute_email'),
-  InstitutePassword: selector(state, 'institute_password')
+  InstitutePassword: selector(state, 'institute_password'),
+  InstituteSports: selector(state, 'institute_sport')
 }))(InstituteForm);
 
 InstituteForm = reduxForm({
