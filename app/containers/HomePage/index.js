@@ -30,16 +30,12 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     }).isRequired,
   }
 
-  adminDashboardClick() {
-    this.props.GoToAdminDashboard();
-  }
-
-  instituteDashboardClick() {
-    this.props.GoToInstituteDashboard();
-  }
-
-  athleteDashboardClick() {
-    this.props.GoToAthleteDashboard();
+  updateProfile() {
+    localStorage.setItem('userID', this.props.data.user.id);
+    localStorage.setItem('role', this.props.data.user.role);
+    this.props.data.user.role == 'ADMIN' ? this.props.GoToAdminDashboard() : '';
+    this.props.data.user.role == 'ATHLETE' ? this.props.GoToAthleteDashboard() : '';
+    this.props.data.user.role == 'OWNER' ? this.props.GoToInstituteDashboard() : '';
   }
 
   render() {
@@ -52,6 +48,8 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     return (<div>An unexpected error occurred</div>)
   }
 
+  this.props.data.user ? this.updateProfile() : '';
+
     return (
       <MuiThemeProvider>
       <article>
@@ -59,13 +57,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
           <CenteredSection>
             <H3>Hey, {this.props.data.user ? this.props.data.user.email : 'no Data'}.</H3>
           </CenteredSection>
-          <Section>
-          <CenteredSection>
-              <RaisedButton label="Proceed to Admin Dashboard" onClick={()=>this.adminDashboardClick()} primary={true} />
-              <RaisedButton label="Proceed to Institute Dashboard" onClick={()=>this.instituteDashboardClick()} primary={true} />
-              <RaisedButton label="Proceed to Athlete Dashboard" onClick={()=>this.athleteDashboardClick()} primary={true} />
-          </CenteredSection>
-          </Section>
         </div>
       </article>
       </MuiThemeProvider>

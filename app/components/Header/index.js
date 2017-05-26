@@ -16,6 +16,8 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
 
   logout(){
   localStorage.removeItem('token');
+  localStorage.removeItem('userID');
+  localStorage.removeItem('role');
   window.location.assign("/");
   location.reload();
     
