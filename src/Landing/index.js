@@ -2,27 +2,57 @@ import React, {Component} from 'react'
 import logo from './logo.png'
 import bg from './bg.png'
 import {Card, CardMedia} from 'material-ui/Card'
-//import {Grid, Row, Col} from 'react-flexbox-grid'
+import Drawer from 'material-ui/Drawer'
 import Dialog from 'material-ui/Dialog'
 import AppBar from 'material-ui/AppBar'
-import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
 import {connect} from 'react-redux'
-import {openModal, formUpdate} from '../actions'
-import FormWithDataAndMutations from './Form'
+import {toggleDialog, toggleDrawer} from '../actions'
+import Form from './Form'
 import * as types from '../constants'
+import {Row} from 'react-flexbox-grid'
+import modalContent from './modal.png'
 
-const Header = ({handleOpen}) =>
+const Header = ({handleOpen, isOpen}) =>
     {
-        
-        
         return(
             <AppBar
                 title='Athliche App Coming Soon'
                 iconElementLeft={<img src={logo} height='50px' />}
-                iconElementRight={<FlatButton  label='Get Notified!' onTouchTap={handleOpen} primary={true} />}
+                iconElementRight={<RaisedButton  label={isOpen ?'Close Form':'Get Notified!'} onTouchTap={handleOpen} />}
             />
         )
         
+    }
+    
+const Intro = ({isOpen, handleClick}) =>
+    {
+        
+        const actions = [
+                <Row center='xs'>
+                    <RaisedButton
+                        label='Sign Up!'
+                        onTouchTap={handleClick}
+                        primary={true}
+                    />
+                </Row>
+            ]
+        return(
+            <Dialog 
+                title={
+                    <Row center='xs'>
+                        <img src={logo} height='50px' />
+                    </Row>
+                }
+                actions={actions}
+                modal={true}
+                open={isOpen}
+            >
+                <Row middle='xs' center='xs'>
+                    <img src={modalContent} role='presentation' />
+                </Row>
+            </Dialog>
+        )
     }
 
 class Landing extends Component  
@@ -32,55 +62,41 @@ class Landing extends Component
         
         this.handleSave = this.handleSave.bind(this)
         this.handleOpen = this.handleOpen.bind(this)
-        this.handleChange = this.handleChange.bind(this)
-        this.checkEntityType = this.checkEntityType.bind(this)
+        this.handleInfo = this.handleInfo.bind(this)
     }
     styles = {
             marginLeft: 'auto',
             marginRight: 'auto'
         }
-    handleSave=()=>{
-        this.fields = {...this.props.mailing}
-        console.log(this.fields)
+    handleSave = (values) => {
+        //preventDefault()
+        console.log(values)
+        this.props.dispatch(toggleDialog())
     }
-    
+    handleInfo = () => {
+        this.props.dispatch(toggleDialog())
+        this.props.dispatch(toggleDrawer())
+    }
     handleOpen = () => {
-        this.props.dispatch(openModal())
-    }
-    handleChange =(e) => 
-    {
-        this.payload = {
-            id: e.target.id,
-            value: e.target.value
-        }
-        this.props.dispatch(formUpdate(this.payload))
-    }
-    
-    checkEntityType = () => 
-    {
-      if(this.props.mailing.entityType == 'team' || 'institution')
-      {
-        return true
-      }
+        this.props.dispatch(toggleDialog())
     }
     
     render(){
         return(
             <div>
-                <Header handleOpen={this.handleOpen} />
+                <Header handleOpen={this.handleOpen} isOpen={this.props.mailing.isOpen} />
                 <Card>
                     <CardMedia >
                         <img src={bg} />
                     </CardMedia>
                 </Card>
-                <Dialog
-                actions={<FlatButton label='Submit' onTouchTap={this.handleSave} />}
-                open={this.props.mailing.isOpen}
-                modal={true}
+                <Intro isOpen={this.props.mailing.dialogOpen} handleClick={this.handleInfo} />
+                <Drawer
+                open={this.props.mailing.drawerOpen}
                 title="Enter your email address"
                 >
-                    <FormWithDataAndMutations styles={this.styles} mailing={this.props.mailing} checkEntityType={this.checkEntityType} handleChange={this.handleChange} />
-                </Dialog>
+                    <Form mailing={this.props.mailing}  onSubmit={this.handleSave} />
+                </Drawer>
             </div>
         )
     }

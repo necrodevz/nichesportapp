@@ -1,23 +1,24 @@
 import * as types from './constants'
 
 const initialState={
-    isOpen: false,
-    name: '',
-    email: '',
-    entitytype: 'athlete',
-    entityName:'',
-    entities: ['athlete', 'coach', 'scout', 'team', 'institution']
+    dialogOpen: true,
+    drawerOpen: false,
+    //name: '',
+    //email: '',
+    //entitytype: '',
+    //entityName:'',
+    //entities: ['athlete', 'coach', 'scout', 'team', 'institution']
 }
 
 export function mailingReducer(state=initialState, action) {
     switch(action.type) {
-        case types.OPEN_MODAL:
+        case types.TOGGLE_DIALOG:
             return Object.assign({}, state, {
-                isOpen: true
+                dialogOpen: !state.dialogOpen
             })
-        case types.FORM_UPDATE:
+        case types.TOGGLE_DRAWER:
             return Object.assign({}, state, {
-                [action.payload.id]:action.payload.value
+                drawerOpen: !state.drawerOpen
             })
         default:
             return state

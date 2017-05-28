@@ -11,7 +11,8 @@
     "react-redux": "^5.0.5",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
-    "redux-form": "^6.7.0"
+    "redux-form": "^6.7.0",
+    "redux-form-material-ui": "^4.2.0"
   },
   "devDependencies": {
     "react-scripts": "1.0.5"

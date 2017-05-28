@@ -1,22 +1,18 @@
 import * as types from './constants'
 
 
-export function openModal() {
+export function toggleDialog() {
     return {
-        type: types.OPEN_MODAL
+        type: types.TOGGLE_DIALOG
     }
 }
 
-export function formUpdate(payload) {
+export function toggleDrawer() {
     return {
-        type: types.FORM_UPDATE,
-        payload:payload
+        type: types.TOGGLE_DRAWER
     }
 }
 
 export function saveMailingListItem(payload) {
-    return {
-        type: types.SUBMIT_FORM,
-        payload: payload
-    }
+    console.log(payload)
 }
