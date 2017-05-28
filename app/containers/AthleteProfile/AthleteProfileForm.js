@@ -19,15 +19,19 @@ import {
 } from 'redux-form-material-ui';
 import RaisedButton from 'material-ui/RaisedButton'
 import FontIcon from 'material-ui/FontIcon'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import IconButton from 'material-ui/IconButton';
 import gql from 'graphql-tag'
 import H3 from 'components/H3';
 import countryList from 'components/countryList'
+import timezoneList from 'components/timezoneList'
 import PublishIcon from 'material-ui/svg-icons/editor/publish';
 import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
 import PlusIcon from 'material-ui/svg-icons/social/plus-one';
 import Avatar from 'material-ui/Avatar'
+import Notifications, {notify} from 'react-notify-toast';
+
+// var userData=[];
 
 var genders = [{"id": 1, "value": "Male"}, {"id": 2, "value": "Female"}, {"id": 3, "value": "Other"}];
 // validation functions
@@ -36,22 +40,63 @@ const email = value =>
   (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? 'Invalid email'
     : undefined);
+var userID = localStorage.getItem('userID');
 
 class AthleteProfileForm extends Component {
   static propTypes = {
-    addPost: React.PropTypes.func
+    updateUser: React.PropTypes.func,
+    updateAthlete: React.PropTypes.func,
+    updateAthleteSport: React.PropTypes.func
   }
 
    submitAthleteProfileForm = async () => {
-    await this.props.addPost({variables: {name: this.props.FirstName,
+    await this.props.updateUser({variables: {firstName: this.props.FirstName,
                     lastName: this.props.LastName,
-                    status: "ACTIVE",
-                   ownerId: "cj2q1u2hg5yvq0175zo5ymafv" }
+                    userID: userID,
+                    email: this.props.Email,
+                    country: this.props.Country,
+                    dob: this.props.DOB,
+                    gender: this.props.Gender,
+                    address: this.props.Address,
+                    timezone: this.props.TimeZone,
+                    mobileNumber: this.props.MobileNumber,
+                    height: parseInt(this.props.Height),
+                    weight: parseInt(this.props.Weight),
+                    bio: this.props.Bio
+                     }
                  }).then(()=>console.log('form submitted------'))
   }
 
+  submitAthleteEducationForm = async () => {
+    await this.props.updateAthlete({variables: {GraduationName: this.props.GraduationName,
+                    GraduationProgramLength: this.props.GraduationProgramLength,
+                    userID: userID,
+                    GraduationUniversity: this.props.GraduationUniversity,
+                    GraduationYear: parseInt(this.props.GraduationYear),
+                    HighSchoolName: this.props.HighSchoolName,
+                    HighSchoolUniversity: this.props.HighSchoolUniversity,
+                    HighSchoolYear: parseInt(this.props.HighSchoolYear)
+                     }
+                 }).then(()=>console.log('form submitted------'))
+  }
+
+  submitSportForm = async () => {
+    await this.props.updateAthleteSport({variables: {SportPlayed: this.props.SportPlayed,
+                    SportYear: this.props.SportYear,
+                    userID: userID
+                     }
+                 }).then(()=>console.log('form submitted------'))
+  }
+
+  // componentDidMount() {
+  //   userData= this.props.userData;
+  //   console.log(userData)
+  // }
+
+
   render() {
-    const {loading, error, repos, handleSubmit, pristine, reset, submitting} = this.props;
+
+    const {loading, error, repos, handleSubmit, pristine, reset, submitting, sportsList, userData} = this.props;
     return (
       <form>
        <Avatar size={100} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCBaY5WK0X77jdCctunaXaBRU6a8vDT7-R3zB1xQUVeB2H4sgz_Sd9Yw" />
@@ -68,10 +113,17 @@ class AthleteProfileForm extends Component {
       </H3>
         <div>
           <Field
-            name="full_name"
+            name="athlete_first_name"
             component={TextField}
-            hintText="Full Name"
-            floatingLabelText="Full Name"
+            hintText="First Name"
+            floatingLabelText="First Name"
+            validate={required}
+          />
+          <Field
+            name="athlete_last_name"
+            component={TextField}
+            hintText="Last Name"
+            floatingLabelText="Last Name"
             validate={required}
           />
         </div>
@@ -79,26 +131,13 @@ class AthleteProfileForm extends Component {
           <Field
             name="country"
             component={SelectField}
-            hintText="Country"
             maxHeight={200}
-            floatingLabelText="Country"
-            validate={required}
-          >
-            {countryList.map(country => (<MenuItem value={country[1]} primaryText={country[0]} key={country[1]} />))}
-          </Field>
-        </div>
-        <div>
-          <Field
-            name="country"
-            component={SelectField}
             hintText="Country"
             floatingLabelText="Country"
             validate={required}
           >
             {countryList.map(country => (<MenuItem value={country[1]} primaryText={country[0]} key={country[1]} />))}
           </Field>
-        </div>
-        <div>
           <Field
             name="dob"
             component={DatePicker}
@@ -115,7 +154,7 @@ class AthleteProfileForm extends Component {
             floatingLabelText="Gender"
             validate={required}
           >
-            {genders.map(gender => (<MenuItem value={gender[1]} primaryText={gender[0]} key={gender[1]} />))}
+            {genders.map(gender => (<MenuItem value={gender.value} primaryText={gender.value} key={gender.id} />))}
           </Field>
         </div>
         <div>
@@ -130,11 +169,15 @@ class AthleteProfileForm extends Component {
         <div>
           <Field
             name="timezone"
-            component={TimePicker}
+            component={SelectField}
+            maxHeight={200}
+            autoWidth={true}
             hintText="Timezone"
             floatingLabelText="Timezone"
             validate={required}
-          />
+          >
+            {timezoneList.map(timezone => (<MenuItem value={timezone.text} primaryText={timezone.text} key={timezone.offset+timezone.value} />))}
+          </Field>
         </div>
         <div>
           <Field
@@ -157,24 +200,18 @@ class AthleteProfileForm extends Component {
         <div>
           <Field
             name="height"
-            component={SelectField}
+            component={TextField}
             hintText="Height"
             floatingLabelText="Height"
             validate={required}
-          >
-            {genders.map(gender => (<MenuItem value={gender[1]} primaryText={gender[0]} key={gender[1]} />))}
-          </Field>
-        </div>
-        <div>
+          />
           <Field
             name="weight"
-            component={SelectField}
+            component={TextField}
             hintText="Weight"
             floatingLabelText="Weight"
             validate={required}
-          >
-            {genders.map(gender => (<MenuItem value={gender[1]} primaryText={gender[0]} key={gender[1]} />))}
-          </Field>
+          />
         </div>
         <div>
           <Field
@@ -219,7 +256,7 @@ class AthleteProfileForm extends Component {
             validate={required}
           />
            <Field
-            name="length_highschool"
+            name="highschool_length"
             component={TextField}
             hintText="Length of Program"
             floatingLabelText="Length of Program"
@@ -249,7 +286,7 @@ class AthleteProfileForm extends Component {
             validate={required}
           />
            <Field
-            name="length_graduate"
+            name="graduation_length"
             component={TextField}
             hintText="Length of Program"
             floatingLabelText="Length of Program"
@@ -283,7 +320,7 @@ class AthleteProfileForm extends Component {
           <PlusIcon />
         </IconButton>
           <div>
-          <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitAthleteProfileForm()} primary={true} />
+          <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitAthleteEducationForm()} primary={true} />
           </div>
       </div>
       <div>
@@ -295,11 +332,13 @@ class AthleteProfileForm extends Component {
         <div>
           <Field
             name="sports_played"
-            component={TextField}
+            component={SelectField}
             hintText="What sports do you play?"
             floatingLabelText="What sports do you play?"
             validate={required}
-          />
+          >
+            {sportsList.map(sport => (<MenuItem value={sport.id} primaryText={sport.name} key={sport.id} />))}
+          </Field>
           <Field
             name="practice_year"
             component={DatePicker}
@@ -312,7 +351,7 @@ class AthleteProfileForm extends Component {
           <PlusIcon />
         </IconButton>
           <div>
-          <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitAthleteProfileForm()} primary={true} />
+          <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitSportForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
           </div>
       </div>
@@ -324,12 +363,32 @@ class AthleteProfileForm extends Component {
 const selector = formValueSelector('coach_form');
 
 AthleteProfileForm = connect(state => ({
-  FirstName: selector(state, 'event_name'),
-  lastNameame: selector(state, 'sport')
+  FirstName: selector(state, 'athlete_first_name'),
+  LastName: selector(state, 'athlete_last_name'),
+  Country: selector(state, 'country'),
+  DOB: selector(state, 'dob'),
+  Gender: selector(state, 'gender'),
+  Address: selector(state, 'address'),
+  TimeZone: selector(state, 'timezone'),
+  MobileNumber: selector(state, 'mobile'),
+  Height: selector(state, 'height'),
+  Weight: selector(state, 'weight'),
+  Bio: selector(state, 'bio'),
+  HighSchoolName: selector(state, 'highschool'),
+  HighSchoolYear: selector(state, 'highschool_year'),
+  HighSchoolUniversity: selector(state, 'highschool_university'),
+  HighSchoolProgramLength: selector(state, 'highschool_length'),
+  GraduationName: selector(state, 'graduation'),
+  GraduationYear: selector(state, 'graduation_year'),
+  GraduationUniversity: selector(state, 'graduation_university'),
+  GraduationProgramLength: selector(state, 'graduation_length'),
+  SportPlayed: selector(state, 'sports_played'),
+  SportYear: selector(state, 'practice_year')
 }))(AthleteProfileForm);
 
+
 AthleteProfileForm = reduxForm({
-  form: 'coach_form',
+  form: 'coach_form'
 })(AthleteProfileForm);
 
 
@@ -346,4 +405,34 @@ AthleteProfileForm.propTypes = {
   onSubmitForm: React.PropTypes.func,
 };
 
-export default AthleteProfileForm;
+const updateProfileInfoMutation = gql`
+  mutation updateUser ($userID: ID!, $firstName: String!, $lastName: String!, $country: String!, $dob: DateTime!, $gender: String!, $address: String!, $timezone: String!, $mobileNumber: String!, $height: Float!, $weight: Float!, $bio: String!) {
+   updateUser(id: $userID, firstName: $firstName, lastName: $lastName, country: $country, dob: $dob, profileImage: "1212113asc2asc21as2c", gender: $gender, address: $address, timeZone: $timezone, mobileNumber: $mobileNumber, height: $height, weight: $weight, bio: $bio) {
+    id
+  }
+  }
+`
+
+const updateEducationInfoMutation = gql`
+  mutation updateAthlete ($userID: ID!, $GraduationName: String!, $GraduationYear: Int!, $GraduationProgramLength: String!, $GraduationUniversity: String!, $HighSchoolName: String!, $HighSchoolYear: Int!, $HighSchoolUniversity: String! ) {
+    updateAthlete(id: $userID, graduation: $GraduationName, graduationProgramLength: $GraduationProgramLength, graduationUniversity: $GraduationUniversity, graduationYear: $GraduationYear, hightSchool: $HighSchoolName, hightSchoolUniversity: $HighSchoolUniversity, hightSchoolYear: $HighSchoolYear) {
+    id
+  }
+  }
+`
+
+const updateSportInfoMutation = gql`
+  mutation updateAthleteSport ($SportPlayed: ID!, $SportYear: DateTime!) {
+    createAthleteSport(athleteId: "cj2vmbh2iu3lx0177iu955e6a", sportId: $SportPlayed, participateStartDate: $SportYear) {
+    id
+  }
+  }
+`
+
+const AthleteFormMutation = compose(
+  graphql(updateProfileInfoMutation, {name: 'updateUser'}),
+  graphql(updateEducationInfoMutation, {name: 'updateAthlete'}),
+  graphql(updateSportInfoMutation, {name: 'updateAthleteSport'})
+)(AthleteProfileForm)
+
+export default AthleteFormMutation;
