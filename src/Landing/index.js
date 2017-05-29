@@ -51,7 +51,7 @@ const Intro = ({isOpen, handleClick}) =>
                 open={isOpen}
             >
                 <Row middle='xs' center='xs'>
-                    <img src={modalContent2} role='presentation' height='60%' />
+                    <img src={modalContent} role='presentation' height='60%' />
                 </Row>
             </Dialog>
             
