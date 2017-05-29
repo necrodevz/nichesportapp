@@ -46,7 +46,7 @@ const Intro = ({isOpen, handleClick}) =>
                     </Row>
                 }
                 actions={actions}
-                modal={true}
+                modal={false}
                 open={isOpen}
             >
                 <Row middle='xs' center='xs'>
