@@ -12,6 +12,8 @@ import Form from './Form'
 import * as types from '../constants'
 import {Row} from 'react-flexbox-grid'
 import modalContent from './modal.png'
+import modalContent2 from './modal-alt.png'
+import { gql, graphql, compose } from 'react-apollo'
 
 const Header = ({handleOpen, isOpen}) =>
     {
@@ -31,7 +33,7 @@ const Intro = ({isOpen, handleClick}) =>
         const actions = [
                 <Row center='xs'>
                     <RaisedButton
-                        label='Sign Up!'
+                        label='Get notified when Athliche becomes available!'
                         onTouchTap={handleClick}
                         primary={true}
                     />
@@ -49,9 +51,10 @@ const Intro = ({isOpen, handleClick}) =>
                 open={isOpen}
             >
                 <Row middle='xs' center='xs'>
-                    <img src={modalContent} role='presentation' />
+                    <img src={modalContent2} role='presentation' height='60%' />
                 </Row>
             </Dialog>
+            
         )
     }
 
@@ -69,9 +72,21 @@ class Landing extends Component
             marginRight: 'auto'
         }
     handleSave = (values) => {
-        //preventDefault()
+        
         console.log(values)
-        this.props.dispatch(toggleDialog())
+        this.props.mutate({
+            variables:{
+                name:values.fullName,
+                email: values.email,
+                favouriteSport: values.favouriteSport
+            }
+        }).then(({data})=> {
+            console.log(data)
+            alert(`Thank you for signing up ${data.createMailingListItem.name}!\n We'll be in contact as soon as Athliche is done`)
+        }).catch((error)=>{
+            console.log(error)
+        })
+        this.props.dispatch(toggleDrawer())
     }
     handleInfo = () => {
         this.props.dispatch(toggleDialog())
@@ -94,6 +109,7 @@ class Landing extends Component
                 <Drawer
                 open={this.props.mailing.drawerOpen}
                 title="Enter your email address"
+                docked={false}
                 >
                     <Form mailing={this.props.mailing}  onSubmit={this.handleSave} />
                 </Drawer>
@@ -109,8 +125,19 @@ const mapStateToProps = (state) =>
   }
 }
 
+const createMailingListItem = gql`
+    mutation createMailingListItem($name: String!, $email:String!, $favouriteSport:String!) {
+        createMailingListItem(name:$name, email:$email, favouriteSport:$favouriteSport){
+            name
+            createdAt
+        }
+    }`
 
-export default connect(mapStateToProps)(Landing)
+
+export default compose(
+    graphql(createMailingListItem),
+    connect(mapStateToProps)
+    )(Landing)
 
 
 //export default Landing
