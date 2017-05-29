@@ -56,7 +56,6 @@ class LoginForm extends Component {
   }
 
   render() {
-    console.log('22222', errors);
     const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
       <CenteredSection>
