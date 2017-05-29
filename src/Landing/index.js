@@ -12,7 +12,6 @@ import Form from './Form'
 import * as types from '../constants'
 import {Row} from 'react-flexbox-grid'
 import modalContent from './modal.png'
-import modalContent2 from './modal-alt.png'
 import { gql, graphql, compose } from 'react-apollo'
 
 const Header = ({handleOpen, isOpen}) =>
