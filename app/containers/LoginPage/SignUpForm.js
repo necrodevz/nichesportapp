@@ -22,11 +22,28 @@ import gql from 'graphql-tag'
 import { push } from 'react-router-redux';
 import Notifications, {notify} from 'react-notify-toast';
 
+const errors = {}
+
 const required = value => (value == null ? 'Required' : undefined);
-const email = value =>
+const signup_email = value =>
   (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? 'Invalid email'
     : undefined);
+
+const validateSignup = values => {
+  
+  errors.first_name = required(values.first_name)
+  errors.last_name = required(values.last_name)
+  errors.signup_password = required(values.signup_password)
+  errors.signup_email = signup_email(values.signup_email || '')
+  if (!values.signup_email) {
+    errors.signup_email = 'Required'
+  } else if (signup_email(values.signup_email)) {
+    errors.signup_email = 'Invalid Email'
+  }
+  return errors
+}
+
 
 class SignUpForm extends Component {
   static propTypes = {
@@ -66,16 +83,16 @@ class SignUpForm extends Component {
         </div>
         <div>
           <Field
-            name="email"
+            name="signup_email"
             component={TextField}
             hintText="Email"
             floatingLabelText="Email"
-            validate={[required, email]}
+            validate={[required, signup_email]}
           />
         </div>
         <div>
           <Field
-            name="password"
+            name="signup_password"
             component={TextField}
             type="password"
             hintText="Password"
@@ -84,7 +101,7 @@ class SignUpForm extends Component {
           />
         </div>
         <div>
-          <RaisedButton label="Submit" onClick={()=>this.submitSignUpForm()} disabled={submitting} primary={true} />
+          <RaisedButton label="Submit" disabled={errors.signup_email != null || errors.signup_password != null || errors.first_name != null || errors.last_name != null} onClick={()=>this.submitSignUpForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </div>
       </form>
@@ -93,32 +110,20 @@ class SignUpForm extends Component {
   }
 }
 
-const selector = formValueSelector('login_form');
+const selector = formValueSelector('signup_form');
+
+SignUpForm = reduxForm({
+  form: 'signup_form',
+  validate: validateSignup
+})(SignUpForm);
+
 
 SignUpForm = connect(state => ({
   FirstName: selector(state, 'first_name'),
   LastName: selector(state, 'last_name'),
-  Email: selector(state, 'email'),
-  Password: selector(state, 'password')
+  Email: selector(state, 'signup_email'),
+  Password: selector(state, 'signup_password')
 }))(SignUpForm);
-
-SignUpForm = reduxForm({
-  form: 'login_form',
-})(SignUpForm);
-
-
-SignUpForm.propTypes = {
-  loading: React.PropTypes.bool,
-  error: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-  ]),
-  coach: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.bool,
-  ]),
-  onSubmitForm: React.PropTypes.func,
-};
 
 export function mapDispatchToProps(dispatch) {
   return {

@@ -22,11 +22,26 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import Notifications, {notify} from 'react-notify-toast';
 
+const errors = {}
+
 const required = value => (value == null ? 'Required' : undefined);
 const email = value =>
   (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? 'Invalid email'
     : undefined);
+
+const validateLogin = values => {
+  
+  errors.password = required(values.password)
+  errors.email = email(values.email || '')
+  if (!values.email) {
+    errors.email = 'Required'
+  } else if (email(values.email)) {
+    errors.email = 'Invalid Email'
+  }
+  return errors
+}
+
 
 class LoginForm extends Component {
   static propTypes = {
@@ -41,6 +56,7 @@ class LoginForm extends Component {
   }
 
   render() {
+    console.log('22222', errors);
     const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
       <CenteredSection>
@@ -66,7 +82,7 @@ class LoginForm extends Component {
           />
         </div>
        <div>
-          <RaisedButton label="Submit" onClick={()=>this.submitLoginForm()} disabled={submitting} primary={true} />
+          <RaisedButton label="Submit" onClick={()=>this.submitLoginForm()} disabled={errors.email != null || errors.password != null} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </div>
       </form>
@@ -77,28 +93,15 @@ class LoginForm extends Component {
 
 const selector = formValueSelector('login_form');
 
+LoginForm = reduxForm({
+  form: 'login_form',
+  validate: validateLogin
+})(LoginForm);
+
 LoginForm = connect(state => ({
   Email: selector(state, 'email'),
   Password: selector(state, 'password')
 }))(LoginForm);
-
-LoginForm = reduxForm({
-  form: 'login_form',
-})(LoginForm);
-
-
-LoginForm.propTypes = {
-  loading: React.PropTypes.bool,
-  error: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-  ]),
-  coach: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.bool,
-  ]),
-  onSubmitForm: React.PropTypes.func,
-};
 
 export function mapDispatchToProps(dispatch) {
   return {
