@@ -3,9 +3,6 @@ import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
 import {RadioButton} from 'material-ui/RadioButton';
 import MenuItem from 'material-ui/MenuItem';
-import { createStructuredSelector } from 'reselect';
-import { createInstitute } from '../DashboardPage/actions';
-import {AutoComplete as MUIAutoComplete} from 'material-ui';
 import {
   AutoComplete,
   Checkbox,
@@ -18,7 +15,6 @@ import {
   Toggle
 } from 'redux-form-material-ui';
 import RaisedButton from 'material-ui/RaisedButton'
-import FontIcon from 'material-ui/FontIcon'
 import { graphql, compose } from 'react-apollo'
 import IconButton from 'material-ui/IconButton';
 import gql from 'graphql-tag'
@@ -31,15 +27,39 @@ import PlusIcon from 'material-ui/svg-icons/social/plus-one';
 import Avatar from 'material-ui/Avatar'
 import Notifications, {notify} from 'react-notify-toast';
 
-// var userData=[];
+var userId = localStorage.getItem('userID');
 
 var genders = [{"id": 1, "value": "Male"}, {"id": 2, "value": "Female"}, {"id": 3, "value": "Other"}];
 // validation functions
+const errors = {}
+
 const required = value => (value == null ? 'Required' : undefined);
 const email = value =>
   (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? 'Invalid email'
     : undefined);
+
+const validate = values => {
+  
+  errors.firstName = required(values.firstName)
+  errors.lastName = required(values.lastName)
+  errors.country = required(values.country)
+  errors.dob = required(values.dob)
+  errors.gender = required(values.gender)
+  errors.address = required(values.address)
+  errors.timezone = required(values.timezone)
+  errors.mobileNumber = required(values.mobileNumber)
+  errors.height = required(values.height)
+  errors.weight = required(values.weight)
+  errors.bio = required(values.bio)
+  errors.email = email(values.email || '')
+  if (!values.email) {
+    errors.email = 'Required'
+  } else if (email(values.email)) {
+    errors.email = 'Invalid Email'
+  }
+  return errors
+}
 
 
 class AthleteProfileForm extends Component {
@@ -51,32 +71,32 @@ class AthleteProfileForm extends Component {
   }
 
    submitAthleteProfileForm = async () => {
-    await this.props.updateUser({variables: {firstName: this.props.FirstName,
-                    lastName: this.props.LastName,
-                    athleteID: this.props.userData.athlete.id,
-                    email: this.props.Email,
-                    country: this.props.Country,
-                    dob: this.props.DOB,
-                    gender: this.props.Gender,
-                    address: this.props.Address,
-                    timezone: this.props.TimeZone,
-                    mobileNumber: this.props.MobileNumber,
-                    height: parseInt(this.props.Height),
-                    weight: parseInt(this.props.Weight),
-                    bio: this.props.Bio
+    await this.props.updateUser({variables: {firstName: this.props.firstName,
+                    lastName: this.props.lastName,
+                    userId: userId,
+                    email: this.props.email,
+                    country: this.props.country,
+                    dob: this.props.dob,
+                    gender: this.props.gender,
+                    address: this.props.address,
+                    timezone: this.props.timezone,
+                    mobileNumber: this.props.mobileNumber,
+                    height: parseInt(this.props.height),
+                    weight: parseInt(this.props.weight),
+                    bio: this.props.bio
                      }
                  }).then(()=>console.log('form submitted------'))
   }
 
   submitAthleteEducationForm = async () => {
-    await this.props.updateAthlete({variables: {GraduationName: this.props.GraduationName,
-                    GraduationProgramLength: this.props.GraduationProgramLength,
-                    athleteID: this.props.userData.athlete.id,
-                    GraduationUniversity: this.props.GraduationUniversity,
-                    GraduationYear: parseInt(this.props.GraduationYear),
-                    HighSchoolName: this.props.HighSchoolName,
-                    HighSchoolUniversity: this.props.HighSchoolUniversity,
-                    HighSchoolYear: parseInt(this.props.HighSchoolYear)
+    await this.props.updateAthlete({variables: {graduationName: this.props.graduationName,
+                    graduationProgramLength: this.props.graduationProgramLength,
+                    athleteId: this.props.userData.athlete.id,
+                    graduationUniversity: this.props.graduationUniversity,
+                    graduationYear: parseInt(this.props.graduationYear),
+                    highSchoolName: this.props.highSchoolName,
+                    highSchoolUniversity: this.props.highSchoolUniversity,
+                    highSchoolYear: parseInt(this.props.highSchoolYear)
                      }
                  }).then(()=>console.log('form submitted------'))
   }
@@ -84,17 +104,23 @@ class AthleteProfileForm extends Component {
   submitSportForm = async () => {
     await this.props.updateAthleteSport({variables: {SportPlayed: this.props.SportPlayed,
                     SportYear: this.props.SportYear,
-                    athleteID: this.props.userData.athlete.id,
+                    athleteId: this.props.userData.athlete.id,
                      }
                  }).then(()=>console.log('form submitted------'))
   }
   
   componentDidMount() {
-    this.props.initialize(this.props.userData)
+    const { userData } = this.props;
+    this.props.initialize({firstName: userData.firstName, lastName: userData.lastName, email: userData.email,
+     country: userData.country, dob: userData.dob, gender: userData.gender, address: userData.address,
+      mobileNumber: userData.mobileNumber, timezone: userData.timeZone, height: userData.height, weight: userData.weight, bio: userData.bio, 
+      graduationName: userData.athlete.graduation, graduationProgramLength: userData.athlete.graduationProgramLength, 
+      graduationUniversity: userData.athlete.graduationUniversity, graduationYear: userData.athlete.graduationYear,
+      highSchoolName: userData.athlete.hightSchool, highSchoolUniversity: userData.athlete.hightSchoolUniversity, highSchoolYear: userData.athlete.hightSchoolYear })
   }
   render() {
 
-    const {loading, error, repos, handleSubmit, pristine, reset, submitting, sportsList, userData, initialValues} = this.props;
+    const { pristine, reset, submitting, sportsList, userData } = this.props;
     return (
       <form>
        <Avatar size={100} src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Kapil_Dev_at_Equation_sports_auction.jpg" />
@@ -160,6 +186,7 @@ class AthleteProfileForm extends Component {
             name="address"
             component={TextField}
             hintText="Address"
+            multiLine={true}
             floatingLabelText="Address"
             validate={required}
           />
@@ -188,7 +215,7 @@ class AthleteProfileForm extends Component {
         </div>
         <div>
           <Field
-            name="mobile"
+            name="mobileNumber"
             component={TextField}
             hintText="Mobile Number"
             floatingLabelText="Mobile Number"
@@ -214,6 +241,7 @@ class AthleteProfileForm extends Component {
         <div>
           <Field
             name="bio"
+            multiLine={true}
             component={TextField}
             hintText="Bio"
             floatingLabelText="Bio"
@@ -222,7 +250,8 @@ class AthleteProfileForm extends Component {
         </div>
         <a href="#">Change Password Link</a>
         <div>
-          <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitAthleteProfileForm()} primary={true} />
+          <RaisedButton label="Save" disabled={errors.email != null || errors.lastName != null || errors.email != null || errors.country != null ||
+            errors.dob != null || errors.gender != null || errors.address != null || errors.timezone != null || errors.mobileNumber != null || errors.height != null || errors.weight != null || errors.bio != null } onClick={()=>this.submitAthleteProfileForm()} primary={true} />
         </div>
       </div>
       <div>
@@ -233,28 +262,28 @@ class AthleteProfileForm extends Component {
       </H3>
         <div>
           <Field
-            name="highschool"
+            name="highSchoolName"
             component={TextField}
             hintText="High School"
             floatingLabelText="High School"
             validate={required}
           />
           <Field
-            name="highschool_year"
+            name="highSchoolYear"
             component={TextField}
             hintText="Year"
             floatingLabelText="Year"
             validate={required}
           />
           <Field
-            name="highschool_university"
+            name="highSchoolUniversity"
             component={TextField}
             hintText="University"
             floatingLabelText="University"
             validate={required}
           />
            <Field
-            name="highschool_length"
+            name="highschoolLength"
             component={TextField}
             hintText="Length of Program"
             floatingLabelText="Length of Program"
@@ -263,28 +292,28 @@ class AthleteProfileForm extends Component {
           </div>
           <div>
           <Field
-            name="graduation"
+            name="graduationName"
             component={TextField}
             hintText="Graduation"
             floatingLabelText="Graduation"
             validate={required}
           />
           <Field
-            name="graduation_year"
+            name="graduationYear"
             component={TextField}
             hintText="Year"
             floatingLabelText="Year"
             validate={required}
           />
           <Field
-            name="graduation_university"
+            name="graduationUniversity"
             component={TextField}
             hintText="University"
             floatingLabelText="University"
             validate={required}
           />
            <Field
-            name="graduation_length"
+            name="graduationProgramLength"
             component={TextField}
             hintText="Length of Program"
             floatingLabelText="Length of Program"
@@ -293,7 +322,7 @@ class AthleteProfileForm extends Component {
           </div>
         <div>
           <Field
-            name="academic_year"
+            name="academicYear"
             component={TextField}
             hintText="Academic Year"
             floatingLabelText="Academic Year"
@@ -329,7 +358,7 @@ class AthleteProfileForm extends Component {
       </H3>
         <div>
           <Field
-            name="sports_played"
+            name="sportsPlayed"
             component={SelectField}
             hintText="What sports do you play?"
             floatingLabelText="What sports do you play?"
@@ -338,7 +367,7 @@ class AthleteProfileForm extends Component {
             {sportsList.map(sport => (<MenuItem value={sport.id} primaryText={sport.name} key={sport.id} />))}
           </Field>
           <Field
-            name="practice_year"
+            name="practiceYear"
             component={DatePicker}
             hintText="Started Practicing"
             floatingLabelText="Started Practicing"
@@ -358,50 +387,52 @@ class AthleteProfileForm extends Component {
   }
 }
 
-const selector = formValueSelector('athlete_profile_form');
+const selector = formValueSelector('athleteProfileForm');
 
 AthleteProfileForm = reduxForm({
-  form: 'athlete_profile_form',
+  form: 'athleteProfileForm',
   enableReinitialize: true,
+  validate
 })(AthleteProfileForm);
 
 AthleteProfileForm = connect((state, ownProps) => ({  
-  FirstName: selector(state, 'firstName'),
-  LastName: selector(state, 'lastName'),
-  Country: selector(state, 'country'),
-  DOB: selector(state, 'dob'),
-  Gender: selector(state, 'gender'),
-  Address: selector(state, 'address'),
-  TimeZone: selector(state, 'timezone'),
-  MobileNumber: selector(state, 'mobile'),
-  Height: selector(state, 'height'),
-  Weight: selector(state, 'weight'),
-  Bio: selector(state, 'bio'),
-  HighSchoolName: selector(state, 'highschool'),
-  HighSchoolYear: selector(state, 'highschool_year'),
-  HighSchoolUniversity: selector(state, 'highschool_university'),
-  HighSchoolProgramLength: selector(state, 'highschool_length'),
-  GraduationName: selector(state, 'graduation'),
-  GraduationYear: selector(state, 'graduation_year'),
-  GraduationUniversity: selector(state, 'graduation_university'),
-  GraduationProgramLength: selector(state, 'graduation_length'),
-  SportPlayed: selector(state, 'sports_played'),
-  SportYear: selector(state, 'practice_year'),
+  firstName: selector(state, 'firstName'),
+  lastName: selector(state, 'lastName'),
+  email: selector(state, 'email'),
+  country: selector(state, 'country'),
+  dob: selector(state, 'dob'),
+  gender: selector(state, 'gender'),
+  address: selector(state, 'address'),
+  timezone: selector(state, 'timezone'),
+  mobileNumber: selector(state, 'mobileNumber'),
+  height: selector(state, 'height'),
+  weight: selector(state, 'weight'),
+  bio: selector(state, 'bio'),
+  highSchoolName: selector(state, 'highSchoolName'),
+  highSchoolYear: selector(state, 'highSchoolYear'),
+  highSchoolUniversity: selector(state, 'highSchoolUniversity'),
+  highSchoolProgramLength: selector(state, 'highSchoolLength'),
+  graduationName: selector(state, 'graduationName'),
+  graduationYear: selector(state, 'graduationYear'),
+  graduationUniversity: selector(state, 'graduationUniversity'),
+  graduationProgramLength: selector(state, 'graduationProgramLength'),
+  sportPlayed: selector(state, 'sportsPlayed'),
+  sportYear: selector(state, 'practiceYear'),
 }))(AthleteProfileForm);
 
 
 
 const updateProfileInfoMutation = gql`
-  mutation updateUser ($athleteID: ID!, $firstName: String!, $lastName: String!, $country: String!, $dob: DateTime!, $gender: String!, $address: String!, $timezone: String!, $mobileNumber: String!, $height: Float!, $weight: Float!, $bio: String!) {
-   updateUser(id: $athleteID, firstName: $firstName, lastName: $lastName, country: $country, dob: $dob, profileImage: "1212113asc2asc21as2c", gender: $gender, address: $address, timeZone: $timezone, mobileNumber: $mobileNumber, height: $height, weight: $weight, bio: $bio) {
+  mutation updateUser ($userId: ID!, $firstName: String!, $lastName: String!, $country: String!, $dob: DateTime!, $gender: String!, $address: String!, $timezone: String!, $mobileNumber: String!, $height: Float!, $weight: Float!, $bio: String!) {
+   updateUser(id: $userId, firstName: $firstName, lastName: $lastName, country: $country, dob: $dob, profileImage: "1212113asc2asc21as2c", gender: $gender, address: $address, timeZone: $timezone, mobileNumber: $mobileNumber, height: $height, weight: $weight, bio: $bio) {
     id
   }
   }
 `
 
 const updateEducationInfoMutation = gql`
-  mutation updateAthlete ($athleteID: ID!, $GraduationName: String!, $GraduationYear: Int!, $GraduationProgramLength: String!, $GraduationUniversity: String!, $HighSchoolName: String!, $HighSchoolYear: Int!, $HighSchoolUniversity: String! ) {
-    updateAthlete(id: $athleteID, graduation: $GraduationName, graduationProgramLength: $GraduationProgramLength, graduationUniversity: $GraduationUniversity, graduationYear: $GraduationYear, hightSchool: $HighSchoolName, hightSchoolUniversity: $HighSchoolUniversity, hightSchoolYear: $HighSchoolYear) {
+  mutation updateAthlete ($athleteId: ID!, $graduationName: String!, $graduationYear: Int!, $graduationProgramLength: String!, $graduationUniversity: String!, $highSchoolName: String!, $highSchoolYear: Int!, $highSchoolUniversity: String! ) {
+    updateAthlete(id: $athleteId, graduation: $graduationName, graduationProgramLength: $graduationProgramLength, graduationUniversity: $graduationUniversity, graduationYear: $graduationYear, hightSchool: $highSchoolName, hightSchoolUniversity: $highSchoolUniversity, hightSchoolYear: $highSchoolYear) {
     id
   }
   }
