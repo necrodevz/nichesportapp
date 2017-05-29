@@ -46,7 +46,7 @@ export class AthleteProfile extends React.Component { // eslint-disable-line rea
     return (
       <CenteredSection>
       <H2>My Profile</H2>
-       {this.props.data.user ? <AthleteProfileForm initialValues={initialValues} userData={this.props.data.user ? this.props.data.user : [] } sportsList={this.props.sportsList.allSports ? this.props.sportsList.allSports : [] }/> : ''}
+       {this.props.data.user ? <AthleteProfileForm userData={this.props.data.user ? this.props.data.user : [] } sportsList={this.props.sportsList.allSports ? this.props.sportsList.allSports : [] }/> : ''}
       </CenteredSection>
     );
   }
@@ -65,8 +65,22 @@ AthleteProfile.propTypes = {
 };
 
 const athleteQuery = gql`query athleteQuery {
-   user { id email firstName lastName role mobileNumber address profileImage bio nationality country timeZone dob gender height weight
-    isActive isFirstTimeLogin mobileVerified emailVerified messageCount notificationCount
+   user { id firstName lastName email country dob profileImage gender address timeZone mobileNumber height weight bio createdAt
+    athlete {
+      id graduation graduationProgramLength graduationUniversity graduationYear hightSchool hightSchoolUniversity hightSchoolYear createdAt
+      athleteSports {
+        id
+        sport { id }
+        participateStartDate
+        athleteAcadmicCertificates { id url }
+      }
+      athletAcadmic { id
+        athlete { id }
+        institute { id }
+        sport { id }
+        createdAt
+      }
+    }
   }
 }`
 

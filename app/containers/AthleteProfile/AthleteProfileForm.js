@@ -40,7 +40,7 @@ const email = value =>
   (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? 'Invalid email'
     : undefined);
-var userID = localStorage.getItem('userID');
+
 
 class AthleteProfileForm extends Component {
   static propTypes = {
@@ -52,7 +52,7 @@ class AthleteProfileForm extends Component {
    submitAthleteProfileForm = async () => {
     await this.props.updateUser({variables: {firstName: this.props.FirstName,
                     lastName: this.props.LastName,
-                    userID: userID,
+                    athleteID: this.props.userData.athlete.id,
                     email: this.props.Email,
                     country: this.props.Country,
                     dob: this.props.DOB,
@@ -70,7 +70,7 @@ class AthleteProfileForm extends Component {
   submitAthleteEducationForm = async () => {
     await this.props.updateAthlete({variables: {GraduationName: this.props.GraduationName,
                     GraduationProgramLength: this.props.GraduationProgramLength,
-                    userID: userID,
+                    athleteID: this.props.userData.athlete.id,
                     GraduationUniversity: this.props.GraduationUniversity,
                     GraduationYear: parseInt(this.props.GraduationYear),
                     HighSchoolName: this.props.HighSchoolName,
@@ -83,7 +83,7 @@ class AthleteProfileForm extends Component {
   submitSportForm = async () => {
     await this.props.updateAthleteSport({variables: {SportPlayed: this.props.SportPlayed,
                     SportYear: this.props.SportYear,
-                    userID: userID
+                    athleteID: this.props.userData.athlete.id,
                      }
                  }).then(()=>console.log('form submitted------'))
   }
@@ -96,10 +96,10 @@ class AthleteProfileForm extends Component {
 
   render() {
 
-    const {loading, error, repos, handleSubmit, pristine, reset, submitting, sportsList, userData} = this.props;
+    const {loading, error, repos, handleSubmit, pristine, reset, submitting, sportsList, userData, initialValues} = this.props;
     return (
       <form>
-       <Avatar size={100} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCBaY5WK0X77jdCctunaXaBRU6a8vDT7-R3zB1xQUVeB2H4sgz_Sd9Yw" />
+       <Avatar size={100} src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Kapil_Dev_at_Equation_sports_auction.jpg" />
         <div>
         <IconButton tooltip="Upload Profile Picture">
           <PublishIcon />
@@ -360,9 +360,14 @@ class AthleteProfileForm extends Component {
   }
 }
 
-const selector = formValueSelector('coach_form');
+const selector = formValueSelector('athlete_profile_form');
 
-AthleteProfileForm = connect(state => ({
+AthleteProfileForm = reduxForm({
+  form: 'athlete_profile_form',
+  initialValues: {athlete_last_name: 'JHON'}
+})(AthleteProfileForm);
+
+AthleteProfileForm = connect((state, ownProps) => ({  
   FirstName: selector(state, 'athlete_first_name'),
   LastName: selector(state, 'athlete_last_name'),
   Country: selector(state, 'country'),
@@ -383,39 +388,23 @@ AthleteProfileForm = connect(state => ({
   GraduationUniversity: selector(state, 'graduation_university'),
   GraduationProgramLength: selector(state, 'graduation_length'),
   SportPlayed: selector(state, 'sports_played'),
-  SportYear: selector(state, 'practice_year')
+  SportYear: selector(state, 'practice_year'),
+
 }))(AthleteProfileForm);
 
 
-AthleteProfileForm = reduxForm({
-  form: 'coach_form'
-})(AthleteProfileForm);
-
-
-AthleteProfileForm.propTypes = {
-  loading: React.PropTypes.bool,
-  error: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-  ]),
-  coach: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.bool,
-  ]),
-  onSubmitForm: React.PropTypes.func,
-};
 
 const updateProfileInfoMutation = gql`
-  mutation updateUser ($userID: ID!, $firstName: String!, $lastName: String!, $country: String!, $dob: DateTime!, $gender: String!, $address: String!, $timezone: String!, $mobileNumber: String!, $height: Float!, $weight: Float!, $bio: String!) {
-   updateUser(id: $userID, firstName: $firstName, lastName: $lastName, country: $country, dob: $dob, profileImage: "1212113asc2asc21as2c", gender: $gender, address: $address, timeZone: $timezone, mobileNumber: $mobileNumber, height: $height, weight: $weight, bio: $bio) {
+  mutation updateUser ($athleteID: ID!, $firstName: String!, $lastName: String!, $country: String!, $dob: DateTime!, $gender: String!, $address: String!, $timezone: String!, $mobileNumber: String!, $height: Float!, $weight: Float!, $bio: String!) {
+   updateUser(id: $athleteID, firstName: $firstName, lastName: $lastName, country: $country, dob: $dob, profileImage: "1212113asc2asc21as2c", gender: $gender, address: $address, timeZone: $timezone, mobileNumber: $mobileNumber, height: $height, weight: $weight, bio: $bio) {
     id
   }
   }
 `
 
 const updateEducationInfoMutation = gql`
-  mutation updateAthlete ($userID: ID!, $GraduationName: String!, $GraduationYear: Int!, $GraduationProgramLength: String!, $GraduationUniversity: String!, $HighSchoolName: String!, $HighSchoolYear: Int!, $HighSchoolUniversity: String! ) {
-    updateAthlete(id: $userID, graduation: $GraduationName, graduationProgramLength: $GraduationProgramLength, graduationUniversity: $GraduationUniversity, graduationYear: $GraduationYear, hightSchool: $HighSchoolName, hightSchoolUniversity: $HighSchoolUniversity, hightSchoolYear: $HighSchoolYear) {
+  mutation updateAthlete ($athleteID: ID!, $GraduationName: String!, $GraduationYear: Int!, $GraduationProgramLength: String!, $GraduationUniversity: String!, $HighSchoolName: String!, $HighSchoolYear: Int!, $HighSchoolUniversity: String! ) {
+    updateAthlete(id: $athleteID, graduation: $GraduationName, graduationProgramLength: $GraduationProgramLength, graduationUniversity: $GraduationUniversity, graduationYear: $GraduationYear, hightSchool: $HighSchoolName, hightSchoolUniversity: $HighSchoolUniversity, hightSchoolYear: $HighSchoolYear) {
     id
   }
   }
