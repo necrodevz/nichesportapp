@@ -46,7 +46,8 @@ class AthleteProfileForm extends Component {
   static propTypes = {
     updateUser: React.PropTypes.func,
     updateAthlete: React.PropTypes.func,
-    updateAthleteSport: React.PropTypes.func
+    updateAthleteSport: React.PropTypes.func,
+    initialize: React.PropTypes.func.isRequired
   }
 
    submitAthleteProfileForm = async () => {
@@ -87,13 +88,10 @@ class AthleteProfileForm extends Component {
                      }
                  }).then(()=>console.log('form submitted------'))
   }
-
-  // componentDidMount() {
-  //   userData= this.props.userData;
-  //   console.log(userData)
-  // }
-
-
+  
+  componentDidMount() {
+    this.props.initialize(this.props.userData)
+  }
   render() {
 
     const {loading, error, repos, handleSubmit, pristine, reset, submitting, sportsList, userData, initialValues} = this.props;
@@ -113,14 +111,14 @@ class AthleteProfileForm extends Component {
       </H3>
         <div>
           <Field
-            name="athlete_first_name"
+            name="firstName"
             component={TextField}
             hintText="First Name"
             floatingLabelText="First Name"
             validate={required}
           />
           <Field
-            name="athlete_last_name"
+            name="lastName"
             component={TextField}
             hintText="Last Name"
             floatingLabelText="Last Name"
@@ -364,12 +362,12 @@ const selector = formValueSelector('athlete_profile_form');
 
 AthleteProfileForm = reduxForm({
   form: 'athlete_profile_form',
-  initialValues: {athlete_last_name: 'JHON'}
+  enableReinitialize: true,
 })(AthleteProfileForm);
 
 AthleteProfileForm = connect((state, ownProps) => ({  
-  FirstName: selector(state, 'athlete_first_name'),
-  LastName: selector(state, 'athlete_last_name'),
+  FirstName: selector(state, 'firstName'),
+  LastName: selector(state, 'lastName'),
   Country: selector(state, 'country'),
   DOB: selector(state, 'dob'),
   Gender: selector(state, 'gender'),
@@ -389,7 +387,6 @@ AthleteProfileForm = connect((state, ownProps) => ({
   GraduationProgramLength: selector(state, 'graduation_length'),
   SportPlayed: selector(state, 'sports_played'),
   SportYear: selector(state, 'practice_year'),
-
 }))(AthleteProfileForm);
 
 
