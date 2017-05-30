@@ -17,6 +17,7 @@ import {
   Toggle
 } from 'redux-form-material-ui';
 import { graphql, compose } from 'react-apollo'
+import RaisedButton from 'material-ui/RaisedButton'
 import gql from 'graphql-tag'
 import IconButton from 'material-ui/IconButton';
 import Notifications, {notify} from 'react-notify-toast';
@@ -55,7 +56,7 @@ import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 //   return errors
 // }
 
-const renderEducationHistory = ({fields, meta: {error, submitFailed}, SportsList}) => (
+const renderEducationHistory = ({fields, meta: {error, submitFailed}, SportsList, InstitutesList, submitEducationHistoryForm}) => (
   <div>
     <span>
     <IconButton onTouchTap={() => fields.push({})} tooltip="Add Field">
@@ -65,11 +66,6 @@ const renderEducationHistory = ({fields, meta: {error, submitFailed}, SportsList
     </span>
     {fields.map((educationHistory, index) => (
       <span key={index}>
-      <div>
-      <IconButton onTouchTap={() => fields.remove(index)} tooltip="Remove Field">
-          <DeleteIcon />
-        </IconButton>
-        </div>
         <h4>educationHistory #{index + 1}</h4>
         <Field
           name={`${educationHistory}.academicYear`}
@@ -78,22 +74,30 @@ const renderEducationHistory = ({fields, meta: {error, submitFailed}, SportsList
           hintText="Academic Year"
           floatingLabelText="Academic Year"
         />
-        <Field
+        {InstitutesList.allInstitutes ? <Field
           name={`${educationHistory}.institute`}
           type="text"
-          component={TextField}
+          maxHeight={200}
+          component={SelectField}
           hintText="Institute"
           floatingLabelText="Institute"
-        />
+        >
+        {InstitutesList.allInstitutes.map(institute => (<MenuItem value={institute.id} primaryText={institute.name} key={institute.id} />))}
+        </Field> : '' }
         {SportsList.allSports ? <Field
           name={`${educationHistory}.sport`}
           type="text"
+          maxHeight={200}
           component={SelectField}
-          hinText="Sport"
+          hintText="Sport"
           floatingLabelText="Sport"
         >
         {SportsList.allSports.map(sport => (<MenuItem value={sport.id} primaryText={sport.name} key={sport.id} />))}
         </Field> : '' }
+        <RaisedButton label="Save" onClick={()=>submitEducationHistoryForm(index)} primary={true} />
+        <IconButton onTouchTap={() => fields.remove(index)} tooltip="Remove Field">
+          <DeleteIcon />
+        </IconButton>
       </span>
     ))}
   </div>
@@ -105,12 +109,13 @@ class educationHistoryForm extends Component {
     submitEducationHistory: React.PropTypes.func
   }
 
-  submitTeamForm = async () => {
+  submitEducationHistoryForm = async (index) => {
+    console.log('index========', index)
     //const {description, imageUrl} = this.state
     await this.props.submitEducationHistory({variables: {athleteId: this.props.athleteId,
-                    academicYear: this.props.educationHistory.academicYear,
-                   institute: this.props.educationHistory.institute,
-                   sport: this.props.educationHistory.sport,
+                    academicYear: parseInt(this.props.educationHistory[index].academicYear),
+                   institute: this.props.educationHistory[index].institute,
+                   sport: this.props.educationHistory[index].sport,
                     }
                  }).catch((res)=>console.log('error', JSON.stringify(res.message)))
   }
@@ -118,13 +123,14 @@ class educationHistoryForm extends Component {
 
   componentWillMount() {
     this.props.GetSportsQuery;
+    this.props.GetInstitutesQuery;
   }
 
   render() {
     const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
          <div>
-         <FieldArray SportsList={this.props.SportsList} name="educationHistory" component={renderEducationHistory} />
+         <FieldArray SportsList={this.props.SportsList} InstitutesList={this.props.InstitutesList} submitEducationHistoryForm={(index)=>this.submitEducationHistoryForm(index)} name="educationHistory" component={renderEducationHistory} />
           </div>
     );
   }
@@ -142,8 +148,8 @@ educationHistoryForm = connect(state => ({
 
 
 const educationMutation = gql`
-  mutation submitEducationHistory ($athleteId: String, $academicYear: String, $institute: String, $sport: String) {
-    createAthleteAcadmic(athleteId: "cj32xcep72o920192ey78063a", instituteId: "cj32wbdg7mg3a01460zdkcxoi", sportId: "cj32w829hbqfo01565f0zeimp", academicYear: 2015) {
+  mutation submitEducationHistory ($athleteId: ID, $instituteId: ID, $academicYear: Int , $sport: ID) {
+    createAthleteAcadmic(athleteId: $athleteId, instituteId: $instituteId, sportId: $sport, academicYear: $academicYear) {
     id
   }
   }`
@@ -155,9 +161,17 @@ const GetSportsQuery = gql`query GetSportsQuery {
   }
 }`
 
+const GetInstitutesQuery = gql`query GetInstitutesQuery {
+  allInstitutes {
+    id
+    name
+  }
+}`
+
 const educationHistoryMutation = compose(
   graphql(educationMutation, {name: 'submitEducationHistory'}),
-  graphql(GetSportsQuery, {name: 'SportsList'})
+  graphql(GetSportsQuery, {name: 'SportsList'}),
+  graphql(GetInstitutesQuery, {name: 'InstitutesList'})
 )(educationHistoryForm)
 
 

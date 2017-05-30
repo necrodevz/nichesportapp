@@ -26,7 +26,10 @@ import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
 import PlusIcon from 'material-ui/svg-icons/social/plus-one';
 import Avatar from 'material-ui/Avatar'
 import Notifications, {notify} from 'react-notify-toast';
-import EducationHistoryForm from './EducationHistoryForm'
+import EducationHistoryForm from './EducationHistoryForm';
+import SportsCertificateForm from './SportsCertificateForm';
+import ProfilePictureUpload from './ProfilePictureUpload'
+var ReactS3Uploader = require('react-s3-uploader');
 
 var userId = localStorage.getItem('userID');
 
@@ -69,6 +72,13 @@ class AthleteProfileForm extends Component {
     initialize: React.PropTypes.func.isRequired
   }
 
+  constructor(props) {
+    super(props);
+    this.state={
+      athleteSports: this.props.userData.athlete.athleteSports
+    }
+  }
+
    submitAthleteProfileForm = async () => {
     await this.props.updateUser({variables: {firstName: this.props.firstName,
                     lastName: this.props.lastName,
@@ -101,8 +111,8 @@ class AthleteProfileForm extends Component {
   }
 
   submitSportForm = async () => {
-    await this.props.updateAthleteSport({variables: {SportPlayed: this.props.SportPlayed,
-                    SportYear: this.props.SportYear,
+    await this.props.updateAthleteSport({variables: {sportPlayed: this.props.sportPlayed,
+                    practiceYear: this.props.practiceYear,
                     athleteId: this.props.userData.athlete.id,
                      }
                  }).then(()=>console.log('form submitted------'))
@@ -122,6 +132,20 @@ class AthleteProfileForm extends Component {
     const { pristine, reset, submitting, sportsList, userData } = this.props;
     return (
       <form>
+      <ProfilePictureUpload />
+      <ReactS3Uploader
+    signingUrl="https://s3.amazonaws.com/athliche.images"
+    signingUrlMethod="GET"
+    accept="image/*"
+    preprocess={this.onUploadStart}
+    onProgress={this.onUploadProgress}
+    onError={this.onUploadError}
+    onFinish={this.onUploadFinish}
+    signingUrlWithCredentials={ false }      // in case when need to pass authentication credentials via CORS
+    uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}  // this is the default
+    
+    
+    />
        <Avatar size={100} src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Kapil_Dev_at_Equation_sports_auction.jpg" />
         <div>
         <IconButton tooltip="Upload Profile Picture">
@@ -319,10 +343,10 @@ class AthleteProfileForm extends Component {
             validate={required}
           />
           </div>
-        <EducationHistoryForm athleteId={this.props.userData.athlete.id} />
           <div>
           <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitAthleteEducationForm()} primary={true} />
           </div>
+          <EducationHistoryForm athleteId={this.props.userData.athlete.id} />
       </div>
       <div>
       <H3>Main Sports
@@ -332,7 +356,7 @@ class AthleteProfileForm extends Component {
       </H3>
         <div>
           <Field
-            name="sportsPlayed"
+            name="sportPlayed"
             component={SelectField}
             hintText="What sports do you play?"
             floatingLabelText="What sports do you play?"
@@ -348,13 +372,11 @@ class AthleteProfileForm extends Component {
             validate={required}
           />
           </div>
-           <IconButton tooltip="Add Certificates">
-          <PlusIcon />
-        </IconButton>
           <div>
           <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitSportForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
           </div>
+          <SportsCertificateForm athleteSports={this.state.athleteSports} />
       </div>
       </form>
     );
@@ -390,8 +412,8 @@ AthleteProfileForm = connect((state, ownProps) => ({
   graduationYear: selector(state, 'graduationYear'),
   graduationUniversity: selector(state, 'graduationUniversity'),
   graduationProgramLength: selector(state, 'graduationProgramLength'),
-  sportPlayed: selector(state, 'sportsPlayed'),
-  sportYear: selector(state, 'practiceYear'),
+  sportPlayed: selector(state, 'sportPlayed'),
+  practiceYear: selector(state, 'practiceYear'),
 }))(AthleteProfileForm);
 
 
@@ -413,8 +435,8 @@ const updateEducationInfoMutation = gql`
 `
 
 const updateSportInfoMutation = gql`
-  mutation updateAthleteSport ($SportPlayed: ID!, $SportYear: DateTime!) {
-    createAthleteSport(athleteId: "cj2vmbh2iu3lx0177iu955e6a", sportId: $SportPlayed, participateStartDate: $SportYear) {
+  mutation updateAthleteSport ($sportPlayed: ID!, $practiceYear: DateTime!, $athleteId: ID!) {
+    createAthleteSport(athleteId: $athleteId, sportId: $sportPlayed, participateStartDate: $practiceYear) {
     id
   }
   }
