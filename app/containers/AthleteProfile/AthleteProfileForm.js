@@ -26,6 +26,7 @@ import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
 import PlusIcon from 'material-ui/svg-icons/social/plus-one';
 import Avatar from 'material-ui/Avatar'
 import Notifications, {notify} from 'react-notify-toast';
+import EducationHistoryForm from './EducationHistoryForm'
 
 var userId = localStorage.getItem('userID');
 
@@ -40,7 +41,6 @@ const email = value =>
     : undefined);
 
 const validate = values => {
-  
   errors.firstName = required(values.firstName)
   errors.lastName = required(values.lastName)
   errors.country = required(values.country)
@@ -60,7 +60,6 @@ const validate = values => {
   }
   return errors
 }
-
 
 class AthleteProfileForm extends Component {
   static propTypes = {
@@ -320,32 +319,7 @@ class AthleteProfileForm extends Component {
             validate={required}
           />
           </div>
-        <div>
-          <Field
-            name="academicYear"
-            component={TextField}
-            hintText="Academic Year"
-            floatingLabelText="Academic Year"
-            validate={required}
-          />
-          <Field
-            name="institute"
-            component={TextField}
-            hintText="Institute"
-            floatingLabelText="Institute"
-            validate={required}
-          />
-          <Field
-            name="sport"
-            component={TextField}
-            hintText="Sport"
-            floatingLabelText="Sport"
-            validate={required}
-          />
-          </div>
-           <IconButton tooltip="Add Field">
-          <PlusIcon />
-        </IconButton>
+        <EducationHistoryForm athleteId={this.props.userData.athlete.id} />
           <div>
           <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitAthleteEducationForm()} primary={true} />
           </div>
