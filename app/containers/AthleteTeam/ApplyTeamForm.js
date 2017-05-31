@@ -19,12 +19,15 @@ import {
   Toggle
 } from 'redux-form-material-ui';
 import RaisedButton from 'material-ui/RaisedButton'
+import { withApollo } from 'react-apollo';
+import ApolloClient from 'apollo-client';
 import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql, compose } from 'react-apollo'
 import IconButton from 'material-ui/IconButton';
 import gql from 'graphql-tag'
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import Paper from 'material-ui/Paper';
+var _ = require('lodash');
 
 const style = {
   height: 300,
@@ -44,15 +47,29 @@ const validate = values => {
   return errors
 }
 
+const teamNames = [];
 
 class ApplyTeamForm extends Component {
-  static propTypes = {
-    applyTeam: React.PropTypes.func
+  constructor(props) {
+    super(props);
+    this.state={
+      searchEnabled: false,
+      searchData: []
+    }
   }
 
-   submitSearchTeams = async () => {
-    await this.props.applyTeam({variables: {search: this.props.SearchText}
-                 }).then(()=>console.log('form submitted------'))
+  static propTypes = {
+    applyTeam: React.PropTypes.func,
+    client: React.PropTypes.instanceOf(ApolloClient).isRequired,
+  }
+
+  submitSearchTeams () {
+    var filterData = _.filter(this.props.TeamsList.allTeams, { 'name': this.props.searchText });
+    this.setState({searchData: filterData, searchEnabled: true});
+  }
+
+  resetSearch () {
+    this.setState({searchEnabled: false});
   }
 
   applyTeam = async (index) => {
@@ -63,6 +80,12 @@ class ApplyTeamForm extends Component {
   }
 
   render() {
+    
+    if(this.props.TeamsList.allTeams && teamNames.length === 0){ 
+    for(var index = 0; index < this.props.TeamsList.allTeams.length; index++)
+      {teamNames.push(this.props.TeamsList.allTeams[index].name)}
+    }
+
     const {loading, error, handleSubmit, pristine, reset, submitting, userData} = this.props;
     return (
       <CenteredSection>
@@ -72,9 +95,11 @@ class ApplyTeamForm extends Component {
           <Field
             name="search_team"
             fullWidth={true}
-            component={TextField}
-            hintText="Search Team"
-            floatingLabelText="Search Team"
+            component={AutoComplete}
+            filter={MUIAutoComplete.fuzzyFilter}
+            dataSource={teamNames}
+            hintText="Search by Team Name"
+            floatingLabelText="Search by Team Name"
             validate={required}
           />
         </div>
@@ -83,10 +108,11 @@ class ApplyTeamForm extends Component {
           <SearchIcon />
         </IconButton>
           <RaisedButton label="Clear" onTouchTap={reset} disabled={pristine || submitting} secondary={true} />
+          <RaisedButton label="Reset Search" onTouchTap={()=>this.resetSearch()} disabled={!this.state.searchEnabled} secondary={true} />
         </div>
       </form>
       </H2>
-      {this.props.TeamsList.allTeams ? this.props.TeamsList.allTeams.map((team,index)=>(
+      {this.props.TeamsList.allTeams && !this.state.searchEnabled ? this.props.TeamsList.allTeams.map((team,index)=>(
       <Paper  style={style} zDepth={3} key={team.id}>
         <h3>Team Name: {team.name}</h3>
         <h4>
@@ -99,7 +125,24 @@ class ApplyTeamForm extends Component {
          <div>Coach: {team.coach.firstName} {team.coach.lastName}</div>
         </h4>
         <div>
-        <RaisedButton label="Apply" disabled={team.atheletTeams.length > 0 ? (team.atheletTeams[0].status == 'INSTITUTEPENDING' || team.atheletTeams[0].status == 'ATHELETPENDING'  ? true : false) : false} onTouchTap={()=>this.applyTeam(index)} primary={true} />
+        <RaisedButton label="Apply" disabled={team.atheletTeams.length > 0 ? (team.atheletTeams[0].status == 'COACHPENDING' || team.atheletTeams[0].status == 'ATHELETPENDING'  ? true : false) : false} onTouchTap={()=>this.applyTeam(index)} primary={true} />
+        </div>
+      </Paper>)) : ''}
+
+      {this.state.searchData.length > 0 && this.state.searchEnabled ? this.state.searchData.map((team,index)=>(
+      <Paper  style={style} zDepth={3} key={team.id}>
+        <h3>Team Name: {team.name}</h3>
+        <h4>
+         <div>Age Group: {team.ageGroup}</div>
+         <br/>
+         <div>Sport: {team.sport ? team.sport.name : 'Not Available'}</div>
+         <br/>
+         <div>No. of Players: {team.totalNumberOfAthelets}</div>
+         <br/>
+         <div>Coach: {team.coach.firstName} {team.coach.lastName}</div>
+        </h4>
+        <div>
+        <RaisedButton label="Apply" disabled={team.atheletTeams.length > 0 ? (team.atheletTeams[0].status == 'COACHPENDING' || team.atheletTeams[0].status == 'ATHELETPENDING'  ? true : false) : false} onTouchTap={()=>this.applyTeam(index)} primary={true} />
         </div>
       </Paper>)) : ''}
       </CenteredSection>
@@ -130,7 +173,7 @@ const applyTeamMutation = gql`
     athleteId: $athleteId
     teamId: $teamId
     athleteMessage: "Please Accept"
-    status:INSTITUTEPENDING
+    status:COACHPENDING
   ) {
     id
   }
@@ -140,7 +183,7 @@ const applyTeamMutation = gql`
 const selector = formValueSelector('search_team_form');
 
 ApplyTeamForm = connect(state => ({
-  SearchText: selector(state, 'search_team'),
+  searchText: selector(state, 'search_team'),
   athleteMessage: selector(state, 'athleteMessage')
 }))(ApplyTeamForm);
 
