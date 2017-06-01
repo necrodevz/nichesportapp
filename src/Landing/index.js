@@ -47,10 +47,10 @@ const Intro = ({isOpen, handleClick}) =>
                 }
                 actions={actions}
                 modal={false}
-                open={isOpen}
+               
             >
                 <Row middle='xs' center='xs'>
-                    <img src={modalContent} role='presentation' height='60%' />
+                    <img src={modalContent} role='presentation' />
                 </Row>
             </Dialog>
             
