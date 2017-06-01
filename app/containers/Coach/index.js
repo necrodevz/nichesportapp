@@ -30,28 +30,27 @@ class Coach extends React.PureComponent { // eslint-disable-line react/prefer-st
   }
     return (
       <CenteredSection>
-        <H3>Hey , there are {this.props.data.allCoaches.length} Coaches in your account</H3>
          <Table>
-    <TableHeader>
-      <TableRow>
-        <TableHeaderColumn>ID</TableHeaderColumn>
-        <TableHeaderColumn>Country</TableHeaderColumn>
-        <TableHeaderColumn>Name</TableHeaderColumn>
-        <TableHeaderColumn>Email</TableHeaderColumn>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-    {this.props.data.allCoaches.map(coach=>(
-      <TableRow key={coach.id}>
-        <TableRowColumn>{coach.id}</TableRowColumn>
-        <TableRowColumn>{coach.user.country}</TableRowColumn>
-        <TableRowColumn>{coach.user.firstName} {coach.user.lastName}</TableRowColumn>
-        <TableRowColumn>{coach.user.email}</TableRowColumn>
-      </TableRow>
-      ))
-    }
-    </TableBody>
-  </Table>
+          <TableHeader>
+            <TableRow>
+              <TableHeaderColumn>ID</TableHeaderColumn>
+              <TableHeaderColumn>Country</TableHeaderColumn>
+              <TableHeaderColumn>Name</TableHeaderColumn>
+              <TableHeaderColumn>Email</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+          {this.props.data.allCoaches.map(coach=>(
+            <TableRow key={coach.id}>
+              <TableRowColumn>{coach.id}</TableRowColumn>
+              <TableRowColumn>{coach.user.country}</TableRowColumn>
+              <TableRowColumn>{coach.user.firstName} {coach.user.lastName}</TableRowColumn>
+              <TableRowColumn>{coach.user.email}</TableRowColumn>
+            </TableRow>
+            ))
+          }
+          </TableBody>
+        </Table>
       </CenteredSection>
     );
   }

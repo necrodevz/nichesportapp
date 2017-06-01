@@ -1,12 +1,5 @@
-/*
- * FeaturePage
- *
- * List all the features
- */
 import React from 'react';
-import Helmet from 'react-helmet';
 import H3 from 'components/H3';
-import messages from './messages';
 import InstituteForm from './InstituteForm'
 import RaisedButton from 'material-ui/RaisedButton'
 import CenteredSection from '../../containers/HomePage/CenteredSection';
@@ -31,11 +24,9 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
   }
 
   toggleInstituteForm(value) {
-    console.log('value', value);
-      this.setState({ showInstituteForm: !value })
+    this.setState({ showInstituteForm: !value })
   }
-  // Since state and props are static,
-  // there's no need to re-render this component
+
   shouldComponentUpdate() {
     return true;
   }
@@ -51,13 +42,6 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
   }
     return (
       <CenteredSection>
-        <Helmet
-          title="Institute List Page"
-          meta={[
-            { name: 'description', content: 'Feature page of Institute' },
-          ]}
-        />
-        <H3>Hey , there are {this.props.data.allInstitutes.length} Institutes in your account</H3>
         {this.state.showInstituteForm ? <InstituteForm showInstituteForm={this.state.showInstituteForm} toggleInstituteForm={this.toggleInstituteForm}/> : <RaisedButton label="Add New Institute" onClick={() => this.toggleInstituteForm(this.state.showInstituteForm)} primary={true} />}
          <Table>
     <TableHeader>

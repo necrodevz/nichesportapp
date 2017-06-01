@@ -4,9 +4,8 @@
  * This is the first thing users see of our App, at the '/' route
  */
 
-import React, { PropTypes as T } from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { push } from 'react-router-redux';
 import H3 from 'components/H3';
 import CenteredSection from './CenteredSection';
@@ -32,9 +31,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
   updateProfile() {
     localStorage.setItem('userID', this.props.data.user.id);
+    localStorage.setItem('userName', this.props.data.user.firstName);
     localStorage.setItem('role', this.props.data.user.role);
     this.props.data.user.role == 'ADMIN' ? this.props.GoToAdminDashboard() : '';
-    this.props.data.user.role == 'ATHLETE' ? this.props.GoToAthleteDashboard() : '';
+    this.props.data.user.role == 'ATHLETE' ? this.props.GoToAthleteDashboard(this.props.data.user.role) : '';
     this.props.data.user.role == 'OWNER' ? this.props.GoToInstituteDashboard() : '';
   }
 
@@ -76,12 +76,9 @@ export function mapDispatchToProps(dispatch) {
   return {
     GoToAdminDashboard: () => dispatch(push('/adminDashboard')),
     GoToInstituteDashboard: () => dispatch(push('/instituteDashboard')),
-    GoToAthleteDashboard: () => dispatch(push('/athleteDashboard'))
+    GoToAthleteDashboard: (role) => dispatch((push({pathname: `/athleteDashboard`, state: {role: role}})))
   };
 }
-
-const mapStateToProps = createStructuredSelector({
-});
 
 const UserQuery = gql`query UserQuery {
    user { id email firstName lastName role mobileNumber address profileImage bio nationality country timeZone dob gender height weight
@@ -89,7 +86,6 @@ const UserQuery = gql`query UserQuery {
   }
 }`
 
-const PokedexWithData = graphql(UserQuery)(HomePage);
+const HomePageWithData = graphql(UserQuery)(HomePage);
 
-// Wrap the component to inject dispatch and state into it
-export default connect(mapStateToProps, mapDispatchToProps)(PokedexWithData);
+export default connect(null, mapDispatchToProps)(HomePageWithData);
