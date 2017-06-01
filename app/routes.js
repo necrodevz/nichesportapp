@@ -150,6 +150,15 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
     }, {
+      path: '/coachDashboard',
+      name: 'coachDashboard',
+      onEnter: requireAuth,
+      getComponent(location, cb) {
+        import('containers/CoachDashboard')
+          .then(loadModule(cb))
+          .catch(errorLoading);
+      },
+    }, {
       path: '*',
       name: 'notfound',
       getComponent(nextState, cb) {

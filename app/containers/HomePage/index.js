@@ -36,6 +36,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     this.props.data.user.role == 'ADMIN' ? this.props.GoToAdminDashboard() : '';
     this.props.data.user.role == 'ATHLETE' ? this.props.GoToAthleteDashboard(this.props.data.user.role) : '';
     this.props.data.user.role == 'OWNER' ? this.props.GoToInstituteDashboard() : '';
+    this.props.data.user.role == 'COACH' ? this.props.GoToCoachDashboard() : '';
   }
 
   render() {
@@ -76,7 +77,8 @@ export function mapDispatchToProps(dispatch) {
   return {
     GoToAdminDashboard: () => dispatch(push('/adminDashboard')),
     GoToInstituteDashboard: () => dispatch(push('/instituteDashboard')),
-    GoToAthleteDashboard: (role) => dispatch((push({pathname: `/athleteDashboard`, state: {role: role}})))
+    GoToAthleteDashboard: (role) => dispatch((push({pathname: `/athleteDashboard`, state: {role: role}}))),
+    GoToCoachDashboard: () => dispatch(push('/coachDashboard'))
   };
 }
 
