@@ -13,7 +13,7 @@ import Section from './Section';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import RaisedButton from 'material-ui/RaisedButton';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'; 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -33,10 +33,10 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     localStorage.setItem('userID', this.props.data.user.id);
     localStorage.setItem('userName', this.props.data.user.firstName);
     localStorage.setItem('role', this.props.data.user.role);
-    this.props.data.user.role == 'ADMIN' ? this.props.GoToAdminDashboard() : '';
+    this.props.data.user.role == 'ADMIN' ? this.props.GoToAdminDashboard(this.props.data.user.role) : '';
     this.props.data.user.role == 'ATHLETE' ? this.props.GoToAthleteDashboard(this.props.data.user.role) : '';
-    this.props.data.user.role == 'OWNER' ? this.props.GoToInstituteDashboard() : '';
-    this.props.data.user.role == 'COACH' ? this.props.GoToCoachDashboard() : '';
+    this.props.data.user.role == 'OWNER' ? this.props.GoToInstituteDashboard(this.props.data.user.role) : '';
+    this.props.data.user.role == 'COACH' ? this.props.GoToCoachDashboard(this.props.data.user.role) : '';
   }
 
   render() {
@@ -75,10 +75,10 @@ HomePage.propTypes = {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    GoToAdminDashboard: () => dispatch(push('/adminDashboard')),
-    GoToInstituteDashboard: () => dispatch(push('/instituteDashboard')),
+    GoToAdminDashboard: (role) => dispatch((push({pathname: `/adminDashboard`, state: {role: role}}))),
+    GoToInstituteDashboard: (role) => dispatch((push({pathname: `/instituteDashboard`, state: {role: role}}))),
     GoToAthleteDashboard: (role) => dispatch((push({pathname: `/athleteDashboard`, state: {role: role}}))),
-    GoToCoachDashboard: () => dispatch(push('/coachDashboard'))
+    GoToCoachDashboard: (role) => dispatch((push({pathname: `/coachDashboard`, state: {role: role}})))
   };
 }
 
