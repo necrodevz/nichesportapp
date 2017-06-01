@@ -5,6 +5,8 @@ import HeaderLink from './HeaderLink';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 import { push } from 'react-router-redux';
+import AthleteHeader from 'containers/AthleteHeader';
+import CoachHeader from 'containers/CoachHeader';
 
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -14,10 +16,15 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
     }
   }
 
+  shouldComponentUpdate() {
+    return true;
+  }
+
   logout(){
   localStorage.removeItem('token');
   localStorage.removeItem('userID');
   localStorage.removeItem('role');
+  localStorage.removeItem('userName');
   window.location.assign("/");
   location.reload();
     
@@ -26,7 +33,10 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
   render() {
     return (
       <MuiThemeProvider>
-        <AppBar title="Athliche Sports App" showMenuIconButton={false} onRightIconButtonTouchTap={()=>this.logout()} onTitleTouchTap={()=>window.location.assign("/")} iconElementRight={this.state.loggedIn ? <FlatButton onClick={()=>this.logout()} label="LogOut" /> : ''}/>
+        <AppBar title="Athliche Sports App" showMenuIconButton={false} onRightIconButtonTouchTap={()=>this.logout()} onTitleTouchTap={()=>window.location.assign("/")} iconElementRight={this.state.loggedIn ? <FlatButton onClick={()=>this.logout()} label='LogOut' /> : ''}>
+          {this.state.loggedIn && this.props.location.state && this.props.location.state.role =='ATHLETE' ? <AthleteHeader /> : ''}
+          {this.state.loggedIn && this.props.location.state && this.props.location.state.role =='COACH' ? <CoachHeader /> : ''}
+        </AppBar>
       </MuiThemeProvider>
     );
   }

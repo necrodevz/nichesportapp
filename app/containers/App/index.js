@@ -36,7 +36,7 @@ export function App(props) {
           { name: 'description', content: 'A React.js Boilerplate application' },
         ]}
       />
-      <Header />
+      <Header {...props}/>
       <div style={ContentStyle}>
       {React.Children.toArray(props.children)}
       </div>
