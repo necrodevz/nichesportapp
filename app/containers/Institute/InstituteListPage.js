@@ -13,6 +13,8 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 
 class InstituteListPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -32,6 +34,14 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
   }
 
   render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={()=>this.toggleInstituteForm(this.state.showInstituteForm)}
+      />
+    ];
+
       if (this.props.data.loading) {
     return (<div>Loading</div>)
   }
@@ -42,7 +52,17 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
   }
     return (
       <CenteredSection>
-        {this.state.showInstituteForm ? <InstituteForm showInstituteForm={this.state.showInstituteForm} toggleInstituteForm={this.toggleInstituteForm}/> : <RaisedButton label="Add New Institute" onClick={() => this.toggleInstituteForm(this.state.showInstituteForm)} primary={true} />}
+      <RaisedButton label="Add New Institute" onClick={() => this.toggleInstituteForm(this.state.showInstituteForm)} primary={true} />
+      <Dialog
+          title="Add Institute"
+          autoScrollBodyContent={true}
+          actions={actions}
+          modal={false}
+          open={this.state.showInstituteForm}
+          onRequestClose={()=>this.toggleInstituteForm(this.state.showInstituteForm)}
+        >
+          <InstituteForm toggleInstituteForm={this.toggleInstituteForm}/>
+        </Dialog>
          <Table>
     <TableHeader>
       <TableRow>

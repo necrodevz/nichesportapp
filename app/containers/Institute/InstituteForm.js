@@ -23,13 +23,32 @@ import RaisedButton from 'material-ui/RaisedButton'
 import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
+import Notifications, {notify} from 'react-notify-toast'
 
-// validation functions
+const errors = {}
+
 const required = value => (value == null ? 'Required' : undefined);
 const institute_email = value =>
   (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? 'Invalid email'
     : undefined);
+
+const validate = values => {
+  
+  errors.institute_password = required(values.institute_password)
+  errors.institute_name = required(values.institute_name)
+  errors.institute_country = required(values.institute_country)
+  errors.institute_type = required(values.institute_type)
+  errors.institute_sport = required(values.institute_sport)
+  errors.institute_email = institute_email(values.institute_email || '')
+  if (!values.institute_email) {
+    errors.institute_email = 'Required'
+  } else if (institute_email(values.institute_email)) {
+    errors.institute_email = 'Invalid Email'
+  }
+  return errors
+}
+// validation functions
 
 const sportsObject=[]
 
@@ -49,7 +68,7 @@ class InstituteForm extends Component {
                     email: this.props.InstituteEmail,
                     password: this.props.InstitutePassword,
                     sport: sportsObject}
-                 }).then(()=>location.reload())
+                 }).then(()=>location.reload()).then(()=>notify.show('Institute Created', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   componentWillMount() {
@@ -59,6 +78,8 @@ class InstituteForm extends Component {
   render() {
     const {loading, error, repos, handleSubmit, pristine, InstituteName, reset, submitting} = this.props;
     return (
+      <CenteredSection>
+      <Notifications />
       <form onSubmit={handleSubmit}>
         <div>
           <Field
@@ -123,15 +144,16 @@ class InstituteForm extends Component {
           />
         </div>
         <div>
-          <RaisedButton label="Submit" disabled={submitting} onClick={()=>this.submitInstituteForm()} primary={true} />
+          <RaisedButton label="Submit" disabled={errors.institute_email != null || errors.institute_password != null || errors.institute_name != null || errors.institute_country != null || errors.institute_type != null || errors.institute_sport != null} onClick={()=>this.submitInstituteForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </div>
       </form>
+      </CenteredSection>
     );
   }
 }
 
-const selector = formValueSelector('institute_form');
+const selector = formValueSelector('add_institute_form');
 
 InstituteForm = connect(state => ({
   InstituteName: selector(state, 'institute_name'),
@@ -143,7 +165,8 @@ InstituteForm = connect(state => ({
 }))(InstituteForm);
 
 InstituteForm = reduxForm({
-  form: 'institute_form',
+  form: 'add_institute_form',
+  validate
 })(InstituteForm);
 
 
