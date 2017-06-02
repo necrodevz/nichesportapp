@@ -69,7 +69,7 @@ class ApplyTeamForm extends Component {
   }
 
   resetSearch () {
-    this.setState({searchEnabled: false});
+    this.setState({searchEnabled: false, searchData: []});
   }
 
   applyTeam = async (index) => {
