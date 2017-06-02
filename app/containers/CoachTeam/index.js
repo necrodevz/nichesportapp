@@ -40,29 +40,26 @@ CoachTeam.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-const athleteQuery = gql`query athleteQuery ($userId: ID){
-   allTeams(filter: {
-      coach: {
-        user:{
-          id: $userId
-        }
+const coachQuery = gql`query coachQuery {
+    user { id firstName lastName email country dob profileImage gender address timeZone mobileNumber height weight bio createdAt
+    coach {
+      id graduation graduationProgramLength graduationUniversity graduationYear hightSchool hightSchoolUniversity hightSchoolYear createdAt
+      coachSports {
+        id
+        sport { id }
+        participateStartDate
+        coachAcadmicCertificates { id url }
+      }
+      coachAcadmic { id
+        coach { id }
+        institute { id }
+        sport { id }
+        createdAt
+      }
     }
   }
-   ) {
-    id
-    name
-    season
-    ageGroup
-    totalNumberOfAthelets
-    createdAt
-    sport { id name }
-    coach { id user { id email firstName lastName }}
-    manager { id user { id email firstName lastName }}
-  }
 }`
- 
-const AthleteQueryData = graphql(athleteQuery , {
-  options: { variables: { userId: localStorage.getItem('userID') } },
-})(CoachTeam);
 
-export default AthleteQueryData;
+const coachQueryData = graphql(coachQuery)(CoachTeam);
+
+export default coachQueryData;

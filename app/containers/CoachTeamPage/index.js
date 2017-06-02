@@ -20,8 +20,7 @@ export class CoachTeamPage extends React.Component { // eslint-disable-line reac
   }
 
   render() {
-    console.log('in coach team page----------');
-      if (this.props.data.loading) {
+    if (this.props.data.loading) {
     return (<div>Loading</div>)
   }
 
@@ -61,13 +60,11 @@ export class CoachTeamPage extends React.Component { // eslint-disable-line reac
   }
 }
 
-const userId = localStorage.getItem('userID');
-console.log("userId",userId)
-const TeamListQuery = gql`query TeamListQuery{
+const coachTeamQuery = gql`query coachTeamQuery ($userId: ID){
    allTeams(filter: {
       coach: {
         user:{
-          id:"cj32wk6prqm2u01924qmn8y4r"
+          id: $userId
         }
     }
   }
@@ -83,7 +80,9 @@ const TeamListQuery = gql`query TeamListQuery{
     manager { id user { id email firstName lastName }}
   }
 }`
+ 
+const CoachTeamData = graphql(coachTeamQuery , {
+  options: { variables: { userId: localStorage.getItem('userID') } },
+})(CoachTeamPage);
 
-const TeamData = graphql(TeamListQuery)(CoachTeamPage);
-
-export default TeamData;
+export default CoachTeamData;
