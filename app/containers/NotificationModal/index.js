@@ -12,6 +12,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import Notifications, {notify} from 'react-notify-toast';
 
+const userRole = localStorage.getItem('role');
 
 export class NotificationModal extends React.Component { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
@@ -20,12 +21,14 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
   }
 
   approveTeam = async (index) => {
-    await this.props.approveTeam({variables: {notificationId: this.props.notification.typeId}
+    await this.props.approveTeam({variables: {notificationId: this.props.notification.typeId,
+      status: `APPROVEDBY`+userRole}
                  }).then(()=>location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   rejectTeam = async (index) => {
-    await this.props.rejectTeam({variables: {notificationId: this.props.notification.typeId}
+    await this.props.rejectTeam({variables: {notificationId: this.props.notification.typeId,
+      status: `REJECTEDBY`+userRole}
                  }).then(()=>location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
@@ -48,15 +51,15 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
               <RaisedButton label="Approve" onTouchTap={()=>this.approveTeam()} primary={true} />
               <RaisedButton label="Reject" onTouchTap={()=>this.rejectTeam()} secondary={true} />
               </div>
-            </CenteredSection> : <div>Loading</div>
+            </CenteredSection> : <div>This Notification is Already Acknowledged</div>
     );
   }
 }
 
 
 const approveTeamMutation = gql`
-  mutation approveTeam ($notificationId: ID!){
-    updateAtheletTeam(id: $notificationId, status: APPROVEDBYCOACH)
+  mutation approveTeam ($notificationId: ID!, $status: ATHELET_TEAM_STATUS){
+    updateAtheletTeam(id: $notificationId, status: $status)
   {
     id
   }
@@ -64,8 +67,8 @@ const approveTeamMutation = gql`
 `
 
 const rejectTeamMutation = gql`
-  mutation rejectTeam ($notificationId: ID!){
-   updateAtheletTeam(id: $notificationId, status: REJECTEDBYCOACH)
+  mutation rejectTeam ($notificationId: ID!, $status: ATHELET_TEAM_STATUS){
+   updateAtheletTeam(id: $notificationId, status: $status)
   {
     id
   }
