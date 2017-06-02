@@ -13,6 +13,7 @@ import CoachVideo from '../../containers/CoachVideo';
 import CoachSearch from '../../containers/CoachSearch';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
+const userId = localStorage.getItem('userID')
 
 export class CoachDashboard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -21,7 +22,7 @@ export class CoachDashboard extends React.PureComponent { // eslint-disable-line
         <MuiThemeProvider>
           <Tabs>
             <Tab label="Team" >
-              <CoachTeam />
+              <CoachTeam userId={userId} />
             </Tab>
             <Tab label="Schedule" >
               <CoachSchedule />

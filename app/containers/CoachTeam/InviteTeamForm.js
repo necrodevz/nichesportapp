@@ -20,7 +20,6 @@ import {
 } from 'redux-form-material-ui';
 import RaisedButton from 'material-ui/RaisedButton'
 import { withApollo } from 'react-apollo';
-import ApolloClient from 'apollo-client';
 import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql, compose } from 'react-apollo'
 import IconButton from 'material-ui/IconButton';
@@ -28,6 +27,9 @@ import gql from 'graphql-tag'
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import Paper from 'material-ui/Paper';
 var _ = require('lodash');
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import CoachInviteModal from './CoachInviteModal'
 
 const style = {
   height: 300,
@@ -43,7 +45,7 @@ const required = value => (value == null ? 'Required' : undefined);
 // validation functions
 const validate = values => {
   
-  errors.search_team = required(values.search_team)
+  errors.searchTeam = required(values.searchTeam)
   return errors
 }
 
@@ -54,13 +56,27 @@ class InviteTeamForm extends Component {
     super(props);
     this.state={
       searchEnabled: false,
-      searchData: []
+      searchData: [],
+      showInvitationDialog: false,
+      activeIndex: 0,
+      activeTeam: null
     }
   }
 
+  toggleInviteDialog(value, index) {
+    var activeTeam = {};
+    for(var i=0; i< this.props.TeamsList.allTeams.length ; i++)
+    {
+      if(index == this.props.TeamsList.allTeams[i].id){
+        activeTeam = this.props.TeamsList.allTeams[i]
+      }
+    }     
+    this.setState({ showInvitationDialog: !value, activeIndex: index, activeTeam: activeTeam })
+    console.log('index', index);
+  }
+
   static propTypes = {
-    applyTeam: React.PropTypes.func,
-    client: React.PropTypes.instanceOf(ApolloClient).isRequired,
+    applyTeam: React.PropTypes.func
   }
 
   submitSearchTeams () {
@@ -69,7 +85,7 @@ class InviteTeamForm extends Component {
   }
 
   resetSearch () {
-    this.setState({searchEnabled: false});
+    this.setState({searchEnabled: false, searchData: []});
   }
 
   applyTeam = async (index) => {
@@ -80,6 +96,14 @@ class InviteTeamForm extends Component {
   }
 
   render() {
+
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={()=>this.toggleInviteDialog(this.state.showInvitationDialog)}
+      />
+    ];
     
     if(this.props.TeamsList.allTeams && teamNames.length === 0){ 
     for(var index = 0; index < this.props.TeamsList.allTeams.length; index++)
@@ -93,7 +117,7 @@ class InviteTeamForm extends Component {
       <form onSubmit={handleSubmit}>
         <div>
           <Field
-            name="search_team"
+            name="searchTeam"
             fullWidth={true}
             component={AutoComplete}
             filter={MUIAutoComplete.fuzzyFilter}
@@ -103,8 +127,19 @@ class InviteTeamForm extends Component {
             validate={required}
           />
         </div>
+        <Dialog
+          title="Team Info"
+          autoScrollBodyContent={true}
+          actions={actions}
+          modal={false}
+          autoDetectWindowHeight={true}
+          open={this.state.showInvitationDialog}
+          onRequestClose={()=>this.toggleInviteDialog(this.state.showInvitationDialog)}
+        >
+          <CoachInviteModal activeTeam={this.state.activeTeam} toggleInviteDialog={()=>this.toggleInviteDialog()} />
+        </Dialog>
         <div>
-          <IconButton onTouchTap={()=>this.submitSearchTeams()} disabled={errors.search_team != null} tooltip="Search Team">
+          <IconButton onTouchTap={()=>this.submitSearchTeams()} disabled={errors.searchTeam != null} tooltip="Search Team">
           <SearchIcon />
         </IconButton>
           <RaisedButton label="Clear" onTouchTap={reset} disabled={pristine || submitting} secondary={true} />
@@ -122,10 +157,9 @@ class InviteTeamForm extends Component {
          <br/>
          <div>No. of Players: {team.totalNumberOfAthelets}</div>
          <br/>
-         <div>Coach: {team.coach.firstName} {team.coach.lastName}</div>
         </h4>
         <div>
-        <RaisedButton label="Invite"  onTouchTap={()=>this.applyTeam(index)} primary={true} />
+        <RaisedButton label="Invite"  onTouchTap={() => this.toggleInviteDialog(this.state.showInvitationDialog, team.id)} primary={true} />
         </div>
       </Paper>)) : ''}
 
@@ -139,37 +173,15 @@ class InviteTeamForm extends Component {
          <br/>
          <div>No. of Players: {team.totalNumberOfAthelets}</div>
          <br/>
-         <div>Coach: {team.coach.firstName} {team.coach.lastName}</div>
         </h4>
         <div>
-        <RaisedButton label="Apply" disabled={team.atheletTeams.length > 0 ? (team.atheletTeams[0].status == 'COACHPENDING' || team.atheletTeams[0].status == 'ATHELETPENDING'  ? true : false) : false} onTouchTap={()=>this.applyTeam(index)} primary={true} />
+        <RaisedButton label="Invite" onTouchTap={() => this.toggleInviteDialog(this.state.showInvitationDialog, team.id)} primary={true} />
         </div>
       </Paper>)) : ''}
       </CenteredSection>
     );
   }
 }
-
-const getAllTeams = gql`query getAllTeams {
-  allTeams(filter: {
-      coach: {
-        user:{
-          id:"cj32wk6prqm2u01924qmn8y4r"
-        }
-    }
-  }
-   ) {
-    id
-    name
-    season
-    ageGroup
-    totalNumberOfAthelets
-    createdAt
-    sport { id name }
-    coach { id user { id email firstName lastName }}
-    manager { id user { id email firstName lastName }}
-  }
-}`
 
 const applyTeamMutation = gql`
   mutation applyTeam ($athleteId: ID, $teamId: ID){
@@ -184,21 +196,20 @@ const applyTeamMutation = gql`
   }
 `
 
-const selector = formValueSelector('search_team_form');
+const selector = formValueSelector('coachInviteTeamForm');
 
 InviteTeamForm = connect(state => ({
-  searchText: selector(state, 'search_team'),
+  searchText: selector(state, 'searchTeam'),
   athleteMessage: selector(state, 'athleteMessage')
 }))(InviteTeamForm);
 
 InviteTeamForm = reduxForm({
-  form: 'search_team_form',
+  form: 'coachInviteTeamForm',
   validate
 })(InviteTeamForm);
 
 const InviteTeamFormMutation = compose(
-  graphql(applyTeamMutation, {name: 'applyTeam'}),
-  graphql(getAllTeams, { name: 'TeamsList' })
+  graphql(applyTeamMutation, {name: 'applyTeam'})
 )(InviteTeamForm)
 
 export default InviteTeamFormMutation;
