@@ -20,7 +20,6 @@ import {
 } from 'redux-form-material-ui';
 import RaisedButton from 'material-ui/RaisedButton'
 import { withApollo } from 'react-apollo';
-import ApolloClient from 'apollo-client';
 import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql, compose } from 'react-apollo'
 import IconButton from 'material-ui/IconButton';
@@ -43,7 +42,7 @@ const required = value => (value == null ? 'Required' : undefined);
 // validation functions
 const validate = values => {
   
-  errors.search_team = required(values.search_team)
+  errors.searchTeam = required(values.searchTeam)
   return errors
 }
 
@@ -59,8 +58,7 @@ class InviteTeamForm extends Component {
   }
 
   static propTypes = {
-    applyTeam: React.PropTypes.func,
-    client: React.PropTypes.instanceOf(ApolloClient).isRequired,
+    applyTeam: React.PropTypes.func
   }
 
   submitSearchTeams () {
@@ -93,7 +91,7 @@ class InviteTeamForm extends Component {
       <form onSubmit={handleSubmit}>
         <div>
           <Field
-            name="search_team"
+            name="searchTeam"
             fullWidth={true}
             component={AutoComplete}
             filter={MUIAutoComplete.fuzzyFilter}
@@ -104,7 +102,7 @@ class InviteTeamForm extends Component {
           />
         </div>
         <div>
-          <IconButton onTouchTap={()=>this.submitSearchTeams()} disabled={errors.search_team != null} tooltip="Search Team">
+          <IconButton onTouchTap={()=>this.submitSearchTeams()} disabled={errors.searchTeam != null} tooltip="Search Team">
           <SearchIcon />
         </IconButton>
           <RaisedButton label="Clear" onTouchTap={reset} disabled={pristine || submitting} secondary={true} />
@@ -150,27 +148,6 @@ class InviteTeamForm extends Component {
   }
 }
 
-const getAllTeams = gql`query getAllTeams {
-  allTeams(filter: {
-      coach: {
-        user:{
-          id:"cj32wk6prqm2u01924qmn8y4r"
-        }
-    }
-  }
-   ) {
-    id
-    name
-    season
-    ageGroup
-    totalNumberOfAthelets
-    createdAt
-    sport { id name }
-    coach { id user { id email firstName lastName }}
-    manager { id user { id email firstName lastName }}
-  }
-}`
-
 const applyTeamMutation = gql`
   mutation applyTeam ($athleteId: ID, $teamId: ID){
    createAtheletTeam(
@@ -184,21 +161,20 @@ const applyTeamMutation = gql`
   }
 `
 
-const selector = formValueSelector('search_team_form');
+const selector = formValueSelector('coachInviteTeamForm');
 
 InviteTeamForm = connect(state => ({
-  searchText: selector(state, 'search_team'),
+  searchText: selector(state, 'searchTeam'),
   athleteMessage: selector(state, 'athleteMessage')
 }))(InviteTeamForm);
 
 InviteTeamForm = reduxForm({
-  form: 'search_team_form',
+  form: 'coachInviteTeamForm',
   validate
 })(InviteTeamForm);
 
 const InviteTeamFormMutation = compose(
-  graphql(applyTeamMutation, {name: 'applyTeam'}),
-  graphql(getAllTeams, { name: 'TeamsList' })
+  graphql(applyTeamMutation, {name: 'applyTeam'})
 )(InviteTeamForm)
 
 export default InviteTeamFormMutation;

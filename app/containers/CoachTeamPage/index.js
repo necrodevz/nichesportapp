@@ -20,12 +20,12 @@ export class CoachTeamPage extends React.Component { // eslint-disable-line reac
   }
 
   render() {
-    if (this.props.data.loading) {
+    if (this.props.TeamsList.loading) {
     return (<div>Loading</div>)
   }
 
-  if (this.props.data.error) {
-    console.log(this.props.data.error)
+  if (this.props.TeamsList.error) {
+    console.log(this.props.TeamsList.error)
     return (<div>An unexpected error occurred</div>)
   }
     return (
@@ -42,7 +42,7 @@ export class CoachTeamPage extends React.Component { // eslint-disable-line reac
       </TableRow>
     </TableHeader>
     <TableBody>
-    {this.props.data.allTeams.map(team=>(
+    {this.props.TeamsList.allTeams.map(team=>(
       <TableRow key={team.id}>
         <TableRowColumn>{team.id}</TableRowColumn>
         <TableRowColumn>{team.name}</TableRowColumn>
@@ -60,29 +60,4 @@ export class CoachTeamPage extends React.Component { // eslint-disable-line reac
   }
 }
 
-const coachTeamQuery = gql`query coachTeamQuery ($userId: ID){
-   allTeams(filter: {
-      coach: {
-        user:{
-          id: $userId
-        }
-    }
-  }
-   ) {
-    id
-    name
-    season
-    ageGroup
-    totalNumberOfAthelets
-    createdAt
-    sport { id name }
-    coach { id user { id email firstName lastName }}
-    manager { id user { id email firstName lastName }}
-  }
-}`
- 
-const CoachTeamData = graphql(coachTeamQuery , {
-  options: { variables: { userId: localStorage.getItem('userID') } },
-})(CoachTeamPage);
-
-export default CoachTeamData;
+export default CoachTeamPage;

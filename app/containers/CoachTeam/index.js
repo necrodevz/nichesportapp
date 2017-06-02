@@ -11,7 +11,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import CoachTeamPage from '../../containers/CoachTeamPage';
 import CoachInvitePage from '../../containers/CoachInvitePage';
 import InviteTeamForm from './InviteTeamForm'
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
 
@@ -24,10 +24,10 @@ export class CoachTeam extends React.Component { // eslint-disable-line react/pr
         <MuiThemeProvider>
           <Tabs>
             <Tab label="My Team">
-              <CoachTeamPage />
+              {this.props.TeamsList && <CoachTeamPage TeamsList={this.props.TeamsList} />}
             </Tab>
             <Tab label="Invite Team">
-              <InviteTeamForm userData={this.props.data.user}/>
+              {this.props.TeamsList && <InviteTeamForm TeamsList={this.props.TeamsList} userData={this.props.data.user}/>}
             </Tab>
           </Tabs>
         </MuiThemeProvider>
@@ -36,9 +36,26 @@ export class CoachTeam extends React.Component { // eslint-disable-line react/pr
   }
 }
 
-CoachTeam.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+const coachTeamQuery = gql`query coachTeamQuery ($userId: ID){
+   allTeams(filter: {
+      coach: {
+        user:{
+          id: $userId
+        }
+    }
+  }
+   ) {
+    id
+    name
+    season
+    ageGroup
+    totalNumberOfAthelets
+    createdAt
+    sport { id name }
+    coach { id user { id email firstName lastName }}
+    manager { id user { id email firstName lastName }}
+  }
+}`
 
 const coachQuery = gql`query coachQuery {
     user { id firstName lastName email country dob profileImage gender address timeZone mobileNumber height weight bio createdAt
@@ -60,6 +77,10 @@ const coachQuery = gql`query coachQuery {
   }
 }`
 
-const coachQueryData = graphql(coachQuery)(CoachTeam);
+const coachQueryData = compose(
+  graphql(coachQuery),
+  graphql(coachTeamQuery , {name: 'TeamsList'}, {
+  options: (props) => ({ variables: { userId: props.userId } })
+}))(CoachTeam);
 
 export default coachQueryData;
