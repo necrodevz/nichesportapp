@@ -73,10 +73,11 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
                 }
           </IconMenu>
            <Dialog
-          title="Notification"
+          title="Team Info"
           autoScrollBodyContent={true}
           actions={actions}
           modal={false}
+          autoDetectWindowHeight={true}
           open={this.state.showNotificationDialog}
           onRequestClose={()=>this.toggleNotificationDialog(this.state.showNotificationDialog)}
         >

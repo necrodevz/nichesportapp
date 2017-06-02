@@ -43,7 +43,6 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
                <br/>
                <div>No. of Players: {team.totalNumberOfAthelets}</div>
                <br/>
-               <div>Coach: {team.coach.firstName} {team.coach.lastName}</div>
               </h4>
               <div>
               <RaisedButton label="Approve" onTouchTap={()=>this.approveTeam()} primary={true} />
