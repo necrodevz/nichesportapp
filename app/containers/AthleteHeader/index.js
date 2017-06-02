@@ -13,28 +13,65 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import EmailIcon from 'material-ui/svg-icons/communication/email';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import Dialog from 'material-ui/Dialog';
+import NotificationModal from '../../containers/NotificationModal';
+import FlatButton from 'material-ui/FlatButton';
+
 
 export class AthleteHeader extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor() {
+    super();
+    this.state = {
+      showNotificationDialog: false,
+      activeIndex: 0
+    }
+  }
+
+  toggleNotificationDialog(value, index) {
+    this.setState({ showNotificationDialog: !value, activeIndex: index })
+    console.log('index', index);
+  }
+
   render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={()=>this.toggleNotificationDialog(this.state.showNotificationDialog)}
+      />
+    ];
+    const{data}=this.props;
+
     return (
       <div>
-        <Badge
-            badgeContent={10}
+        {data.allNotifications ? <div><Badge
+            badgeContent={data.allNotifications.length}
             secondary={true}
             badgeStyle={{top: 2, right: 2}}
           >
-            <IconMenu anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-            targetOrigin={{horizontal: 'right', vertical: 'top'}}
-              iconButtonElement={
+          <IconMenu maxHeight={200} autoWidth={true} iconButtonElement={
                 <IconButton><NotificationsIcon /></IconButton>
               }
               targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
-              anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
             >
-              <MenuItem primaryText="Refresh" />
-              <MenuItem primaryText="Help" />
-              <MenuItem primaryText="Sign out" />
-            </IconMenu>
+                {data.allNotifications.map((notification, index) => (
+                  <MenuItem key={notification.id} onTouchTap={() => this.toggleNotificationDialog(this.state.showNotificationDialog, index)} primaryText={notification.title} />))
+                }
+          </IconMenu>
+           <Dialog
+          title="Team Info"
+          autoScrollBodyContent={true}
+          actions={actions}
+          modal={false}
+          autoDetectWindowHeight={true}
+          open={this.state.showNotificationDialog}
+          onRequestClose={()=>this.toggleNotificationDialog(this.state.showNotificationDialog)}
+        >
+          <NotificationModal toggleNotificationDialog={()=>this.toggleNotificationDialog()} notification={data.allNotifications[this.state.activeIndex]} />
+        </Dialog>
           </Badge>
           <Badge
             badgeContent={5}
@@ -44,7 +81,7 @@ export class AthleteHeader extends React.Component { // eslint-disable-line reac
             <IconButton tooltip="Messages">
               <EmailIcon />
             </IconButton>
-          </Badge>
+          </Badge> </div> : ''}
       </div>
     );
   }
@@ -61,4 +98,18 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(AthleteHeader);
+const AthleteNotificationsQuery = gql`query AthleteNotificationsQuery ($userId: ID) {
+    allNotifications(filter: {user: {id: $userId}}) {
+    id
+    type
+    typeId
+    title
+    isRead
+  }
+}`
+
+const AthleteHeaderData = graphql(AthleteNotificationsQuery, {
+  options: { variables: { userId: localStorage.getItem('userID') } },
+})(AthleteHeader);
+
+export default AthleteHeaderData;
