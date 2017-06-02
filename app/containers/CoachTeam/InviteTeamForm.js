@@ -27,6 +27,9 @@ import gql from 'graphql-tag'
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import Paper from 'material-ui/Paper';
 var _ = require('lodash');
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import CoachInviteModal from './CoachInviteModal'
 
 const style = {
   height: 300,
@@ -53,8 +56,23 @@ class InviteTeamForm extends Component {
     super(props);
     this.state={
       searchEnabled: false,
-      searchData: []
+      searchData: [],
+      showInvitationDialog: false,
+      activeIndex: 0,
+      activeTeam: null
     }
+  }
+
+  toggleInviteDialog(value, index) {
+    var activeTeam = {};
+    for(var i=0; i< this.props.TeamsList.allTeams.length ; i++)
+    {
+      if(index == this.props.TeamsList.allTeams[i].id){
+        activeTeam = this.props.TeamsList.allTeams[i]
+      }
+    }     
+    this.setState({ showInvitationDialog: !value, activeIndex: index, activeTeam: activeTeam })
+    console.log('index', index);
   }
 
   static propTypes = {
@@ -67,7 +85,7 @@ class InviteTeamForm extends Component {
   }
 
   resetSearch () {
-    this.setState({searchEnabled: false});
+    this.setState({searchEnabled: false, searchData: []});
   }
 
   applyTeam = async (index) => {
@@ -78,6 +96,14 @@ class InviteTeamForm extends Component {
   }
 
   render() {
+
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={()=>this.toggleInviteDialog(this.state.showInvitationDialog)}
+      />
+    ];
     
     if(this.props.TeamsList.allTeams && teamNames.length === 0){ 
     for(var index = 0; index < this.props.TeamsList.allTeams.length; index++)
@@ -101,6 +127,17 @@ class InviteTeamForm extends Component {
             validate={required}
           />
         </div>
+        <Dialog
+          title="Team Info"
+          autoScrollBodyContent={true}
+          actions={actions}
+          modal={false}
+          autoDetectWindowHeight={true}
+          open={this.state.showInvitationDialog}
+          onRequestClose={()=>this.toggleInviteDialog(this.state.showInvitationDialog)}
+        >
+          <CoachInviteModal activeTeam={this.state.activeTeam} toggleInviteDialog={()=>this.toggleInviteDialog()} />
+        </Dialog>
         <div>
           <IconButton onTouchTap={()=>this.submitSearchTeams()} disabled={errors.searchTeam != null} tooltip="Search Team">
           <SearchIcon />
@@ -120,10 +157,9 @@ class InviteTeamForm extends Component {
          <br/>
          <div>No. of Players: {team.totalNumberOfAthelets}</div>
          <br/>
-         <div>Coach: {team.coach.firstName} {team.coach.lastName}</div>
         </h4>
         <div>
-        <RaisedButton label="Invite"  onTouchTap={()=>this.applyTeam(index)} primary={true} />
+        <RaisedButton label="Invite"  onTouchTap={() => this.toggleInviteDialog(this.state.showInvitationDialog, team.id)} primary={true} />
         </div>
       </Paper>)) : ''}
 
@@ -137,10 +173,9 @@ class InviteTeamForm extends Component {
          <br/>
          <div>No. of Players: {team.totalNumberOfAthelets}</div>
          <br/>
-         <div>Coach: {team.coach.firstName} {team.coach.lastName}</div>
         </h4>
         <div>
-        <RaisedButton label="Apply" disabled={team.atheletTeams.length > 0 ? (team.atheletTeams[0].status == 'COACHPENDING' || team.atheletTeams[0].status == 'ATHELETPENDING'  ? true : false) : false} onTouchTap={()=>this.applyTeam(index)} primary={true} />
+        <RaisedButton label="Invite" onTouchTap={() => this.toggleInviteDialog(this.state.showInvitationDialog, team.id)} primary={true} />
         </div>
       </Paper>)) : ''}
       </CenteredSection>

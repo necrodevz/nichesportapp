@@ -47,6 +47,11 @@ const coachTeamQuery = gql`query coachTeamQuery ($userId: ID){
    ) {
     id
     name
+    atheletTeams{
+      athlete{ id user{ id email firstName lastName } }
+      status
+      athleteMessage
+    }
     season
     ageGroup
     totalNumberOfAthelets
