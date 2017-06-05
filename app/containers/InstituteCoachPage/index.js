@@ -47,7 +47,7 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
       <CenteredSection>
       {this.state.showCoachForm ? <CoachForm instituteId={this.props.userID} showCoachForm={this.state.showCoachForm} toggleCoachForm={this.toggleCoachForm}/> : <RaisedButton label="Add New Coach" onClick={() => this.toggleCoachForm(this.state.showCoachForm)} primary={true} />}
         <Table>
-        <TableHeader>
+        <TableHeader displaySelectAll= {false}>
           <TableRow>
             <TableHeaderColumn>ID</TableHeaderColumn>
             <TableHeaderColumn>Email</TableHeaderColumn>
@@ -55,7 +55,7 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
             <TableHeaderColumn>Last Name</TableHeaderColumn>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody displayRowCheckbox={false}>
         {this.props.data.allCoaches.map(coach=>(
           <TableRow key={coach.id}>
             <TableRowColumn>{coach.id}</TableRowColumn>

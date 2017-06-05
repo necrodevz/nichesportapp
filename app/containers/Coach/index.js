@@ -31,7 +31,7 @@ class Coach extends React.PureComponent { // eslint-disable-line react/prefer-st
     return (
       <CenteredSection>
          <Table>
-          <TableHeader>
+          <TableHeader displaySelectAll= {false}>
             <TableRow>
               <TableHeaderColumn>ID</TableHeaderColumn>
               <TableHeaderColumn>Country</TableHeaderColumn>
@@ -39,7 +39,7 @@ class Coach extends React.PureComponent { // eslint-disable-line react/prefer-st
               <TableHeaderColumn>Email</TableHeaderColumn>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody displayRowCheckbox={false}>
           {this.props.data.allCoaches.map(coach=>(
             <TableRow key={coach.id}>
               <TableRowColumn>{coach.id}</TableRowColumn>
