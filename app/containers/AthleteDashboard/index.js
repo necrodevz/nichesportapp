@@ -28,9 +28,6 @@ export class AthleteDashboard extends React.PureComponent { // eslint-disable-li
             <Tab label="Team" >
               <AthleteTeam />
             </Tab>
-            <Tab label="Calendar/Schedule" >
-              <InstituteCalendar />
-            </Tab>
             <Tab label="Video" >
             <div>Video Page</div>
             </Tab>
