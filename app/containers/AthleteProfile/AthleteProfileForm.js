@@ -121,7 +121,7 @@ class AthleteProfileForm extends Component {
   componentDidMount() {
     const { userData } = this.props;
     this.props.initialize({firstName: userData.firstName, lastName: userData.lastName, email: userData.email,
-     country: userData.country, dob: userData.dob, gender: userData.gender, address: userData.address,
+     country: userData.country, dob: new Date(userData.dob), gender: userData.gender, address: userData.address,
       mobileNumber: userData.mobileNumber, timezone: userData.timeZone, height: userData.height, weight: userData.weight, bio: userData.bio, 
       graduationName: userData.athlete.graduation, graduationProgramLength: userData.athlete.graduationProgramLength, 
       graduationUniversity: userData.athlete.graduationUniversity, graduationYear: userData.athlete.graduationYear,
