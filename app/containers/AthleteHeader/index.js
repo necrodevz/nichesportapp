@@ -18,6 +18,8 @@ import gql from 'graphql-tag';
 import Dialog from 'material-ui/Dialog';
 import NotificationModal from '../../containers/NotificationModal';
 import FlatButton from 'material-ui/FlatButton';
+import Avatar from 'material-ui/Avatar'
+
 
 
 export class AthleteHeader extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -46,6 +48,7 @@ export class AthleteHeader extends React.Component { // eslint-disable-line reac
 
     return (
       <div>
+       <Avatar size={100} src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Kapil_Dev_at_Equation_sports_auction.jpg" />
         {data.allNotifications ? <div><Badge
             badgeContent={data.allNotifications.length}
             secondary={true}
