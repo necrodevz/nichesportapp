@@ -51,7 +51,7 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
         <H3>Hey , there are {this.props.data.allInstitutes.length} Teams in your account</H3>
         {this.state.showTeamForm ? <TeamForm showTeamForm={this.state.showTeamForm} toggleTeamForm={this.toggleTeamForm}/> : <RaisedButton label="Add New Team" onClick={() => this.toggleTeamForm(this.state.showTeamForm)} primary={true} />}
          <Table>
-    <TableHeader>
+    <TableHeader displaySelectAll= {false}>
       <TableRow>
         <TableHeaderColumn>ID</TableHeaderColumn>
         <TableHeaderColumn>Name</TableHeaderColumn>
@@ -59,7 +59,7 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
         <TableHeaderColumn>Status</TableHeaderColumn>
       </TableRow>
     </TableHeader>
-    <TableBody>
+    <TableBody displayRowCheckbox={false}>
     {this.props.data.allInstitutes.map(institute=>(
       <TableRow key={institute.id}>
         <TableRowColumn>{institute.id}</TableRowColumn>

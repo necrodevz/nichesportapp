@@ -64,7 +64,7 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
           <InstituteForm toggleInstituteForm={this.toggleInstituteForm}/>
         </Dialog>
          <Table>
-    <TableHeader>
+    <TableHeader displaySelectAll= {false}>
       <TableRow>
         <TableHeaderColumn>ID</TableHeaderColumn>
         <TableHeaderColumn>Name</TableHeaderColumn>
@@ -72,7 +72,7 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
         <TableHeaderColumn>Status</TableHeaderColumn>
       </TableRow>
     </TableHeader>
-    <TableBody>
+    <TableBody displayRowCheckbox={false}>
     {this.props.data.allInstitutes.map(institute=>(
       <TableRow key={institute.id}>
         <TableRowColumn>{institute.id}</TableRowColumn>

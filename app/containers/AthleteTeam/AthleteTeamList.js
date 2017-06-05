@@ -38,7 +38,7 @@ class AthleteTeamList extends React.Component { // eslint-disable-line react/pre
     return (
       <CenteredSection>
       <Table>
-        <TableHeader>
+        <TableHeader displaySelectAll= {false}>
           <TableRow>
             <TableHeaderColumn>Name</TableHeaderColumn>
             <TableHeaderColumn>Season</TableHeaderColumn>
@@ -49,7 +49,7 @@ class AthleteTeamList extends React.Component { // eslint-disable-line react/pre
             <TableHeaderColumn>Status</TableHeaderColumn>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody displayRowCheckbox={false}>
         {this.props.data.allTeams.map(team=>(
           <TableRow key={team.id}>
             <TableRowColumn>{team.name}</TableRowColumn>
