@@ -1,0 +1,362 @@
+# project: cj32ti8u8khzz0122jd4cwzh6
+# version: 82
+
+type AdminSetting implements Node {
+  createdAt: DateTime!
+  dayInvitePendingByCoach: Int! @defaultValue(value: 3)
+  id: ID! @isUnique
+  maxTeamsCanAssign: Int! @defaultValue(value: 1)
+  termsAndCondition: String!
+  updatedAt: DateTime!
+}
+
+enum AthleteStatus {
+  APPROVED
+  MANAGER_PENDING
+}
+
+type File implements Node {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type Institute implements Node {
+  coach: [Coach!]! @relation(name: "CoachOnInstitute")
+  country: String
+  createdAt: DateTime!
+  id: ID! @isUnique
+  instituteSport: [InstituteSport!]! @relation(name: "InstituteSportOnInstitute")
+  manager: [Manager!]! @relation(name: "ManagerOnInstitute")
+  name: String!
+  owner: User @relation(name: "InstituteOnUser")
+  status: InstituteStatus! @defaultValue(value: ACTIVE)
+  typeOfInstitute: String
+  updatedAt: DateTime!
+  coachAcadmic: [CoachAcadmic!]! @relation(name: "CoachAcadmicOnSInstitute")
+  athleteAcadmic: [AthleteAcadmic!]! @relation(name: "AthleteAcadmicOnSInstitute")
+  teams: [Team!]! @relation(name: "TeamOnInstitute")
+  events: [Event!]! @relation(name: "InstituteOnEvent")
+  trainings: [Training!]! @relation(name: "InstituteOnTraining")
+}
+
+type InstituteSport implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  institute: Institute! @relation(name: "InstituteSportOnInstitute")
+  sport: Sport! @relation(name: "SportOnInstitute")
+  updatedAt: DateTime!
+}
+
+enum InstituteStatus {
+  ACTIVE
+  PENDING
+  DEACTIVATE
+}
+
+type Manager implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  institute: Institute @relation(name: "ManagerOnInstitute")
+  updatedAt: DateTime!
+  user: User @relation(name: "ManagerOnUser")
+  teams: [Team!]! @relation(name: "TeamOnManager")
+}
+
+type Sport implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  instituteSport: [InstituteSport!]! @relation(name: "SportOnInstitute")
+  name: String!
+  updatedAt: DateTime!
+  coachAcadmic: [CoachAcadmic!]! @relation(name: "CoachAcadmicOnSport")
+  athleteAcadmic: [AthleteAcadmic!]! @relation(name: "AthleteAcadmicOnSport")
+  athleteSports: [AthleteSport!]! @relation(name: "SportOnAthleteSport")
+  coachSports: [CoachSport!]! @relation(name: "SportOnCoachSport")
+  teams: [Team!]! @relation(name: "TeamOnSport")
+  events: [Event!]! @relation(name: "SportOnEvent")
+}
+
+type User implements Node {
+  address: String
+  athlete: Athlete @relation(name: "UserOnAthlete")
+  bio: String
+  coach: Coach @relation(name: "CoachOnUser")
+  country: String
+  createdAt: DateTime!
+  createdAthletes: [Athlete!]! @relation(name: "CreatedAthlete")
+  dob: DateTime
+  emailVerified: Boolean! @defaultValue(value: false)
+  firstName: String!
+  gender: String
+  height: Float
+  id: ID! @isUnique
+  instituteOwner: Institute @relation(name: "InstituteOnUser")
+  isActive: Boolean! @defaultValue(value: false)
+  isFirstTimeLogin: Boolean! @defaultValue(value: false)
+  lastName: String!
+  manager: Manager @relation(name: "ManagerOnUser")
+  messageCount: Int! @defaultValue(value: 0)
+  mobileNumber: String
+  mobileVerificationCode: String
+  mobileVerified: Boolean! @defaultValue(value: false)
+  nationality: String
+  notificationCount: Int! @defaultValue(value: 0)
+  profileImage: String
+  resetPasswordToken: String
+  role: UserRole!
+  timeZone: String
+  updatedAt: DateTime!
+  weight: Float
+  email: String @isUnique
+  password: String
+  notifications: [Notification!]! @relation(name: "UserOnNotification")
+  videos: [Video!]! @relation(name: "UserOnVideo")
+}
+
+enum UserRole {
+  ATHLETE
+  OWNER
+  COACH
+  MANAGER
+  ADMIN
+}
+
+type Coach implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  institute: Institute @relation(name: "CoachOnInstitute")
+  updatedAt: DateTime!
+  user: User @relation(name: "CoachOnUser")
+  graduation: String
+  graduationProgramLength: String
+  graduationUniversity: String
+  graduationYear: Int
+  hightSchool: String
+  hightSchoolUniversity: String
+  hightProgramLength: String
+  hightSchoolYear: Int
+  coachAcadmic: [CoachAcadmic!]! @relation(name: "CoachAcadmicHistory")
+  coachSports: [CoachSport!]! @relation(name: "CoachOnCoachSport")
+  teams: [Team!]! @relation(name: "TeamOnCoach")
+  events: [Event!]! @relation(name: "CoachOnEvent")
+  trainings: [Training!]! @relation(name: "CoachOnTraining")
+}
+
+type CoachSport implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  coach: Coach! @relation(name: "CoachOnCoachSport")
+  sport: Sport! @relation(name: "SportOnCoachSport")
+  updatedAt: DateTime!
+  participateStartDate: DateTime!
+  coachAcadmicCertificates: [CoachAcadmicCertificate!]! @relation(name: "CoachSportOnCoachAcadmicCertificate")
+}
+
+type CoachAcadmic implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  coach: Coach @relation(name: "CoachAcadmicHistory")
+  institute: Institute @relation(name: "CoachAcadmicOnSInstitute")
+  sport: Sport @relation(name: "CoachAcadmicOnSport")
+  updatedAt: DateTime!
+  academicYear: Int
+}
+
+type CoachAcadmicCertificate implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  coachSport: CoachSport! @relation(name: "CoachSportOnCoachAcadmicCertificate")
+  url: String!
+  name: String
+  updatedAt: DateTime!
+}
+
+type Athlete implements Node {
+  createdAt: DateTime!
+  createdBy: User @relation(name: "CreatedAthlete")
+  graduation: String
+  graduationProgramLength: String
+  graduationUniversity: String
+  graduationYear: Int
+  hightSchool: String
+  hightSchoolUniversity: String
+  hightSchoolYear: Int
+  hightProgramLength: String
+  id: ID! @isUnique
+  status: AthleteStatus! @defaultValue(value: APPROVED)
+  updatedAt: DateTime!
+  user: User! @relation(name: "UserOnAthlete")
+  athleteSports: [AthleteSport!]! @relation(name: "AthleteOnAthleteSport")
+  athletAcadmic: [AthleteAcadmic!]! @relation(name: "AthleteAcadmicHistory")
+  atheletTeams: [AtheletTeam!]! @relation(name: "AthleteOnAtheletTeam")
+}
+
+type AthleteSport implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  athlete: Athlete @relation(name: "AthleteOnAthleteSport")
+  sport: Sport @relation(name: "SportOnAthleteSport")
+  updatedAt: DateTime!
+  participateStartDate: DateTime!
+  athleteAcadmicCertificates: [AthleteAcadmicCertificate!]! @relation(name: "AthleteSportOnCoachAcadmicCertificate")
+}
+
+type AthleteAcadmic implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  athlete: Athlete @relation(name: "AthleteAcadmicHistory")
+  institute: Institute @relation(name: "AthleteAcadmicOnSInstitute")
+  sport: Sport @relation(name: "AthleteAcadmicOnSport")
+  updatedAt: DateTime!
+  academicYear: Int
+}
+
+type AthleteAcadmicCertificate implements Node {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  athleteSport: AthleteSport! @relation(name: "AthleteSportOnCoachAcadmicCertificate")
+  url: String!
+  name: String
+  updatedAt: DateTime!
+}
+
+type Team implements Node {
+  id: ID! @isUnique
+  institute: Institute @relation(name: "TeamOnInstitute")
+  sport: Sport @relation(name: "TeamOnSport")
+  coach: Coach @relation(name: "TeamOnCoach")
+  manager: Manager @relation(name: "TeamOnManager")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  season: Int
+  ageGroup: Int
+  totalNumberOfAthelets: Int @defaultValue(value: 0)
+  approvedNumberOfAthelets: Int @defaultValue(value: 0)
+  rules: String
+  atheletTeams: [AtheletTeam!]! @relation(name: "TeamOnAtheletTeam")
+  trainingTeams: [TrainingTeam!]! @relation(name: "TeamOnTrainingTeam")
+  eventTeams: [EventTeam!]! @relation(name: "TeamOnEventTeam")
+}
+
+type AtheletTeam implements Node {
+  id: ID! @isUnique
+  athlete: Athlete @relation(name: "AthleteOnAtheletTeam")
+  team: Team @relation(name: "TeamOnAtheletTeam")
+  status: AtheletTeamStatus! @defaultValue(value: MANAGERPENDING)
+  athleteMessage: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum AtheletTeamStatus {
+  COACHPENDING
+  MANAGERPENDING
+  INSTITUTEPENDING
+  APPROVEDBYATHLETE
+  APPROVEDBYCOACH
+  APPROVEDBYINSTITUTE
+  REJECTEDBYINSTITUTE
+  REJECTEDBYATHLETE
+  REJECTEDBYCOACH
+  ATHLETEPENDING
+}
+
+type Notification implements Node {
+  id: ID! @isUnique
+  user: User @relation(name: "UserOnNotification")
+  type: String
+  typeId: String
+  title: String
+  description: String
+  isRead: Boolean! @defaultValue(value: false)
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Video implements Node {
+  id: ID! @isUnique
+  user: User @relation(name: "UserOnVideo")
+  title: String
+  url: String
+  type: VideoType
+  description: String
+  location: String
+  privacy: VideoVrivacy
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum VideoType {
+  GAME
+  PRACTICE
+  SCOUT
+  PLAYLIST
+}
+
+enum VideoVrivacy {
+  PUBLIC
+  PRIVATE
+}
+
+type Event implements Node {
+  id: ID! @isUnique
+  name: String
+  institute: Institute @relation(name: "InstituteOnEvent")
+  sport: Sport @relation(name: "SportOnEvent")
+  numberOfFixtures: Int
+  numberOfTeams: Int
+  numberOfMatches: Int
+  address: String
+  startDate: DateTime
+  endDate: DateTime
+  time: String
+  coach: Coach @relation(name: "CoachOnEvent")
+  type: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  teams: [EventTeam!]! @relation(name: "EventOnEventTeam")
+}
+
+type EventTeam implements Node {
+  id: ID! @isUnique
+  event: Event @relation(name: "EventOnEventTeam")
+  team: Team @relation(name: "TeamOnEventTeam")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Training implements Node {
+  id: ID! @isUnique
+  institute: Institute @relation(name: "InstituteOnTraining")
+  dateTime: DateTime
+  coach: Coach @relation(name: "CoachOnTraining")
+  address: String
+  numberOfSessions: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  trainingTeams: [TrainingTeam!]! @relation(name: "TrainingOnTrainingTeam")
+  trainingDates: [TrainingDate!]! @relation(name: "TrainingOnTrainingDate")
+}
+
+type TrainingTeam implements Node {
+  id: ID! @isUnique
+  training: Training @relation(name: "TrainingOnTrainingTeam")
+  team: Team @relation(name: "TeamOnTrainingTeam")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type TrainingDate implements Node {
+  id: ID! @isUnique
+  training: Training @relation(name: "TrainingOnTrainingDate")
+  date: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
