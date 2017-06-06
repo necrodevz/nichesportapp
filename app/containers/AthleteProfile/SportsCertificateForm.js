@@ -20,39 +20,54 @@ import IconButton from 'material-ui/IconButton';
 import Notifications, {notify} from 'react-notify-toast';
 import PlusIcon from 'material-ui/svg-icons/social/plus-one';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
+import {GridList, GridTile} from 'material-ui/GridList';
 
 const renderSportsCertificate = ({fields, athleteSports, meta: {error, submitFailed}, SportsList, submitSportsCertificateForm}) => (
   <div>
-    <span>
-    <IconButton onTouchTap={() => fields.push({})} tooltip="Add Certificate">
+    <GridList cols={5} cellHeight={80} padding={1} style={{"margin-bottom":"-40px"}}>
+      <GridTile></GridTile>
+      <GridTile cols={4} >Upload multiple certificates:
+        <IconButton onTouchTap={() => fields.push({})} tooltip="Add More">
           <PlusIcon />
         </IconButton>
-      {submitFailed && error && <span>{error}</span>}
-    </span>
+      </GridTile>
+    </GridList>
+
+    {submitFailed && error && <span>{error}</span>}
+
+
     {fields.map((sportsCertificates, index) => (
       <span key={index}>
-        <h4>sportsCertificates #{index + 1}</h4>
-        <Field
-          name={`${sportsCertificates}.certificateUrl`}
-          type="text"
-          component={TextField}
-          hintText="Sports Certificate"
-          floatingLabelText="Sports Certificate"
-        />
-        {SportsList.allSports ? <Field
-          name={`${sportsCertificates}.sport`}
-          type="text"
-          maxHeight={200}
-          component={SelectField}
-          hintText="Sport"
-          floatingLabelText="Sport"
-        >
-        {athleteSports.map(sport => (<MenuItem value={sport.id} primaryText={sport.id} key={sport.id} />))}
-        </Field> : '' }
-        <RaisedButton label="Save" onClick={()=>submitSportsCertificateForm(index)} primary={true} />
-        <IconButton onTouchTap={() => fields.remove(index)} tooltip="Remove Field">
-          <DeleteIcon />
-        </IconButton>
+        <GridList cols={5} cellHeight={80} padding={1}>
+          <GridTile></GridTile>
+          <GridTile>
+            <Field
+              name={`${sportsCertificates}.certificateUrl`}
+              type="text"
+              component={TextField}
+              hintText="Sports Certificate"
+              floatingLabelText="Sports Certificate"
+            />
+          </GridTile>
+          <GridTile>
+            {SportsList.allSports ? <Field
+              name={`${sportsCertificates}.sport`}
+              type="text"
+              maxHeight={200}
+              component={SelectField}
+              hintText="Sport"
+              floatingLabelText="Sport"
+            >
+            {athleteSports.map(sport => (<MenuItem value={sport.id} primaryText={sport.id} key={sport.id} />))}
+            </Field> : '' }
+          </GridTile>
+          <GridTile>
+            <RaisedButton style={{"padding-top":"25px"}} label="Save" onClick={()=>submitSportsCertificateForm(index)} primary={true} />
+            <IconButton onTouchTap={() => fields.remove(index)} tooltip="Remove Field">
+              <DeleteIcon />
+            </IconButton>
+          </GridTile>
+        </GridList>
       </span>
     ))}
   </div>

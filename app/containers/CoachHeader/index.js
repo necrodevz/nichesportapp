@@ -60,7 +60,8 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
         {data.allNotifications ? <div><Badge
             badgeContent={data.allNotifications.length}
             secondary={true}
-            badgeStyle={{top: 2, right: 2}}
+            badgeStyle={{top: 20, right: 25}}
+            style={{"margin-right":"-40px"}}
           >
           <IconMenu maxHeight={200} autoWidth={true} iconButtonElement={
                 <IconButton><NotificationsIcon /></IconButton>
@@ -87,7 +88,7 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
           <Badge
             badgeContent={5}
             secondary={true}
-            badgeStyle={{top: 2, right: 2}}
+            badgeStyle={{top: 20, right: 20}}
           >
             <IconButton tooltip="Messages">
               <EmailIcon />

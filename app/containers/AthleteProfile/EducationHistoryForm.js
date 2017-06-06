@@ -23,6 +23,8 @@ import IconButton from 'material-ui/IconButton';
 import Notifications, {notify} from 'react-notify-toast';
 import PlusIcon from 'material-ui/svg-icons/social/plus-one';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
+import {GridList, GridTile} from 'material-ui/GridList';
+
 
 // const errors = {}
 
@@ -57,50 +59,70 @@ import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 // }
 
 const renderEducationHistory = ({fields, meta: {error, submitFailed}, SportsList, InstitutesList, submitEducationHistoryForm}) => (
+  
+
   <div>
-    <span>
-    <IconButton onTouchTap={() => fields.push({})} tooltip="Add Field">
-          <PlusIcon />
-        </IconButton>
+      <GridList cols={5} cellHeight={80} padding={1} style={{"margin-bottom":"-40px"}}>
+        <GridTile></GridTile>
+        <GridTile cols={4} >If users have participated in sports, they have to enter following info:
+          <IconButton onTouchTap={() => fields.push({})} tooltip="Add More123">
+            <PlusIcon />
+          </IconButton>
+        </GridTile>
+      </GridList>
+
+
+
       {submitFailed && error && <span>{error}</span>}
-    </span>
+
     {fields.map((educationHistory, index) => (
       <span key={index}>
-        <h4>educationHistory #{index + 1}</h4>
-        <Field
-          name={`${educationHistory}.academicYear`}
-          type="text"
-          component={TextField}
-          hintText="Academic Year"
-          floatingLabelText="Academic Year"
-        />
-        {InstitutesList.allInstitutes ? <Field
-          name={`${educationHistory}.institute`}
-          type="text"
-          maxHeight={200}
-          component={SelectField}
-          hintText="Institute"
-          floatingLabelText="Institute"
-        >
-        {InstitutesList.allInstitutes.map(institute => (<MenuItem value={institute.id} primaryText={institute.name} key={institute.id} />))}
-        </Field> : '' }
-        {SportsList.allSports ? <Field
-          name={`${educationHistory}.sport`}
-          type="text"
-          maxHeight={200}
-          component={SelectField}
-          hintText="Sport"
-          floatingLabelText="Sport"
-        >
-        {SportsList.allSports.map(sport => (<MenuItem value={sport.id} primaryText={sport.name} key={sport.id} />))}
-        </Field> : '' }
-        <RaisedButton label="Save" onClick={()=>submitEducationHistoryForm(index)} primary={true} />
-        <IconButton onTouchTap={() => fields.remove(index)} tooltip="Remove Field">
-          <DeleteIcon />
-        </IconButton>
+        <GridList cols={5} cellHeight={80} padding={1}>
+          <GridTile></GridTile>
+          <GridTile>
+            <Field
+              name={`${educationHistory}.academicYear`}
+              type="text"
+              component={TextField}
+              hintText="Academic Year"
+              floatingLabelText="Academic Year"
+            />
+          </GridTile>
+          <GridTile>
+            {InstitutesList.allInstitutes ? <Field
+              name={`${educationHistory}.institute`}
+              type="text"
+              maxHeight={200}
+              component={SelectField}
+              hintText="Institute"
+              floatingLabelText="Institute"
+            >
+            {InstitutesList.allInstitutes.map(institute => (<MenuItem value={institute.id} primaryText={institute.name} key={institute.id} />))}
+            </Field> : '' }
+          </GridTile>
+          <GridTile>
+            {SportsList.allSports ? <Field
+              name={`${educationHistory}.sport`}
+              type="text"
+              maxHeight={200}
+              component={SelectField}
+              hintText="Sport"
+              floatingLabelText="Sport"
+            >
+            {SportsList.allSports.map(sport => (<MenuItem value={sport.id} primaryText={sport.name} key={sport.id} />))}
+            </Field> : '' }
+          </GridTile>
+          <GridTile>
+            <RaisedButton style={{"padding-top":"25px"}} label="Save" onClick={()=>submitEducationHistoryForm(index)} primary={true} />
+            <IconButton onTouchTap={() => fields.remove(index)} tooltip="Remove Field">
+              <DeleteIcon />
+            </IconButton>
+          </GridTile>
+        </GridList>
       </span>
     ))}
   </div>
+
 )
 
 
