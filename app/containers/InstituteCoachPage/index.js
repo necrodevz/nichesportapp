@@ -73,7 +73,7 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
 }
 
 const GetCoachListQuery = gql`query GetCoachListQuery ($userID: ID!) {
-  allCoaches(filter: {institute: {id: $userID}}) {
+  allCoaches(filter: {institute:{ owner:{id: $userID }} }) {
     id
     user { id email firstName lastName }
   }

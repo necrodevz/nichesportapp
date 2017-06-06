@@ -64,6 +64,7 @@ class EventForm extends Component {
             name="sport"
             component={SelectField}
             hintText="Sport"
+            style={{"textAlign":"left"}}
             floatingLabelText="Sport"
             validate={required}
           >

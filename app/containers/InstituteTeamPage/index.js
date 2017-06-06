@@ -48,24 +48,21 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
   }
     return (
       <CenteredSection>
-        <H3>Hey , there are {this.props.data.allInstitutes.length} Teams in your account</H3>
         {this.state.showTeamForm ? <TeamForm showTeamForm={this.state.showTeamForm} toggleTeamForm={this.toggleTeamForm}/> : <RaisedButton label="Add New Team" onClick={() => this.toggleTeamForm(this.state.showTeamForm)} primary={true} />}
          <Table>
     <TableHeader displaySelectAll= {false}>
       <TableRow>
-        <TableHeaderColumn>ID</TableHeaderColumn>
         <TableHeaderColumn>Name</TableHeaderColumn>
-        <TableHeaderColumn>Country</TableHeaderColumn>
-        <TableHeaderColumn>Status</TableHeaderColumn>
+        <TableHeaderColumn>Coach</TableHeaderColumn>
+        <TableHeaderColumn>Season Hired</TableHeaderColumn>
       </TableRow>
     </TableHeader>
     <TableBody displayRowCheckbox={false}>
-    {this.props.data.allInstitutes.map(institute=>(
+    {this.props.data.allTeams.map(institute=>(
       <TableRow key={institute.id}>
-        <TableRowColumn>{institute.id}</TableRowColumn>
         <TableRowColumn>{institute.name}</TableRowColumn>
-        <TableRowColumn>{institute.country}</TableRowColumn>
-        <TableRowColumn>{institute.status}</TableRowColumn>
+        <TableRowColumn>{institute.coach.user.firstName} {institute.coach.user.lastName}</TableRowColumn>
+        <TableRowColumn>{institute.season}</TableRowColumn>
       </TableRow>
       ))
     }
@@ -76,13 +73,28 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
   }
 }
 
-const TeamListQuery = gql`query TeamListQuery {
-  allInstitutes {
-    id name country status 
+const TeamListQuery = gql`query TeamListQuery($userID: ID!) {
+    allTeams(filter: {institute:{ owner:{id: $userID }} }) {
+    id
+    name
+    season
+    ageGroup
+    totalNumberOfAthelets
+    createdAt
+    sport { id name }
+    coach { id user { id email firstName lastName }}
+    manager { id user { id email firstName lastName }}
   }
 }`
 
-const TeamData = graphql(TeamListQuery)(InstituteTeamPage);
+const userId = localStorage.getItem('userID');
+const TeamData = graphql(TeamListQuery, {
+  options: {
+      variables: {
+        userID: userId
+      }
+    }
+  })(InstituteTeamPage);
 
 export default TeamData;
 
