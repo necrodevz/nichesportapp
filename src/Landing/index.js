@@ -10,9 +10,11 @@ import {connect} from 'react-redux'
 import {toggleDialog, toggleDrawer} from '../actions'
 import Form from './Form'
 import * as types from '../constants'
-import {Row} from 'react-flexbox-grid'
+import {Row, Col} from 'react-flexbox-grid'
 import modalContent from './modal.png'
 import { gql, graphql, compose } from 'react-apollo'
+import CountdownTimer from 'react-cntdwn' 
+import './marquee.css'
 
 const Header = ({handleOpen, isOpen}) =>
     {
@@ -21,6 +23,7 @@ const Header = ({handleOpen, isOpen}) =>
                 title='Athliche App Coming Soon'
                 iconElementLeft={<img src={logo} height='50px' />}
                 iconElementRight={<RaisedButton  label={isOpen ?'Close Form':'Get Notified!'} onTouchTap={handleOpen} />}
+                static
             />
         )
         
@@ -47,7 +50,7 @@ const Intro = ({isOpen, handleClick}) =>
                 }
                 actions={actions}
                 modal={false}
-               
+                open={isOpen}
             >
                 <Row middle='xs' center='xs'>
                     <img src={modalContent} role='presentation' />
@@ -56,6 +59,52 @@ const Intro = ({isOpen, handleClick}) =>
             
         )
     }
+    
+const Ticker = ({news}) => 
+{
+    return(
+        <h2 className='marquee'><span>{news}</span></h2>
+    )
+}
+
+const Timer = ({endDate}) =>
+{
+    return(
+        <Row centered>
+            <h2>Time to Launch</h2>
+            <br />
+            <h3>
+                <CountdownTimer
+                    targetDate={new Date(endDate)}
+                    interval={1000}
+                    timeSeparator={':'}
+                    leadingZero
+                    format={{
+                        day: 'DD',
+                        hour: 'HH',
+                        minute: 'MM',
+                        second: 'SS'
+                    }}
+                />
+            </h3>
+        </Row>
+    )
+}
+
+const Overlay =({endDate, news}) => 
+{
+    return(
+        <Row>
+            <Col xs={12} md={3} mdOffset={1}>
+                <Timer endDate={endDate} />
+            </Col>
+            <Col xs={12} md={8}>
+                <Ticker news={news} />
+            </Col>
+        </Row>
+    )
+    
+}
 
 class Landing extends Component  
 {
@@ -70,6 +119,13 @@ class Landing extends Component
             marginLeft: 'auto',
             marginRight: 'auto'
         }
+    endDate = '06/30/17'
+    news = () =>{
+        <span>
+            Item1 Item2 Item3 Item4
+        </span>
+            
+    }
     handleSave = (values) => {
         
         console.log(values)
@@ -88,11 +144,11 @@ class Landing extends Component
         this.props.dispatch(toggleDrawer())
     }
     handleInfo = () => {
-        this.props.dispatch(toggleDialog())
+        //this.props.dispatch(toggleDialog())
         this.props.dispatch(toggleDrawer())
     }
     handleOpen = () => {
-        this.props.dispatch(toggleDialog())
+        this.props.dispatch(toggleDrawer())
     }
     
     render(){
@@ -100,7 +156,9 @@ class Landing extends Component
             <div>
                 <Header handleOpen={this.handleOpen} isOpen={this.props.mailing.isOpen} />
                 <Card>
-                    <CardMedia >
+                    <CardMedia 
+                        overlay={<Overlay endDate={this.endDate} news={this.news} />}
+                    >
                         <img src={bg} />
                     </CardMedia>
                 </Card>
@@ -110,6 +168,8 @@ class Landing extends Component
                 title="Enter your email address"
                 docked={false}
                 >
+                    <h2>Please fill out fields below</h2>
+                    <br />
                     <Form mailing={this.props.mailing}  onSubmit={this.handleSave} />
                 </Drawer>
             </div>

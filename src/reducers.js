@@ -1,7 +1,7 @@
 import * as types from './constants'
 
 const initialState={
-    dialogOpen: true,
+    dialogOpen: false,
     drawerOpen: false,
     //name: '',
     //email: '',

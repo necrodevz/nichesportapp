@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {TextField} from 'redux-form-material-ui'
-import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
 import { reduxForm, Field } from 'redux-form'
 
 
@@ -12,7 +12,7 @@ const Form = ({handleSubmit}) => {
             <Field name='favouriteSport' floatingLabelText='Enter your Favourite sport' component={TextField} />
             
             
-            <FlatButton label='Submit' type='submit' primary />
+            <RaisedButton label='Submit' type='submit' primary />
          </form>
         )
 }
