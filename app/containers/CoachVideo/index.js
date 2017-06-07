@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 export class CoachVideo extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <div>
+      <div style={{"height":"400px"}}>
       Video
       </div>
     );

@@ -18,6 +18,9 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+
 
 var userID = localStorage.getItem('userID');
 
@@ -35,6 +38,14 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
   }
 
   render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={()=>this.toggleCoachForm(this.state.showCoachForm)}
+      />
+    ];
+    
       if (this.props.data.loading) {
     return (<div>Loading</div>)
   }
@@ -46,25 +57,50 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
     return (
       <div>
       <div >
-      {this.state.showCoachForm ? <CoachForm instituteId={this.props.userID} showCoachForm={this.state.showCoachForm} toggleCoachForm={this.toggleCoachForm}/> : <RaisedButton label="Add New Coach" style={{"float": "right","margin-top": "10px","margin-right": "10px"}} onClick={() => this.toggleCoachForm(this.state.showCoachForm)} primary={true} />}
+      {this.state.showCoachForm ?
+        <Dialog
+            title="Create Coach"
+            autoScrollBodyContent={true}
+            actions={actions}
+            modal={false}
+            titleStyle={{"background":"rgb(0, 188, 212)","color":"white"}}
+            open={this.state.showCoachForm}
+            onRequestClose={()=>this.toggleCoachForm(this.state.showCoachForm)}
+          >
+            <CoachForm instituteId={this.props.userID} showCoachForm={this.state.showCoachForm} toggleCoachForm={this.toggleCoachForm}/>
+        </Dialog>
+       : <RaisedButton label="Create Coach" style={{"float": "right","margin-top": "10px","margin-right": "10px"}} onClick={() => this.toggleCoachForm(this.state.showCoachForm)} primary={true} />}
       </div>  
-      <div style={{"float": "left"}}>
-        <Table>
-        <TableHeader displaySelectAll= {false}>
+      <div style={{"float": "left","margin-left": "50px","margin-right": "50px","margin-bottom": "50px"}}>
+        <Table
+          height={"350px"}
+          fixedHeader={true}
+          selectable={false}
+          multiSelectable={false}>
+          >
+        <TableHeader 
+          displaySelectAll={false}
+          adjustForCheckbox={false}
+          enableSelectAll={false}
+          >
           <TableRow>
-            <TableHeaderColumn>ID</TableHeaderColumn>
-            <TableHeaderColumn>Email</TableHeaderColumn>
-            <TableHeaderColumn>First Name</TableHeaderColumn>
-            <TableHeaderColumn>Last Name</TableHeaderColumn>
+            <TableHeaderColumn style={{textAlign: 'center'}}>ID</TableHeaderColumn>
+            <TableHeaderColumn style={{textAlign: 'center'}}>Email</TableHeaderColumn>
+            <TableHeaderColumn style={{textAlign: 'center'}}>First Name</TableHeaderColumn>
+            <TableHeaderColumn style={{textAlign: 'center'}}>Last Name</TableHeaderColumn>
           </TableRow>
         </TableHeader>
-        <TableBody displayRowCheckbox={false}>
+        <TableBody 
+          displayRowCheckbox={false}
+          deselectOnClickaway={false}
+          showRowHover={true}
+          >
         {this.props.data.allCoaches.map(coach=>(
           <TableRow key={coach.id}>
-            <TableRowColumn>{coach.id}</TableRowColumn>
-            <TableRowColumn>{coach.user.email}</TableRowColumn>
-            <TableRowColumn>{coach.user.firstName}</TableRowColumn>
-            <TableRowColumn>{coach.user.lastName}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{coach.id}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{coach.user.email}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{coach.user.firstName}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{coach.user.lastName}</TableRowColumn>
           </TableRow>
           ))
         }

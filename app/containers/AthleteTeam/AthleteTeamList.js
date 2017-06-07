@@ -36,35 +36,48 @@ class AthleteTeamList extends React.Component { // eslint-disable-line react/pre
     return (<div>An unexpected error occurred</div>)
   }
     return (
-      <CenteredSection>
-      <Table>
-        <TableHeader displaySelectAll= {false}>
+      <div style={{"margin": "50px"}}>
+      <Table
+        height={"350px"}
+        fixedHeader={true}
+        selectable={false}
+        multiSelectable={false}>
+        >
+        <TableHeader
+          displaySelectAll={false}
+          adjustForCheckbox={false}
+          enableSelectAll={false}
+          >
           <TableRow>
-            <TableHeaderColumn>Name</TableHeaderColumn>
-            <TableHeaderColumn>Season</TableHeaderColumn>
-            <TableHeaderColumn>Coach</TableHeaderColumn>
-            <TableHeaderColumn>Sport</TableHeaderColumn>
-            <TableHeaderColumn>Age Group</TableHeaderColumn>
-            <TableHeaderColumn>No. of Athletes</TableHeaderColumn>
-            <TableHeaderColumn>Status</TableHeaderColumn>
+            <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
+            <TableHeaderColumn style={{textAlign: 'center'}}>Season</TableHeaderColumn>
+            <TableHeaderColumn style={{textAlign: 'center'}}>Coach</TableHeaderColumn>
+            <TableHeaderColumn style={{textAlign: 'center'}}>Sport</TableHeaderColumn>
+            <TableHeaderColumn style={{textAlign: 'center'}}>Age Group</TableHeaderColumn>
+            <TableHeaderColumn style={{textAlign: 'center'}}>No. of Athletes</TableHeaderColumn>
+            <TableHeaderColumn style={{textAlign: 'center'}}>Status</TableHeaderColumn>
           </TableRow>
         </TableHeader>
-        <TableBody displayRowCheckbox={false}>
+        <TableBody 
+          displayRowCheckbox={false}
+          deselectOnClickaway={false}
+          showRowHover={true}
+          >
         {this.props.data.allTeams.map(team=>(
           <TableRow key={team.id}>
-            <TableRowColumn>{team.name}</TableRowColumn>
-            <TableRowColumn>{team.season}</TableRowColumn>
-            <TableRowColumn>{team.coach.user.firstName} {team.coach.user.lastName}</TableRowColumn>
-            <TableRowColumn>{team.sport ? team.sport.name : 'Not Available'}</TableRowColumn>
-            <TableRowColumn>{team.ageGroup}</TableRowColumn>
-            <TableRowColumn>{team.totalNumberOfAthelets}</TableRowColumn>
-            <TableRowColumn>{team.atheletTeams[0].status}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{team.name}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{team.season}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{team.coach.user.firstName} {team.coach.user.lastName}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{team.sport ? team.sport.name : 'Not Available'}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{team.ageGroup}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{team.totalNumberOfAthelets}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{team.atheletTeams[0].status}</TableRowColumn>
           </TableRow>
           ))
         }
         </TableBody>
   </Table>
-      </CenteredSection>
+      </div>
     );
   }
 }

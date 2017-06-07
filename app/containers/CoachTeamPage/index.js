@@ -52,46 +52,64 @@ export class CoachTeamPage extends React.Component { // eslint-disable-line reac
     return (<div>An unexpected error occurred</div>)
   }
     return (
-      <CenteredSection>
-      <Dialog
-          title="Team Info"
-          autoScrollBodyContent={true}
-          actions={actions}
-          modal={false}
-          autoDetectWindowHeight={true}
-          open={this.state.showTeamDetailDialog}
-          onRequestClose={()=>this.toggleTeamDetailDialog(this.state.showTeamDetailDialog)}
-        >
-          <TeamDetailModal activeTeam={this.props.TeamsList.allTeams[this.state.activeIndex]} />
-        </Dialog>
-         <Table>
-    <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-      <TableRow>
-        <TableHeaderColumn>ID</TableHeaderColumn>
-        <TableHeaderColumn>Name</TableHeaderColumn>
-        <TableHeaderColumn>Season</TableHeaderColumn>
-        <TableHeaderColumn>Age Group</TableHeaderColumn>
-        <TableHeaderColumn>No. of Athetes</TableHeaderColumn>
-        <TableHeaderColumn>View Team Detail</TableHeaderColumn>
-      </TableRow>
-    </TableHeader>
-    <TableBody displayRowCheckbox={false}>
-    {this.props.TeamsList.allTeams.map((team, index)=>(
-      <TableRow key={team.id}>
-        <TableRowColumn>{index+1}</TableRowColumn>
-        <TableRowColumn>{team.name}</TableRowColumn>
-        <TableRowColumn>{team.season}</TableRowColumn>
-        <TableRowColumn>{team.ageGroup}</TableRowColumn>
-        <TableRowColumn>{team.totalNumberOfAthelets}</TableRowColumn>
-        <TableRowColumn>
-        <RaisedButton label="View Detail" onTouchTap={()=>this.toggleTeamDetailDialog(this.state.showTeamDetailDialog, index)} primary={true} />
-        </TableRowColumn>
-      </TableRow>
-      ))
-    }
-    </TableBody>
-  </Table>
-      </CenteredSection>
+      <div>
+        <div>
+        <Dialog
+            title="Team Info"
+            autoScrollBodyContent={true}
+            actions={actions}
+            modal={false}
+            autoDetectWindowHeight={true}
+            titleStyle={{"background":"rgb(0, 188, 212)","color":"white"}}
+            open={this.state.showTeamDetailDialog}
+            onRequestClose={()=>this.toggleTeamDetailDialog(this.state.showTeamDetailDialog)}
+          >
+            <TeamDetailModal activeTeam={this.props.TeamsList.allTeams[this.state.activeIndex]} />
+          </Dialog>
+        </div>
+        <div style={{"margin":"50px"}}>
+           <Table
+              height={"350px"}
+              fixedHeader={true}
+              selectable={false}
+              multiSelectable={false}>
+            >
+            <TableHeader 
+              displaySelectAll={false}
+              adjustForCheckbox={false}
+              enableSelectAll={false}
+              >
+              <TableRow>
+                <TableHeaderColumn style={{textAlign: 'center'}}>ID</TableHeaderColumn>
+                <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
+                <TableHeaderColumn style={{textAlign: 'center'}}>Season</TableHeaderColumn>
+                <TableHeaderColumn style={{textAlign: 'center'}}>Age Group</TableHeaderColumn>
+                <TableHeaderColumn style={{textAlign: 'center'}}>No. of Athetes</TableHeaderColumn>
+                <TableHeaderColumn style={{textAlign: 'center'}}>View Team Detail</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody 
+              displayRowCheckbox={false}
+              deselectOnClickaway={false}
+              showRowHover={true}
+              >
+            {this.props.TeamsList.allTeams.map((team, index)=>(
+              <TableRow key={team.id}>
+                <TableRowColumn style={{textAlign: 'center'}}>{index+1}</TableRowColumn>
+                <TableRowColumn style={{textAlign: 'center'}}>{team.name}</TableRowColumn>
+                <TableRowColumn style={{textAlign: 'center'}}>{team.season}</TableRowColumn>
+                <TableRowColumn style={{textAlign: 'center'}}>{team.ageGroup}</TableRowColumn>
+                <TableRowColumn style={{textAlign: 'center'}}>{team.totalNumberOfAthelets}</TableRowColumn>
+                <TableRowColumn>
+                <RaisedButton label="View Detail" onTouchTap={()=>this.toggleTeamDetailDialog(this.state.showTeamDetailDialog, index)} primary={true} />
+                </TableRowColumn>
+              </TableRow>
+              ))
+            }
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     );
   }
 }

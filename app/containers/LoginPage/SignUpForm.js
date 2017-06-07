@@ -21,6 +21,7 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { push } from 'react-router-redux';
 import Notifications, {notify} from 'react-notify-toast';
+import {GridList, GridTile} from 'material-ui/GridList';
 
 const errors = {}
 
@@ -63,7 +64,8 @@ class SignUpForm extends Component {
     return (
       <CenteredSection>
        <form onSubmit={handleSubmit}>
-       <div>
+      <GridList cols={1} cellHeight={80} padding={1}>
+        <GridTile>
           <Field
             name="first_name"
             component={TextField}
@@ -71,8 +73,10 @@ class SignUpForm extends Component {
             floatingLabelText="First Name"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={1} cellHeight={80} padding={1}>
+        <GridTile>
           <Field
             name="last_name"
             component={TextField}
@@ -80,8 +84,10 @@ class SignUpForm extends Component {
             floatingLabelText="Last Name"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={1} cellHeight={80} padding={1}>
+        <GridTile>
           <Field
             name="signup_email"
             component={TextField}
@@ -89,8 +95,10 @@ class SignUpForm extends Component {
             floatingLabelText="Email"
             validate={[required, signup_email]}
           />
-        </div>
-        <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={1} cellHeight={80} padding={1}>
+        <GridTile>
           <Field
             name="signup_password"
             component={TextField}
@@ -99,11 +107,14 @@ class SignUpForm extends Component {
             floatingLabelText="Password"
             validate={required}
           />
-        </div>
-        <div>
-          <RaisedButton label="Submit" disabled={errors.signup_email != null || errors.signup_password != null || errors.first_name != null || errors.last_name != null} onClick={()=>this.submitSignUpForm()} primary={true} />
+        </GridTile>
+      </GridList>
+      <GridList cols={1} cellHeight={80} padding={1}>
+        <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
+          <RaisedButton style={{"margin-right":"20px"}} label="Submit" disabled={errors.signup_email != null || errors.signup_password != null || errors.first_name != null || errors.last_name != null} onClick={()=>this.submitSignUpForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
-        </div>
+        </GridTile>
+      </GridList>
       </form>
       </CenteredSection>
     );
