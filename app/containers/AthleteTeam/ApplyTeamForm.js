@@ -107,7 +107,6 @@ class ApplyTeamForm extends Component {
           <IconButton onTouchTap={()=>this.submitSearchTeams()} disabled={errors.search_team != null}>
           <SearchIcon />
         </IconButton>
-          <RaisedButton label="Clear" onTouchTap={reset} disabled={pristine || submitting} secondary={true} />
           <RaisedButton label="Reset Search" onTouchTap={()=>this.resetSearch()} disabled={!this.state.searchEnabled} secondary={true} />
         </div>
       </form>

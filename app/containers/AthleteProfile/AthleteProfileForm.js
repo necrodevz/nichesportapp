@@ -423,7 +423,6 @@ class AthleteProfileForm extends Component {
         <GridTile></GridTile>
         <GridTile style={{"padding-top":"20px"}}>
           <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitSportForm()} primary={true} />
-          <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </GridTile>
       </GridList>
       <SportsCertificateForm athleteSports={this.state.athleteSports} />
