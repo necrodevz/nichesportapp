@@ -87,7 +87,7 @@ var ProfilePictureUpload = React.createClass({
         <GridList cols={5} cellHeight={100} padding={1}>
           <GridTile></GridTile>
           <GridTile>
-            <IconButton tooltip="Upload Profile Picture">
+            <IconButton>
               <PublishIcon />
             </IconButton>
           </GridTile>

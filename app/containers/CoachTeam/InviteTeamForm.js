@@ -139,7 +139,7 @@ class InviteTeamForm extends Component {
           <CoachInviteModal activeTeam={this.state.activeTeam} toggleInviteDialog={()=>this.toggleInviteDialog()} />
         </Dialog>
         <div>
-          <IconButton onTouchTap={()=>this.submitSearchTeams()} disabled={errors.searchTeam != null} tooltip="Search Team">
+          <IconButton onTouchTap={()=>this.submitSearchTeams()} disabled={errors.searchTeam != null}>
           <SearchIcon />
         </IconButton>
           <RaisedButton label="Clear" onTouchTap={reset} disabled={pristine || submitting} secondary={true} />

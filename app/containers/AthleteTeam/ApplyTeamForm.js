@@ -104,7 +104,7 @@ class ApplyTeamForm extends Component {
           />
         </div>
         <div>
-          <IconButton onTouchTap={()=>this.submitSearchTeams()} disabled={errors.search_team != null} tooltip="Search Team">
+          <IconButton onTouchTap={()=>this.submitSearchTeams()} disabled={errors.search_team != null}>
           <SearchIcon />
         </IconButton>
           <RaisedButton label="Clear" onTouchTap={reset} disabled={pristine || submitting} secondary={true} />

@@ -65,7 +65,7 @@ const renderEducationHistory = ({fields, meta: {error, submitFailed}, SportsList
       <GridList cols={5} cellHeight={80} padding={1} style={{"margin-bottom":"-40px"}}>
         <GridTile></GridTile>
         <GridTile cols={4} >If users have participated in sports, they have to enter following info:
-          <IconButton onTouchTap={() => fields.push({})} tooltip="Add More123">
+          <IconButton onTouchTap={() => fields.push({})}>
             <PlusIcon />
           </IconButton>
         </GridTile>
@@ -114,7 +114,7 @@ const renderEducationHistory = ({fields, meta: {error, submitFailed}, SportsList
           </GridTile>
           <GridTile>
             <RaisedButton style={{"padding-top":"25px"}} label="Save" onClick={()=>submitEducationHistoryForm(index)} primary={true} />
-            <IconButton onTouchTap={() => fields.remove(index)} tooltip="Remove Field">
+            <IconButton onTouchTap={() => fields.remove(index)}>
               <DeleteIcon />
             </IconButton>
           </GridTile>

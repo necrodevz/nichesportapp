@@ -9,6 +9,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 import { connect } from 'react-redux';
 import EventForm from './EventForm';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 
 export class InstituteCalendar extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -28,11 +30,32 @@ export class InstituteCalendar extends React.PureComponent { // eslint-disable-l
     return true;
   }
   render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={()=>this.toggleEventForm(this.state.showEventForm)}
+      />
+    ];
+
+
     return (
       <div>
         <div style={{"float": "left","height":"400px"}} >Institute Events Page</div>
         <div>
-          {this.state.showEventForm ? <EventForm showEventForm={this.state.showEventForm} toggleEventForm={this.toggleEventForm}/> : <RaisedButton style={{"float": "right","margin-top": "10px","margin-right": "10px"}} label="Add New Event" onClick={() => this.toggleEventForm(this.state.showEventForm)} primary={true} />}
+          {this.state.showEventForm ? 
+            <Dialog
+                title="Create Event"
+                autoScrollBodyContent={true}
+                actions={actions}
+                modal={false}
+                titleStyle={{"background":"rgb(0, 188, 212)","color":"white"}}
+                open={this.state.showEventForm}
+                onRequestClose={()=>this.toggleEventForm(this.state.showEventForm)}
+              >
+                <EventForm showEventForm={this.state.showEventForm} toggleEventForm={this.toggleEventForm}/> 
+            </Dialog>
+            : <RaisedButton style={{"float": "right","margin-top": "10px","margin-right": "10px"}} label="Add New Event" onClick={() => this.toggleEventForm(this.state.showEventForm)} primary={true} />}
         </div>
       </div>
     );

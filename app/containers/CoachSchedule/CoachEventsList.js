@@ -31,20 +31,32 @@ export class CoachEventsList extends React.Component { // eslint-disable-line re
   }
     return (
       <CenteredSection>
-         <Table >
-    <TableHeader displaySelectAll= {false} >
+         <Table 
+          fixedHeader={true}
+          selectable={false}
+          multiSelectable={false}>
+         >
+    <TableHeader
+      displaySelectAll={false}
+      adjustForCheckbox={false}
+      enableSelectAll={false}
+     >
       <TableRow >
-        <TableHeaderColumn >Name</TableHeaderColumn>
-        <TableHeaderColumn>address</TableHeaderColumn>
-        <TableHeaderColumn>Start Date</TableHeaderColumn>        
+        <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
+        <TableHeaderColumn style={{textAlign: 'center'}}>address</TableHeaderColumn>
+        <TableHeaderColumn style={{textAlign: 'center'}}>Start Date</TableHeaderColumn>        
       </TableRow>
     </TableHeader>
-    <TableBody displayRowCheckbox={false}>
+    <TableBody 
+      displayRowCheckbox={false}
+      deselectOnClickaway={false}
+      showRowHover={true}
+    >
     {this.props.data.allEvents.map((team, index)=>(
       <TableRow key={index+1} >
-        <TableRowColumn>{index+1}. {team.name}</TableRowColumn>
-        <TableRowColumn>{team.address}</TableRowColumn>
-        <TableRowColumn>{team.startDate}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{index+1}. {team.name}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{team.address}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{team.startDate}</TableRowColumn>
 
       </TableRow>
       ))

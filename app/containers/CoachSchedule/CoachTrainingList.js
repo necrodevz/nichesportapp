@@ -30,32 +30,44 @@ export class CoachTrainingList extends React.Component { // eslint-disable-line 
   }
     return (
       <CenteredSection>
-         <Table>
-    <TableHeader displaySelectAll= {false}>
+         <Table
+          fixedHeader={true}
+          selectable={false}
+          multiSelectable={false}>
+         >
+    <TableHeader 
+      displaySelectAll={false}
+      adjustForCheckbox={false}
+      enableSelectAll={false}
+      >
       <TableRow>
-        <TableHeaderColumn>Training Session</TableHeaderColumn>
-        <TableHeaderColumn>Date</TableHeaderColumn>
-        <TableHeaderColumn>Time</TableHeaderColumn>
-        <TableHeaderColumn>Team</TableHeaderColumn>
-        <TableHeaderColumn>Location</TableHeaderColumn>
+        <TableHeaderColumn style={{textAlign: 'center'}}>Training Session</TableHeaderColumn>
+        <TableHeaderColumn style={{textAlign: 'center'}}>Date</TableHeaderColumn>
+        <TableHeaderColumn style={{textAlign: 'center'}}>Time</TableHeaderColumn>
+        <TableHeaderColumn style={{textAlign: 'center'}}>Team</TableHeaderColumn>
+        <TableHeaderColumn style={{textAlign: 'center'}}>Location</TableHeaderColumn>
       </TableRow>
     </TableHeader>
-    <TableBody displayRowCheckbox={false}>
+    <TableBody 
+      displayRowCheckbox={false}
+      deselectOnClickaway={false}
+      showRowHover={true}
+    >
     {this.props.data.allTrainings.map((team, index)=>(
       <TableRow key={team.id}>
-        <TableRowColumn>{index+1}</TableRowColumn>
-        <TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{index+1}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>
         {team.trainingDates.length > 0 ?
           team.trainingDates.map(trainingDate =>
         <div key={trainingDate.id}>{trainingDate.date}</div>) : ''}
         </TableRowColumn>
-         <TableRowColumn>
+         <TableRowColumn style={{textAlign: 'center'}}>
         {team.trainingDates.length > 0 ?
           team.trainingDates.map(trainingDate =>
         <div key={trainingDate.id}>{trainingDate.date}</div>) : ''}
         </TableRowColumn>
-        <TableRowColumn>{team.address}</TableRowColumn>
-        <TableRowColumn>{team.address}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{team.address}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{team.address}</TableRowColumn>
 
 
       </TableRow>
