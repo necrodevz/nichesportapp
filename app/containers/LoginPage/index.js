@@ -41,16 +41,20 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
   render() {
      const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
-      <MuiThemeProvider>
-       <Tabs>
-            <Tab label="LogIn" >
-              <LoginForm />
-            </Tab>
-            <Tab label="SignUp" >
-            <SignUpForm />
-            </Tab>
-          </Tabs>
-      </MuiThemeProvider>
+      <div style={{"margin-top":"50px","margin-botton":"30px"}}>
+        <MuiThemeProvider>
+          <div style={{"width": "35%","margin":"auto"}}>
+            <Tabs >
+              <Tab label="LogIn" >
+                <LoginForm />
+              </Tab>
+              <Tab label="SignUp" >
+              <SignUpForm />
+              </Tab>
+            </Tabs>
+          </div>
+        </MuiThemeProvider>
+      </div>
     );
   }
 }

@@ -34,7 +34,7 @@ export class AthleteDashboard extends React.PureComponent { // eslint-disable-li
               <AthleteTeam />
             </Tab>
             <Tab label="Video" icon={< CameraEnhanceIcon />}>
-            <div>Video Page</div>
+            <div style={{"height":"400px"}}>Video Page</div>
             </Tab>
           </Tabs>
         </MuiThemeProvider>
