@@ -22,6 +22,7 @@ import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import Notifications, {notify} from 'react-notify-toast';
+import {GridList, GridTile} from 'material-ui/GridList';
 
 
 var userID = localStorage.getItem('userID');
@@ -68,7 +69,8 @@ class TeamForm extends Component {
     const {loading, error, repos, handleSubmit, pristine, reset, submitting} = this.props;
     return (
       <form onSubmit={handleSubmit}>
-        <div>
+      <GridList cols={2} cellHeight={80} padding={1}>
+        <GridTile>
           <Field
             name="team_name"
             component={TextField}
@@ -76,8 +78,8 @@ class TeamForm extends Component {
             floatingLabelText="Team Name"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="age_group"
             component={SelectField}
@@ -88,7 +90,10 @@ class TeamForm extends Component {
           >
             {age.map(agemapping => (<MenuItem value={agemapping.value} primaryText={agemapping.value} key={agemapping.id} />))}
           </Field>
-        </div>
+        </GridTile>
+      </GridList>
+      <GridList cols={2} cellHeight={80} padding={1}>
+        <GridTile>
         {this.props.SportsList.allSports ? <div>
                           <Field
                             name="team_sport"
@@ -102,7 +107,8 @@ class TeamForm extends Component {
                           </Field>
                         </div>
                 :""}
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="players_count"
             component={TextField}
@@ -110,7 +116,10 @@ class TeamForm extends Component {
             floatingLabelText="No. of Players"
             validate={required}
           />
-        </div>
+        </GridTile>
+      </GridList>
+      <GridList cols={2} cellHeight={80} padding={1}>
+        <GridTile>
         {this.props.CoachList.allCoaches ? <div>
                           <Field
                             name="team_coach"
@@ -124,10 +133,17 @@ class TeamForm extends Component {
                           </Field>
                         </div>
                 :""}
-        <div>
+        </GridTile>
+        <GridTile>
+          
+        </GridTile>
+      </GridList>
+      <GridList cols={1} cellHeight={80} padding={1}>
+        <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
           <RaisedButton label="Submit" disabled={errors.team_name != null || errors.age_group != null || errors.team_sport != null || errors.players_count != null || errors.team_coach != null || submitting} onClick={()=>this.submitTeamForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
-        </div>
+        </GridTile>
+      </GridList>
       </form>
     );
   }

@@ -10,6 +10,9 @@ import RaisedButton from 'material-ui/RaisedButton'
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+
 import {
   Table,
   TableBody,
@@ -38,6 +41,14 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
   }
 
   render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={()=>this.toggleTeamForm(this.state.showTeamForm)}
+      />
+    ];
+
       if (this.props.data.loading) {
     return (<div>Loading</div>)
   }
@@ -49,23 +60,48 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
     return (
       <div>
         <div >
-        {this.state.showTeamForm ? <TeamForm showTeamForm={this.state.showTeamForm} toggleTeamForm={this.toggleTeamForm}/> : <RaisedButton  label="Add New Team" style={{"float": "right","margin-top": "10px","margin-right": "10px"}} onClick={() => this.toggleTeamForm(this.state.showTeamForm)} primary={true} />}
+          {this.state.showTeamForm ?
+            <Dialog
+                title="Create Team"
+                autoScrollBodyContent={true}
+                actions={actions}
+                modal={false}
+                titleStyle={{"background":"rgb(0, 188, 212)","color":"white"}}
+                open={this.state.showTeamForm}
+                onRequestClose={()=>this.toggleTeamForm(this.state.showTeamForm)}
+              >
+                <TeamForm showTeamForm={this.state.showTeamForm} toggleTeamForm={this.toggleTeamForm}/>
+            </Dialog>
+          : <RaisedButton  label="Create Team" style={{"float": "right","margin-top": "10px","margin-right": "10px"}} onClick={() => this.toggleTeamForm(this.state.showTeamForm)} primary={true} />}
         </div>
-        <div style={{"float": "left"}}>
-        <Table>
-    <TableHeader displaySelectAll= {false}>
+        <div style={{"float": "left","margin-left": "50px","margin-right": "50px","margin-bottom": "50px"}}>
+        <Table
+          height={"350px"}
+          fixedHeader={true}
+          selectable={false}
+          multiSelectable={false}>
+          >
+    <TableHeader 
+      displaySelectAll={false}
+      adjustForCheckbox={false}
+      enableSelectAll={false}
+      >
       <TableRow>
-        <TableHeaderColumn>Name</TableHeaderColumn>
-        <TableHeaderColumn>Coach</TableHeaderColumn>
-        <TableHeaderColumn>Season Hired</TableHeaderColumn>
+        <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
+        <TableHeaderColumn style={{textAlign: 'center'}}>Coach</TableHeaderColumn>
+        <TableHeaderColumn style={{textAlign: 'center'}}>Season Hired</TableHeaderColumn>
       </TableRow>
     </TableHeader>
-    <TableBody displayRowCheckbox={false}>
+    <TableBody 
+      displayRowCheckbox={false}
+      deselectOnClickaway={false}
+      showRowHover={true}
+      >
     {this.props.data.allTeams.map(institute=>(
       <TableRow key={institute.id}>
-        <TableRowColumn>{institute.name}</TableRowColumn>
-        <TableRowColumn>{institute.coach.user.firstName} {institute.coach.user.lastName}</TableRowColumn>
-        <TableRowColumn>{institute.season}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{institute.name}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{institute.coach.user.firstName} {institute.coach.user.lastName}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{institute.season}</TableRowColumn>
       </TableRow>
       ))
     }

@@ -31,7 +31,7 @@ export class InstituteDashboard extends React.PureComponent { // eslint-disable-
               <InstituteCoachPage />
             </Tab>
             <Tab label="Search" >
-            <div>Search Page</div>
+            <div style={{"float": "left","height":"400px"}}>Search Page</div>
             </Tab>
           </Tabs>
         </MuiThemeProvider>

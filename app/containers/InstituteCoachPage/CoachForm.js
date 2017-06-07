@@ -22,6 +22,8 @@ import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import Notifications, {notify} from 'react-notify-toast';
+import {GridList, GridTile} from 'material-ui/GridList';
+
 
 var userID = localStorage.getItem('userID');
 const errors = {}
@@ -65,7 +67,8 @@ class CoachForm extends Component {
     const {loading, error, repos, handleSubmit, pristine, reset, submitting} = this.props;
     return (
       <form onSubmit={handleSubmit}>
-        <div>
+      <GridList cols={2} cellHeight={80} padding={1}>
+        <GridTile>
           <Field
             name="coach_first_name"
             component={TextField}
@@ -73,8 +76,8 @@ class CoachForm extends Component {
             floatingLabelText="First Name"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="coach_last_name"
             component={TextField}
@@ -82,8 +85,10 @@ class CoachForm extends Component {
             floatingLabelText="Last Name"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={2} cellHeight={80} padding={1}>
+        <GridTile>
           <Field
             name="coach_email"
             component={TextField}
@@ -91,8 +96,8 @@ class CoachForm extends Component {
             floatingLabelText="Email"
             validate={[required, coach_email]}
           />
-        </div>
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="coach_password"
             component={TextField}
@@ -101,11 +106,14 @@ class CoachForm extends Component {
             floatingLabelText="Password"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={1} cellHeight={80} padding={1}>
+        <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
           <RaisedButton label="Submit" disabled={errors.coach_last_name != null || errors.coach_first_name != null || errors.coach_email != null || errors.coach_password != null || submitting} onTouchTap={()=>this.submitCoachForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
-        </div>
+        </GridTile>
+      </GridList>
       </form>
     );
   }
