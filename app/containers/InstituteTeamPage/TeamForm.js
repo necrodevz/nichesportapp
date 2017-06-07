@@ -141,7 +141,6 @@ class TeamForm extends Component {
       <GridList cols={1} cellHeight={80} padding={1}>
         <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
           <RaisedButton label="Submit" disabled={errors.team_name != null || errors.age_group != null || errors.team_sport != null || errors.players_count != null || errors.team_coach != null || submitting} onClick={()=>this.submitTeamForm()} primary={true} />
-          <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </GridTile>
       </GridList>
       </form>

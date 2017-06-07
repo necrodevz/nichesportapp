@@ -157,7 +157,6 @@ class InstituteForm extends Component {
       <GridList cols={1} cellHeight={80} padding={1}>
         <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
           <RaisedButton label="Submit" disabled={errors.institute_email != null || errors.institute_password != null || errors.institute_name != null || errors.institute_country != null || errors.institute_type != null || errors.institute_sport != null} onClick={()=>this.submitInstituteForm()} primary={true} />
-          <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </GridTile>
       </GridList>
       </form>

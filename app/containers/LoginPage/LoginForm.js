@@ -63,7 +63,7 @@ class LoginForm extends Component {
       <CenteredSection>
       <Notifications />
        <form onSubmit={handleSubmit}>
-      <GridList cols={1} cellHeight={80} padding={1}>
+      <GridList cols={1} cellHeight={110} padding={1}>
         <GridTile>
           <Field
             name="email"
@@ -74,7 +74,7 @@ class LoginForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={1} cellHeight={80} padding={1}>
+      <GridList cols={1} cellHeight={110} padding={1}>
         <GridTile>
           <Field
             name="password"
@@ -86,10 +86,9 @@ class LoginForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={1} cellHeight={80} padding={1}>
+      <GridList cols={1} cellHeight={110} padding={1}>
         <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
           <RaisedButton style={{"margin-right":"20px"}} label="Submit" onClick={()=>this.submitLoginForm()} disabled={errors.email != null || errors.password != null} primary={true} />
-          <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </GridTile>
       </GridList>
       </form>

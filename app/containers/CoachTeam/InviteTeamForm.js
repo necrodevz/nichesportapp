@@ -142,7 +142,6 @@ class InviteTeamForm extends Component {
           <IconButton onTouchTap={()=>this.submitSearchTeams()} disabled={errors.searchTeam != null}>
           <SearchIcon />
         </IconButton>
-          <RaisedButton label="Clear" onTouchTap={reset} disabled={pristine || submitting} secondary={true} />
           <RaisedButton label="Reset Search" onTouchTap={()=>this.resetSearch()} disabled={!this.state.searchEnabled} secondary={true} />
         </div>
       </form>

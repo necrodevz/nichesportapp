@@ -111,7 +111,6 @@ class CoachForm extends Component {
       <GridList cols={1} cellHeight={80} padding={1}>
         <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
           <RaisedButton label="Submit" disabled={errors.coach_last_name != null || errors.coach_first_name != null || errors.coach_email != null || errors.coach_password != null || submitting} onTouchTap={()=>this.submitCoachForm()} primary={true} />
-          <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </GridTile>
       </GridList>
       </form>

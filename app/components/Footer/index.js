@@ -29,7 +29,7 @@ class Footer extends Component {
               <BottomNavigationItem
                 label="Copyright @ Athliche Sports 2017"
                 icon={nearbyIcon}
-                style={{ maxWidth:300}}
+                style={{ maxWidth:300, cursor:"text"}}
                 onTouchTap={() => this.select(0)}
               />
               <BottomNavigationItem
