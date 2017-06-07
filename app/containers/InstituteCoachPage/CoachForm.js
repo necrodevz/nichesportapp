@@ -33,8 +33,7 @@ const coach_email = value =>
     ? 'Invalid email'
     : undefined);
 
-const validateCoachForm = values => {
-  console.log("aay in fun")
+const validate = values => {
   errors.coach_first_name = required(values.coach_first_name)
   errors.coach_last_name = required(values.coach_last_name)
   errors.coach_password = required(values.coach_password)
@@ -53,6 +52,7 @@ class CoachForm extends Component {
   }
 
    submitCoachForm = async () => {
+    console.log("erorrrr",errors)
     await this.props.createCoach({variables: {firstName: this.props.FirstName,
                     lastName: this.props.LastName,
                     email: this.props.Email,
@@ -103,7 +103,7 @@ class CoachForm extends Component {
           />
         </div>
         <div>
-          <RaisedButton label="Submit" disabled={submitting} onTouchTap={()=>this.submitCoachForm()} primary={true} />
+          <RaisedButton label="Submit" disabled={errors.coach_last_name != null || errors.coach_first_name != null || errors.coach_email != null || errors.coach_password != null || submitting} onTouchTap={()=>this.submitCoachForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </div>
       </form>
@@ -122,7 +122,7 @@ CoachForm = connect(state => ({
 
 CoachForm = reduxForm({
   form: 'coach_form',
-  validation: validateCoachForm
+  validate
 })(CoachForm);
 
 

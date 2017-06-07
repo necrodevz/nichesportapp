@@ -96,10 +96,10 @@ class InstituteForm extends Component {
             <Field
               name="institute_country"
               component={SelectField}
-              hintText="Institute Country"
+              hintText="Country"
               maxHeight={200}
               style={{"textAlign":"left"}}
-              floatingLabelText="Institute Country"
+              floatingLabelText="Country"
               validate={required}
             >
               {countryList.map(country => (<MenuItem value={country[1]} primaryText={country[0]} key={country[1]} />))}
@@ -111,8 +111,8 @@ class InstituteForm extends Component {
            <Field
             name="institute_type"
             component={TextField}
-            hintText="Institute Type"
-            floatingLabelText="Institute Type"
+            hintText="Type"
+            floatingLabelText="Type"
             validate={required}
           />
         </GridTile>
@@ -122,9 +122,9 @@ class InstituteForm extends Component {
                               name="institute_sport"
                               multiple={true}
                               component={SelectField}
-                              hintText="Institute Sport"
+                              hintText="Sport"
                               style={{"textAlign":"left"}}
-                              floatingLabelText="Institute Sport"
+                              floatingLabelText="Sport"
                               validate={required}
                             >
                               {this.props.data.allSports.map(sport => (<MenuItem value={sport.id} primaryText={sport.name} key={sport.id} />))}
@@ -138,8 +138,8 @@ class InstituteForm extends Component {
           <Field
             name="institute_email"
             component={TextField}
-            hintText="Institute Email"
-            floatingLabelText="Institute Email"
+            hintText="Email"
+            floatingLabelText="Email"
             validate={[required, institute_email]}
           />
         </GridTile>
@@ -147,9 +147,9 @@ class InstituteForm extends Component {
           <Field
             name="institute_password"
             component={TextField}
-            hintText="Institute Password"
+            hintText="Password"
             type="password"
-            floatingLabelText="Institute Password"
+            floatingLabelText="Password"
             validate={required}
           />
         </GridTile>
