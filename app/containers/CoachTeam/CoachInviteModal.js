@@ -28,6 +28,9 @@ export class CoachInviteModal extends React.Component { // eslint-disable-line r
   }
 
   approveTeam = async (index) => {
+    console.log("id",this.props.activeTeam.id)
+    console.log("index",index)
+    console.log("id",this.props.athletesList.allAthletes[index].id)
     await this.props.approveTeam({variables: {teamId: this.props.activeTeam.id,
       athleteId: this.props.athletesList.allAthletes[index].id}
                  }).then(()=>notify.show('Athlete Invited Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
