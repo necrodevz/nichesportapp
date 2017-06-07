@@ -154,7 +154,7 @@ class AthleteProfileForm extends Component {
       <GridList cols={1} cellHeight={80} padding={1} >
         <GridTile>
           <H3>Personal Info:
-          <IconButton tooltip="Edit Profile Info"><EditIcon /></IconButton>
+          <IconButton><EditIcon /></IconButton>
           </H3>
         </GridTile>
       </GridList>
@@ -298,7 +298,7 @@ class AthleteProfileForm extends Component {
       <GridList cols={1} cellHeight={80} padding={1}>
         <GridTile>
         <H3>Education History:
-          <IconButton tooltip="Edit Education Info"><EditIcon /></IconButton>
+          <IconButton><EditIcon /></IconButton>
         </H3>
         </GridTile>
       </GridList>
@@ -392,7 +392,7 @@ class AthleteProfileForm extends Component {
       <GridList cols={1} cellHeight={80} padding={1}>
         <GridTile>
           <H3>Main Sports
-            <IconButton tooltip="Main Sports Info"><EditIcon /></IconButton>
+            <IconButton><EditIcon /></IconButton>
           </H3>    
         </GridTile>
       </GridList>

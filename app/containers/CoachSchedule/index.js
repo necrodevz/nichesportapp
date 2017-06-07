@@ -26,6 +26,7 @@ import {
   Toggle
 } from 'redux-form-material-ui';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
+import {GridList, GridTile} from 'material-ui/GridList';
 
 
 
@@ -90,19 +91,16 @@ export class CoachSchedule extends React.Component { // eslint-disable-line reac
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.handleClose}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.handleClose}
-      />,
+        onTouchTap={()=>{this.handleClose}}
+      />
     ];
+
     return (
       
       <div>
-      <RaisedButton label="Add New Team" onTouchTap={this.handleOpen} primary={true} />
+      <GridList cols={1} cellHeight={80} padding={1}>
+        <GridTile>
+      <RaisedButton style={{"float": "right","margin-top": "10px","margin-right": "10px"}} label="Create Training" onTouchTap={this.handleOpen} primary={true} />
        <Dialog
           title="Training"
           actions={actions}
@@ -111,82 +109,101 @@ export class CoachSchedule extends React.Component { // eslint-disable-line reac
           onRequestClose={this.handleClose}
           autoScrollBodyContent={true}
         >
-        <CenteredSection>
-          <form onSubmit="">
           <div>
-          <Field
-            name="training_session"
-            component={TextField}
-            hintText="Training Session"
-            floatingLabelText="Training Session"
-            validate={required}
-          />
-        </div>
-        <div>
-          <Field
-            name="dates"
-            component={TextField}
-            hintText="Dates"
-            floatingLabelText="Dates"
-            validate={required}
-          />
-        </div>
-        <div>
-          <Field
-            name="time"
-            component={TextField}
-            hintText="Time"
-            floatingLabelText="Time"
-            validate={required}
-          />
-        </div>
-        <div>
-          <Field
-            name="select_team"
-            component={TextField}
-            hintText="Select Team"
-            floatingLabelText="Select Team"
-            validate={required}
-          />
-        </div>
-        <div>
-          <Field
-            name="address"
-            component={TextField}
-            hintText="Address"
-            floatingLabelText="Address"
-            validate={required}
-          />
-        </div>
-        <div>
-          <RaisedButton label="Submit" primary={true} />
-          <RaisedButton label="Clear"  secondary={true} />
-        </div>
-      </form>
-    </CenteredSection>
+            <form onSubmit="">
+            <GridList cols={2} cellHeight={80} padding={1}>
+              <GridTile>
+                <Field
+                  name="training_session"
+                  component={TextField}
+                  hintText="Training Session"
+                  floatingLabelText="Training Session"
+                  validate={required}
+                />
+              </GridTile>
+              <GridTile>
+                <Field
+                  name="dates"
+                  component={TextField}
+                  hintText="Dates"
+                  floatingLabelText="Dates"
+                  validate={required}
+                />
+              </GridTile>
+            </GridList>
+            <GridList cols={2} cellHeight={80} padding={1}>
+              <GridTile>
+                <Field
+                  name="time"
+                  component={TextField}
+                  hintText="Time"
+                  floatingLabelText="Time"
+                  validate={required}
+                />
+              </GridTile>
+              <GridTile>
+                <Field
+                  name="select_team"
+                  component={TextField}
+                  hintText="Select Team"
+                  floatingLabelText="Select Team"
+                  validate={required}
+                />
+              </GridTile>
+            </GridList>
+            <GridList cols={2} cellHeight={80} padding={1}>
+              <GridTile>
+                <Field
+                  name="address"
+                  component={TextField}
+                  hintText="Address"
+                  floatingLabelText="Address"
+                  validate={required}
+                />
+              </GridTile>
+            </GridList>
+            <GridList cols={1} cellHeight={80} padding={1}>
+              <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
+                <RaisedButton label="Submit" primary={true} />
+              </GridTile>
+            </GridList>
+        </form>
+      </div>
         </Dialog>
-       <Card>
-        <CardHeader
-          title="Training"
-          subtitle=""
-          actAsExpander={true}
-          showExpandableButton={true}
-        />
-        <CardText expandable={true}>
-          <CoachTrainingList />
-        </CardText>
-      </Card>
-      <Card>
-        <CardHeader
-          title="Event"
-          subtitle=""
-          actAsExpander={true}
-          showExpandableButton={true}
-        />
-        <CardText expandable={true}>
-          <CoachEventsList />
-        </CardText>
-    </Card>
+      </GridTile>
+      </GridList>
+      <GridList cols={1} cellHeight={"100%"} style={{"margin": "20px"}}>
+        <GridTile>
+           <Card>
+            <CardHeader
+              title="Training"
+              style={{"background-color":"#757575"}}
+              subtitle=""
+              actAsExpander={true}
+              showExpandableButton={true}
+            />
+            <CardText expandable={true}>
+              <CoachTrainingList />
+            </CardText>
+          </Card>
+        </GridTile>
+      </GridList>
+      <GridList cols={1} cellHeight={"100%"} style={{"margin": "20px"}}>
+        <GridTile>
+          <Card>
+            <CardHeader
+              title="Event"
+              style={{"background-color":"#757575"}}
+              subtitle=""
+              actAsExpander={true}
+              showExpandableButton={true}
+            />
+            <CardText expandable={true}>
+              <CoachEventsList />
+            </CardText>
+          </Card>
+        </GridTile>
+      </GridList>
       </div>
     );
   }

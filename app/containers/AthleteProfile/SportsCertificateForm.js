@@ -27,7 +27,7 @@ const renderSportsCertificate = ({fields, athleteSports, meta: {error, submitFai
     <GridList cols={5} cellHeight={80} padding={1} style={{"margin-bottom":"-40px"}}>
       <GridTile></GridTile>
       <GridTile cols={4} >Upload multiple certificates:
-        <IconButton onTouchTap={() => fields.push({})} tooltip="Add More">
+        <IconButton onTouchTap={() => fields.push({})}>
           <PlusIcon />
         </IconButton>
       </GridTile>
@@ -63,7 +63,7 @@ const renderSportsCertificate = ({fields, athleteSports, meta: {error, submitFai
           </GridTile>
           <GridTile>
             <RaisedButton style={{"padding-top":"25px"}} label="Save" onClick={()=>submitSportsCertificateForm(index)} primary={true} />
-            <IconButton onTouchTap={() => fields.remove(index)} tooltip="Remove Field">
+            <IconButton onTouchTap={() => fields.remove(index)}>
               <DeleteIcon />
             </IconButton>
           </GridTile>

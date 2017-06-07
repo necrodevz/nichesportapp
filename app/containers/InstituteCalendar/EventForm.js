@@ -21,6 +21,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
+import {GridList, GridTile} from 'material-ui/GridList';
+
 
 const optionsStyle = {
   maxWidth: 255,
@@ -50,7 +52,8 @@ class EventForm extends Component {
     const {loading, error, repos, handleSubmit, pristine, reset, submitting} = this.props;
     return (
       <form onSubmit={handleSubmit}>
-        <div>
+      <GridList cols={2} cellHeight={80} padding={1}>
+        <GridTile>
           <Field
             name="event_name"
             component={TextField}
@@ -58,8 +61,8 @@ class EventForm extends Component {
             floatingLabelText="Event Name"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="sport"
             component={SelectField}
@@ -70,8 +73,10 @@ class EventForm extends Component {
           >
             {sports.map(sport => (<MenuItem value={sport.value} primaryText={sport.value} key={sport.id} />))}
           </Field>
-        </div>
-        <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={2} cellHeight={80} padding={1}>
+        <GridTile>
           <Field
             name="start_date"
             component={DatePicker}
@@ -79,8 +84,8 @@ class EventForm extends Component {
             floatingLabelText="Start Date"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="end_date"
             component={DatePicker}
@@ -88,8 +93,10 @@ class EventForm extends Component {
             floatingLabelText="End Date"
             validate={required}
           />
-        </div>
-         <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={2} cellHeight={80} padding={1}>
+        <GridTile>
           <Field
             name="teams_count"
             component={TextField}
@@ -97,8 +104,8 @@ class EventForm extends Component {
             floatingLabelText="No. of Teams"
             validate={required}
           />
-        </div>
-         <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="matches_count"
             component={TextField}
@@ -106,8 +113,10 @@ class EventForm extends Component {
             floatingLabelText="How many matches will be played"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={2} cellHeight={80} padding={1}>
+        <GridTile>
           <Field
             name="address"
             component={TextField}
@@ -115,11 +124,14 @@ class EventForm extends Component {
             floatingLabelText="Address"
             validate={required}
           />
-        </div>
-        <div>
-          <RaisedButton label="Submit" disabled={submitting} onClick={()=>this.submitEventForm()} primary={true} />
-          <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
-        </div>
+        </GridTile>
+        <GridTile></GridTile>
+      </GridList>
+      <GridList cols={1} cellHeight={80} padding={1}>
+        <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
+          <RaisedButton style={{"margin-right":"15px"}} label="Submit" disabled={submitting} onClick={()=>this.submitEventForm()} primary={true} />
+        </GridTile>
+      </GridList>
       </form>
     );
   }

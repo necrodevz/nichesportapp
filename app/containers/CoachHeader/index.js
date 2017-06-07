@@ -90,7 +90,7 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
             secondary={true}
             badgeStyle={{top: 20, right: 20}}
           >
-            <IconButton tooltip="Messages">
+            <IconButton>
               <EmailIcon />
             </IconButton>
           </Badge> </div> : ''}
