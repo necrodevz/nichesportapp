@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 export class CoachSearch extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <div>
+      <div style={{"height":"400px"}}>
       Search
       </div>
     );
