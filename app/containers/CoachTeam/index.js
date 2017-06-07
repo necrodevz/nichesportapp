@@ -21,16 +21,7 @@ export class CoachTeam extends React.Component { // eslint-disable-line react/pr
   render() {
     return (
       <div>
-        <MuiThemeProvider>
-          <Tabs>
-            <Tab label="My Team">
-              {this.props.TeamsList && <CoachTeamPage TeamsList={this.props.TeamsList} />}
-            </Tab>
-            <Tab label="Invite Team">
-              {this.props.TeamsList && <InviteTeamForm TeamsList={this.props.TeamsList} userData={this.props.data.user}/>}
-            </Tab>
-          </Tabs>
-        </MuiThemeProvider>
+        {this.props.TeamsList && <CoachTeamPage TeamsList={this.props.TeamsList} />}
       </div>
     );
   }

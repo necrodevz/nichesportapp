@@ -90,6 +90,7 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
         <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
         <TableHeaderColumn style={{textAlign: 'center'}}>Coach</TableHeaderColumn>
         <TableHeaderColumn style={{textAlign: 'center'}}>Season Hired</TableHeaderColumn>
+        <TableHeaderColumn style={{textAlign: 'center'}}>Sport</TableHeaderColumn>
       </TableRow>
     </TableHeader>
     <TableBody 
@@ -102,6 +103,9 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
         <TableRowColumn style={{textAlign: 'center'}}>{institute.name}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>{institute.coach.user.firstName} {institute.coach.user.lastName}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>{institute.season}</TableRowColumn>
+        {institute.sport != null ?
+        <TableRowColumn style={{textAlign: 'center'}}>{institute.sport.name}</TableRowColumn> : <TableRowColumn style={{textAlign: 'center'}}>NA</TableRowColumn>}
+
       </TableRow>
       ))
     }
