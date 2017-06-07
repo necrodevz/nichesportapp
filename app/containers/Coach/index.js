@@ -43,8 +43,8 @@ class Coach extends React.PureComponent { // eslint-disable-line react/prefer-st
             >
             <TableRow>
               <TableHeaderColumn style={{textAlign: 'center'}}>ID</TableHeaderColumn>
-              <TableHeaderColumn style={{textAlign: 'center'}}>Country</TableHeaderColumn>
-              <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
+              <TableHeaderColumn style={{textAlign: 'center'}}>First Name</TableHeaderColumn>
+              <TableHeaderColumn style={{textAlign: 'center'}}>Last Name</TableHeaderColumn>
               <TableHeaderColumn style={{textAlign: 'center'}}>Email</TableHeaderColumn>
             </TableRow>
           </TableHeader>
@@ -56,8 +56,8 @@ class Coach extends React.PureComponent { // eslint-disable-line react/prefer-st
           {this.props.data.allCoaches.map(coach=>(
             <TableRow key={coach.id}>
               <TableRowColumn style={{textAlign: 'center'}}>{coach.id}</TableRowColumn>
-              <TableRowColumn style={{textAlign: 'center'}}>{coach.user.country}</TableRowColumn>
-              <TableRowColumn style={{textAlign: 'center'}}>{coach.user.firstName} {coach.user.lastName}</TableRowColumn>
+              <TableRowColumn style={{textAlign: 'center'}}>{coach.user.firstName}</TableRowColumn>
+              <TableRowColumn style={{textAlign: 'center'}}>{coach.user.lastName}</TableRowColumn>
               <TableRowColumn style={{textAlign: 'center'}}>{coach.user.email}</TableRowColumn>
             </TableRow>
             ))

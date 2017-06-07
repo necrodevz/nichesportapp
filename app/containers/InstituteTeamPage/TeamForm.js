@@ -25,11 +25,22 @@ import Notifications, {notify} from 'react-notify-toast';
 
 
 var userID = localStorage.getItem('userID');
+const errors = {}
 
 var age = [{"id": 1, "value": "Under 15"}, {"id": 2, "value": "Under 18"}, {"id": 3, "value": "20+"}];
 var players = [{"id": 1, "value": "Jhon"}, {"id": 2, "value": "Marko"}, {"id": 3, "value": "Feder"}];
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);
+
+const validate = values => {
+  errors.team_name = required(values.team_name)
+  errors.age_group = required(values.age_group)
+  errors.team_sport = required(values.team_sport)
+  errors.players_count = required(values.players_count)
+  errors.team_coach = required(values.team_coach)
+
+  return errors
+}
 
 class TeamForm extends Component {
   static propTypes = {
@@ -114,7 +125,7 @@ class TeamForm extends Component {
                         </div>
                 :""}
         <div>
-          <RaisedButton label="Submit" disabled={submitting} onClick={()=>this.submitTeamForm()} primary={true} />
+          <RaisedButton label="Submit" disabled={errors.team_name != null || errors.age_group != null || errors.team_sport != null || errors.players_count != null || errors.team_coach != null || submitting} onClick={()=>this.submitTeamForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </div>
       </form>
@@ -134,6 +145,7 @@ TeamForm = connect(state => ({
 
 TeamForm = reduxForm({
   form: 'team_form',
+  validate
 })(TeamForm);
 
 
