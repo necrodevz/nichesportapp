@@ -44,10 +44,10 @@ export class AthleteProfile extends React.Component { // eslint-disable-line rea
   this.props.data.user ? console.log('data------', this.props.data.user) : '';
 
     return (
-      <CenteredSection>
-      <H2>My Profile</H2>
+      <section style={{"margin-left":"30px"}}>
+      <H2>My Account</H2>
        {this.props.data.user ? <AthleteProfileForm userData={this.props.data.user ? this.props.data.user : [] } sportsList={this.props.sportsList.allSports ? this.props.sportsList.allSports : [] }/> : ''}
-      </CenteredSection>
+      </section>
     );
   }
 }

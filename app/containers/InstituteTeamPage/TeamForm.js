@@ -40,12 +40,12 @@ class TeamForm extends Component {
     //const {description, imageUrl} = this.state
     await this.props.createTeam({variables: {name: this.props.TeamName,
                     ageGroup: this.props.AgeGroup,
-                   instituteId: userID,
+                   instituteId: 'cj32wbdg7mg3a01460zdkcxoi',
                    teamSport: this.props.TeamSport,
                    playerCount: parseInt(this.props.PlayersCount),
                    teamCoach: this.props.TeamCoach
                     }
-                 }).then(()=>location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 })
   }
 
   componentWillMount() {
@@ -71,6 +71,7 @@ class TeamForm extends Component {
             name="age_group"
             component={SelectField}
             hintText="Age Group"
+            style={{"textAlign":"left"}}
             floatingLabelText="Age Group"
             validate={required}
           >
@@ -81,6 +82,7 @@ class TeamForm extends Component {
                           <Field
                             name="team_sport"
                             component={SelectField}
+                            style={{"textAlign":"left"}}
                             hintText="Sport"
                             floatingLabelText="Sport"
                             validate={required}
@@ -98,22 +100,11 @@ class TeamForm extends Component {
             validate={required}
           />
         </div>
-        {players ? <div>
-                          <Field
-                            name="team_players"
-                            multiple={true}
-                            component={SelectField}
-                            hintText="Add Players"
-                            floatingLabelText="Add Players"
-                            validate={required}>
-                            {players.map(sport => (<MenuItem value={sport.value} primaryText={sport.value} key={sport.id} />))}
-                          </Field>
-                        </div>
-                :""}
         {this.props.CoachList.allCoaches ? <div>
                           <Field
                             name="team_coach"
                             component={SelectField}
+                            style={{"textAlign":"left"}}
                             hintText="Assign Coach"
                             floatingLabelText="Assign Coach"
                             validate={required}
@@ -138,7 +129,6 @@ TeamForm = connect(state => ({
   AgeGroup: selector(state, 'age_group'),
   TeamSport: selector(state, 'team_sport'),
   PlayersCount: selector(state, 'players_count'),
-  TeamPlayers: selector(state, 'team_players'),
   TeamCoach: selector(state, 'team_coach'),
 }))(TeamForm);
 
@@ -161,7 +151,7 @@ TeamForm.propTypes = {
 };
 
 const addMutation = gql`
-  mutation createTeam ($name: String!, $teamSport: ID!, $teamCoach: ID!, $playerCount: Int!) {
+  mutation createTeam ($name: String!, $instituteId: ID! ,$teamSport: ID!, $teamCoach: ID!, $playerCount: Int!) {
    createTeam(instituteId: $instituteId, sportId: $teamSport, coachId: $teamCoach, managerId: "cj32whu1xpomj01800euaosy8", name: $name, season: 2015, ageGroup: 5, totalNumberOfAthelets: $playerCount) {
     id
   }

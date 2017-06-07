@@ -33,9 +33,10 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
   render() {
     return (
       <MuiThemeProvider>
-        <AppBar title="Athliche Sports App" showMenuIconButton={false} onRightIconButtonTouchTap={()=>this.logout()} onTitleTouchTap={()=>window.location.assign("/")} iconElementRight={this.state.loggedIn ? <FlatButton onClick={()=>this.logout()} label='LogOut' /> : ''}>
+        <AppBar title="Athliche Sports" style={{"height":"70px"}} titleStyle={{"cursor": "pointer","width":"20px"}} showMenuIconButton={false} onRightIconButtonTouchTap={()=>this.logout()} onTitleTouchTap={()=>window.location.assign("/") }>
           {this.state.loggedIn && this.props.location.state && this.props.location.state.role =='ATHLETE' ? <AthleteHeader /> : ''}
           {this.state.loggedIn && this.props.location.state && this.props.location.state.role =='COACH' ? <CoachHeader /> : ''}
+          {this.state.loggedIn ? <FlatButton onClick={()=>this.logout()} label='LogOut'  style={{"margin-top":"15px","color":"white"}} /> : ''}
         </AppBar>
       </MuiThemeProvider>
     );

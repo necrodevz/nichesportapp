@@ -96,6 +96,7 @@ class InstituteForm extends Component {
             component={SelectField}
             hintText="Institute Country"
             maxHeight={200}
+            style={{"textAlign":"left"}}
             floatingLabelText="Institute Country"
             validate={required}
           >
@@ -117,6 +118,7 @@ class InstituteForm extends Component {
                             multiple={true}
                             component={SelectField}
                             hintText="Institute Sport"
+                            style={{"textAlign":"left"}}
                             floatingLabelText="Institute Sport"
                             validate={required}
                           >

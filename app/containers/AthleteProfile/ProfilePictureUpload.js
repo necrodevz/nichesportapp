@@ -1,6 +1,10 @@
 import React from 'react';  
 import ReactDom from 'react-dom';  
 import $ from 'jquery';
+import {GridList, GridTile} from 'material-ui/GridList';
+import IconButton from 'material-ui/IconButton';
+import PublishIcon from 'material-ui/svg-icons/editor/publish';
+import Avatar from 'material-ui/Avatar'
 
 var ProfilePictureUpload = React.createClass({  
   getInitialState(){
@@ -80,16 +84,26 @@ var ProfilePictureUpload = React.createClass({
 
     return (
       <div>
-        <img
-          style={{ border : '1px solid black' }}
-          height={400}
-          src={this.state.imageUrl}
-          alt=""/>
-        <p>.png or .jpg or .jpeg & max 2mb</p>
-      <input
-          type="file"
-          onChange={this.fileOnChange}/>
-        {uploadInfo}
+        <GridList cols={5} cellHeight={100} padding={1}>
+          <GridTile></GridTile>
+          <GridTile>
+            <IconButton tooltip="Upload Profile Picture">
+              <PublishIcon />
+            </IconButton>
+          </GridTile>
+          <GridTile>
+            <Avatar size={100} src={this.state.imageUrl} />
+          </GridTile>
+          <GridTile></GridTile>
+          <GridTile></GridTile>
+        </GridList>
+        <GridList cols={5} cellHeight={80} padding={1}>
+          <GridTile></GridTile>
+          <GridTile>
+            <input type="file" onChange={this.fileOnChange}/>
+            {uploadInfo}
+          </GridTile>
+        </GridList>
       </div>
     );
   }

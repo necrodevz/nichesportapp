@@ -28,7 +28,9 @@ import Avatar from 'material-ui/Avatar'
 import Notifications, {notify} from 'react-notify-toast';
 import EducationHistoryForm from './EducationHistoryForm';
 import SportsCertificateForm from './SportsCertificateForm';
-import ProfilePictureUpload from './ProfilePictureUpload'
+import ProfilePictureUpload from './ProfilePictureUpload';
+import {GridList, GridTile} from 'material-ui/GridList';
+
 var ReactS3Uploader = require('react-s3-uploader');
 
 var userId = localStorage.getItem('userID');
@@ -131,34 +133,34 @@ class AthleteProfileForm extends Component {
 
     const { pristine, reset, submitting, sportsList, userData } = this.props;
     return (
-      <form>
+      <form style={{"margin-bottom":"40px"}}>
       <ProfilePictureUpload />
-      <ReactS3Uploader
-    signingUrl="https://s3.amazonaws.com/athliche.images"
-    signingUrlMethod="GET"
-    accept="image/*"
-    preprocess={this.onUploadStart}
-    onProgress={this.onUploadProgress}
-    onError={this.onUploadError}
-    onFinish={this.onUploadFinish}
-    signingUrlWithCredentials={ false }      // in case when need to pass authentication credentials via CORS
-    uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}  // this is the default
-    
-    
-    />
-       <Avatar size={100} src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Kapil_Dev_at_Equation_sports_auction.jpg" />
-        <div>
-        <IconButton tooltip="Upload Profile Picture">
-          <PublishIcon />
-        </IconButton>
-        </div>
-      <div>
-      <H3>Personal Info
-      <IconButton tooltip="Edit Profile Info">
-          <EditIcon />
-        </IconButton>
-      </H3>
-        <div>
+      <GridList cols={5} cellHeight={80} padding={1}>
+        <GridTile></GridTile>
+        <GridTile>
+          <ReactS3Uploader
+            signingUrl="https://s3.amazonaws.com/athliche.images"
+            signingUrlMethod="GET"
+            accept="image/*"
+            preprocess={this.onUploadStart}
+            onProgress={this.onUploadProgress}
+            onError={this.onUploadError}
+            onFinish={this.onUploadFinish}
+            signingUrlWithCredentials={ false }      // in case when need to pass authentication credentials via CORS
+            uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}  // this is the default
+          />
+        </GridTile>
+      </GridList>
+      <GridList cols={1} cellHeight={80} padding={1} >
+        <GridTile>
+          <H3>Personal Info:
+          <IconButton tooltip="Edit Profile Info"><EditIcon /></IconButton>
+          </H3>
+        </GridTile>
+      </GridList>
+      <GridList cols={5} cellHeight={80} padding={1} >
+        <GridTile></GridTile>
+        <GridTile>
           <Field
             name="firstName"
             component={TextField}
@@ -166,6 +168,8 @@ class AthleteProfileForm extends Component {
             floatingLabelText="First Name"
             validate={required}
           />
+        </GridTile>
+        <GridTile>
           <Field
             name="lastName"
             component={TextField}
@@ -173,8 +177,8 @@ class AthleteProfileForm extends Component {
             floatingLabelText="Last Name"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="country"
             component={SelectField}
@@ -185,6 +189,8 @@ class AthleteProfileForm extends Component {
           >
             {countryList.map(country => (<MenuItem value={country[1]} primaryText={country[0]} key={country[1]} />))}
           </Field>
+        </GridTile>
+        <GridTile>
           <Field
             name="dob"
             component={DatePicker}
@@ -192,8 +198,11 @@ class AthleteProfileForm extends Component {
             floatingLabelText="DOB"
             validate={required}
           />
-        </div>
-         <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={5} cellHeight={80} padding={1} >
+        <GridTile></GridTile>
+        <GridTile>
           <Field
             name="gender"
             component={SelectField}
@@ -203,8 +212,8 @@ class AthleteProfileForm extends Component {
           >
             {genders.map(gender => (<MenuItem value={gender.value} primaryText={gender.value} key={gender.id} />))}
           </Field>
-        </div>
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="address"
             component={TextField}
@@ -213,8 +222,8 @@ class AthleteProfileForm extends Component {
             floatingLabelText="Address"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="timezone"
             component={SelectField}
@@ -226,8 +235,8 @@ class AthleteProfileForm extends Component {
           >
             {timezoneList.map(timezone => (<MenuItem value={timezone.text} primaryText={timezone.text} key={timezone.offset+timezone.value} />))}
           </Field>
-        </div>
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="email"
             component={TextField}
@@ -235,8 +244,11 @@ class AthleteProfileForm extends Component {
             floatingLabelText="Email"
             validate={[required, email]}
           />
-        </div>
-        <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={5} cellHeight={80} padding={1} >
+        <GridTile></GridTile>
+        <GridTile>
           <Field
             name="mobileNumber"
             component={TextField}
@@ -244,8 +256,8 @@ class AthleteProfileForm extends Component {
             floatingLabelText="Mobile Number"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="height"
             component={TextField}
@@ -253,6 +265,8 @@ class AthleteProfileForm extends Component {
             floatingLabelText="Height"
             validate={required}
           />
+        </GridTile>
+        <GridTile>
           <Field
             name="weight"
             component={TextField}
@@ -260,8 +274,8 @@ class AthleteProfileForm extends Component {
             floatingLabelText="Weight"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="bio"
             multiLine={true}
@@ -270,20 +284,27 @@ class AthleteProfileForm extends Component {
             floatingLabelText="Bio"
             validate={required}
           />
-        </div>
-        <a href="#">Change Password Link</a>
-        <div>
-          <RaisedButton label="Save" disabled={errors.email != null || errors.lastName != null || errors.email != null || errors.country != null ||
+        </GridTile>
+      </GridList>
+      <GridList cols={5} cellHeight={80}>
+        <GridTile></GridTile>
+        <GridTile style={{"padding-top":"20px"}}>
+            <RaisedButton label="Save" disabled={errors.email != null || errors.lastName != null || errors.email != null || errors.country != null ||
             errors.dob != null || errors.gender != null || errors.address != null || errors.timezone != null || errors.mobileNumber != null || errors.height != null || errors.weight != null || errors.bio != null } onClick={()=>this.submitAthleteProfileForm()} primary={true} />
-        </div>
-      </div>
-      <div>
-      <H3>Education History
-      <IconButton tooltip="Edit Education Info">
-          <EditIcon />
-        </IconButton>
-      </H3>
-        <div>
+          <a style={{"padding-left":"20px"}} href="#">Change Password</a>
+        </GridTile>
+      </GridList>
+
+      <GridList cols={1} cellHeight={80} padding={1}>
+        <GridTile>
+        <H3>Education History:
+          <IconButton tooltip="Edit Education Info"><EditIcon /></IconButton>
+        </H3>
+        </GridTile>
+      </GridList>
+      <GridList cols={5} cellHeight={80} padding={1}>
+        <GridTile></GridTile>
+        <GridTile>
           <Field
             name="highSchoolName"
             component={TextField}
@@ -291,6 +312,8 @@ class AthleteProfileForm extends Component {
             floatingLabelText="High School"
             validate={required}
           />
+        </GridTile>
+        <GridTile>
           <Field
             name="highSchoolYear"
             component={TextField}
@@ -298,6 +321,8 @@ class AthleteProfileForm extends Component {
             floatingLabelText="Year"
             validate={required}
           />
+        </GridTile>
+        <GridTile>
           <Field
             name="highSchoolUniversity"
             component={TextField}
@@ -305,15 +330,20 @@ class AthleteProfileForm extends Component {
             floatingLabelText="University"
             validate={required}
           />
-           <Field
+        </GridTile>
+        <GridTile>
+          <Field
             name="highschoolLength"
             component={TextField}
             hintText="Length of Program"
             floatingLabelText="Length of Program"
             validate={required}
           />
-          </div>
-          <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={5} cellHeight={80} padding={1}>
+        <GridTile></GridTile>
+        <GridTile>
           <Field
             name="graduationName"
             component={TextField}
@@ -321,6 +351,8 @@ class AthleteProfileForm extends Component {
             floatingLabelText="Graduation"
             validate={required}
           />
+        </GridTile>
+        <GridTile>
           <Field
             name="graduationYear"
             component={TextField}
@@ -328,6 +360,8 @@ class AthleteProfileForm extends Component {
             floatingLabelText="Year"
             validate={required}
           />
+        </GridTile>
+        <GridTile>
           <Field
             name="graduationUniversity"
             component={TextField}
@@ -335,26 +369,36 @@ class AthleteProfileForm extends Component {
             floatingLabelText="University"
             validate={required}
           />
-           <Field
+        </GridTile>
+        <GridTile>
+          <Field
             name="graduationProgramLength"
             component={TextField}
             hintText="Length of Program"
             floatingLabelText="Length of Program"
             validate={required}
           />
-          </div>
-          <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={5} cellHeight={80} >
+        <GridTile></GridTile>
+        <GridTile style={{"padding-top":"20px"}}>
           <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitAthleteEducationForm()} primary={true} />
-          </div>
-          <EducationHistoryForm athleteId={this.props.userData.athlete.id} />
-      </div>
-      <div>
-      <H3>Main Sports
-      <IconButton tooltip="Main Sports Info">
-          <EditIcon />
-        </IconButton>
-      </H3>
-        <div>
+        </GridTile>
+      </GridList>
+
+      <EducationHistoryForm athleteId={this.props.userData.athlete.id} />
+
+      <GridList cols={1} cellHeight={80} padding={1}>
+        <GridTile>
+          <H3>Main Sports
+            <IconButton tooltip="Main Sports Info"><EditIcon /></IconButton>
+          </H3>    
+        </GridTile>
+      </GridList>
+      <GridList cols={5} cellHeight={80} padding={1}>
+        <GridTile></GridTile>
+        <GridTile>
           <Field
             name="sportPlayed"
             component={SelectField}
@@ -364,6 +408,8 @@ class AthleteProfileForm extends Component {
           >
             {sportsList.map(sport => (<MenuItem value={sport.id} primaryText={sport.name} key={sport.id} />))}
           </Field>
+        </GridTile>
+        <GridTile>
           <Field
             name="practiceYear"
             component={DatePicker}
@@ -371,13 +417,16 @@ class AthleteProfileForm extends Component {
             floatingLabelText="Started Practicing"
             validate={required}
           />
-          </div>
-          <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={5} cellHeight={80} padding={1}>
+        <GridTile></GridTile>
+        <GridTile style={{"padding-top":"20px"}}>
           <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitSportForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
-          </div>
-          <SportsCertificateForm athleteSports={this.state.athleteSports} />
-      </div>
+        </GridTile>
+      </GridList>
+      <SportsCertificateForm athleteSports={this.state.athleteSports} />
       </form>
     );
   }

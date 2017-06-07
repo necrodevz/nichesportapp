@@ -48,12 +48,15 @@ export class AthleteHeader extends React.Component { // eslint-disable-line reac
 
     return (
       <div>
-       <Avatar size={100} src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Kapil_Dev_at_Equation_sports_auction.jpg" />
-        {data.allNotifications ? <div><Badge
-            badgeContent={data.allNotifications.length}
-            secondary={true}
-            badgeStyle={{top: 2, right: 2}}
-          >
+        {data.allNotifications ?
+          <div>
+            <Avatar style={{"margin-top":"-15px"}} size={40} src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Kapil_Dev_at_Equation_sports_auction.jpg" />
+            <Badge
+              badgeContent={data.allNotifications.length}
+              secondary={true}
+              badgeStyle={{top: 20, right: 25}}
+              style={{"margin-right":"-40px"}}
+            >
           <IconMenu maxHeight={200} autoWidth={true} iconButtonElement={
                 <IconButton><NotificationsIcon /></IconButton>
               }
@@ -79,7 +82,7 @@ export class AthleteHeader extends React.Component { // eslint-disable-line reac
           <Badge
             badgeContent={5}
             secondary={true}
-            badgeStyle={{top: 2, right: 2}}
+            badgeStyle={{top: 20, right: 20}}
           >
             <IconButton tooltip="Messages">
               <EmailIcon />

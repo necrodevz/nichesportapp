@@ -24,6 +24,7 @@ import gql from 'graphql-tag'
 import Notifications, {notify} from 'react-notify-toast';
 
 var userID = localStorage.getItem('userID');
+const errors = {}
 
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);
@@ -31,6 +32,20 @@ const coach_email = value =>
   (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? 'Invalid email'
     : undefined);
+
+const validateCoachForm = values => {
+  console.log("aay in fun")
+  errors.coach_first_name = required(values.coach_first_name)
+  errors.coach_last_name = required(values.coach_last_name)
+  errors.coach_password = required(values.coach_password)
+  errors.coach_email = coach_email(values.coach_email || '')
+  if (!values.coach_email) {
+    errors.coach_email = 'Required'
+  } else if (coach_email(values.coach_email)) {
+    errors.coach_email = 'Invalid Email'
+  }
+  return errors
+}
 
 class CoachForm extends Component {
   static propTypes = {
@@ -107,6 +122,7 @@ CoachForm = connect(state => ({
 
 CoachForm = reduxForm({
   form: 'coach_form',
+  validation: validateCoachForm
 })(CoachForm);
 
 
