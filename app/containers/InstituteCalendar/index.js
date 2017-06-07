@@ -29,10 +29,12 @@ export class InstituteCalendar extends React.PureComponent { // eslint-disable-l
   }
   render() {
     return (
-      <CenteredSection>
-      Institute Events Page
-      {this.state.showEventForm ? <EventForm showEventForm={this.state.showEventForm} toggleEventForm={this.toggleEventForm}/> : <RaisedButton label="Add New Event" onClick={() => this.toggleEventForm(this.state.showEventForm)} primary={true} />}
-      </CenteredSection>
+      <div>
+        <div style={{"float": "left"}}>Institute Events Page</div>
+        <div>
+          {this.state.showEventForm ? <EventForm showEventForm={this.state.showEventForm} toggleEventForm={this.toggleEventForm}/> : <RaisedButton style={{"float": "right","margin-top": "10px","margin-right": "10px"}} label="Add New Event" onClick={() => this.toggleEventForm(this.state.showEventForm)} primary={true} />}
+        </div>
+      </div>
     );
   }
 }

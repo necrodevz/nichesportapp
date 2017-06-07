@@ -44,8 +44,11 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
     return (<div>An unexpected error occurred</div>)
   }
     return (
-      <CenteredSection>
-      {this.state.showCoachForm ? <CoachForm instituteId={this.props.userID} showCoachForm={this.state.showCoachForm} toggleCoachForm={this.toggleCoachForm}/> : <RaisedButton label="Add New Coach" onClick={() => this.toggleCoachForm(this.state.showCoachForm)} primary={true} />}
+      <div>
+      <div >
+      {this.state.showCoachForm ? <CoachForm instituteId={this.props.userID} showCoachForm={this.state.showCoachForm} toggleCoachForm={this.toggleCoachForm}/> : <RaisedButton label="Add New Coach" style={{"float": "right","margin-top": "10px","margin-right": "10px"}} onClick={() => this.toggleCoachForm(this.state.showCoachForm)} primary={true} />}
+      </div>  
+      <div style={{"float": "left"}}>
         <Table>
         <TableHeader displaySelectAll= {false}>
           <TableRow>
@@ -67,7 +70,8 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
         }
         </TableBody>
       </Table>
-      </CenteredSection>
+      </div>
+      </div>
     );
   }
 }

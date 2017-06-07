@@ -24,6 +24,7 @@ import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import Notifications, {notify} from 'react-notify-toast'
+import {GridList, GridTile} from 'material-ui/GridList';
 
 const errors = {}
 
@@ -78,55 +79,62 @@ class InstituteForm extends Component {
   render() {
     const {loading, error, repos, handleSubmit, pristine, InstituteName, reset, submitting} = this.props;
     return (
-      <CenteredSection>
+      <div>
       <Notifications />
       <form onSubmit={handleSubmit}>
-        <div>
-          <Field
-            name="institute_name"
-            component={TextField}
-            hintText="Institute Name"
-            floatingLabelText="Institute Name"
-            validate={required}
-          />
-        </div>
-        <div>
-          <Field
-            name="institute_country"
-            component={SelectField}
-            hintText="Institute Country"
-            maxHeight={200}
-            style={{"textAlign":"left"}}
-            floatingLabelText="Institute Country"
-            validate={required}
-          >
-            {countryList.map(country => (<MenuItem value={country[1]} primaryText={country[0]} key={country[1]} />))}
-          </Field>
-        </div>
-        <div>
-          <Field
+        <GridList cols={2} cellHeight={80} padding={1}>
+          <GridTile>
+            <Field
+              name="institute_name"
+              component={TextField}
+              hintText="Institute Name"
+              floatingLabelText="Institute Name"
+              validate={required}
+            />
+          </GridTile>
+          <GridTile>
+            <Field
+              name="institute_country"
+              component={SelectField}
+              hintText="Institute Country"
+              maxHeight={200}
+              style={{"textAlign":"left"}}
+              floatingLabelText="Institute Country"
+              validate={required}
+            >
+              {countryList.map(country => (<MenuItem value={country[1]} primaryText={country[0]} key={country[1]} />))}
+            </Field>
+          </GridTile>
+        </GridList>
+      <GridList cols={2} cellHeight={80} padding={1}>
+        <GridTile>
+           <Field
             name="institute_type"
             component={TextField}
             hintText="Institute Type"
             floatingLabelText="Institute Type"
             validate={required}
           />
-        </div>
-        {this.props.data.allSports ? <div>
-                          <Field
-                            name="institute_sport"
-                            multiple={true}
-                            component={SelectField}
-                            hintText="Institute Sport"
-                            style={{"textAlign":"left"}}
-                            floatingLabelText="Institute Sport"
-                            validate={required}
-                          >
-                            {this.props.data.allSports.map(sport => (<MenuItem value={sport.id} primaryText={sport.name} key={sport.id} />))}
-                          </Field>
-                        </div>
-                :""}
-          <div>
+        </GridTile>
+        <GridTile>
+          {this.props.data.allSports ? <div>
+                            <Field
+                              name="institute_sport"
+                              multiple={true}
+                              component={SelectField}
+                              hintText="Institute Sport"
+                              style={{"textAlign":"left"}}
+                              floatingLabelText="Institute Sport"
+                              validate={required}
+                            >
+                              {this.props.data.allSports.map(sport => (<MenuItem value={sport.id} primaryText={sport.name} key={sport.id} />))}
+                            </Field>
+                          </div>
+                  :""}
+        </GridTile>
+      </GridList>
+      <GridList cols={2} cellHeight={80} padding={1}>
+        <GridTile>
           <Field
             name="institute_email"
             component={TextField}
@@ -134,8 +142,8 @@ class InstituteForm extends Component {
             floatingLabelText="Institute Email"
             validate={[required, institute_email]}
           />
-        </div>
-        <div>
+        </GridTile>
+        <GridTile>
           <Field
             name="institute_password"
             component={TextField}
@@ -144,13 +152,16 @@ class InstituteForm extends Component {
             floatingLabelText="Institute Password"
             validate={required}
           />
-        </div>
-        <div>
+        </GridTile>
+      </GridList>
+      <GridList cols={1} cellHeight={80} padding={1}>
+        <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
           <RaisedButton label="Submit" disabled={errors.institute_email != null || errors.institute_password != null || errors.institute_name != null || errors.institute_country != null || errors.institute_type != null || errors.institute_sport != null} onClick={()=>this.submitInstituteForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
-        </div>
+        </GridTile>
+      </GridList>
       </form>
-      </CenteredSection>
+      </div>
     );
   }
 }
