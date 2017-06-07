@@ -131,6 +131,7 @@ class SignUpForm extends Component {
           <Checkbox onClick={this.checkboxChange.bind(this)} name="checkbox" label="I have read and agree with the Terms of use." style={{width: '100%', margin: '0 auto',paddingTop:"10px", backgroundColor: '#ffd699',}} />
           <RaisedButton style={{"marginRight":"20px","paddingTop":"20px"}} label="Submit" disabled={errors.checkbox != null || errors.signup_email != null || errors.signup_password != null || errors.first_name != null || errors.last_name != null || this.state.isChecked ==false } onClick={()=>this.submitSignUpForm()} primary={true} />
           <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
+        
         </GridTile>
       </GridList>
       </form>
