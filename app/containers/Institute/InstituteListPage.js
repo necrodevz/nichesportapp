@@ -5,6 +5,8 @@ import RaisedButton from 'material-ui/RaisedButton'
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import {
   Table,
   TableBody,
@@ -13,8 +15,6 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 
 
 class InstituteListPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -51,40 +51,57 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
     return (<div>An unexpected error occurred</div>)
   }
     return (
-      <CenteredSection>
-      <RaisedButton label="Add New Institute" onClick={() => this.toggleInstituteForm(this.state.showInstituteForm)} primary={true} />
-      <Dialog
-          title="Add Institute"
-          autoScrollBodyContent={true}
-          actions={actions}
-          modal={false}
-          open={this.state.showInstituteForm}
-          onRequestClose={()=>this.toggleInstituteForm(this.state.showInstituteForm)}
-        >
-          <InstituteForm toggleInstituteForm={this.toggleInstituteForm}/>
-        </Dialog>
-         <Table>
-    <TableHeader displaySelectAll= {false}>
-      <TableRow>
-        <TableHeaderColumn>ID</TableHeaderColumn>
-        <TableHeaderColumn>Name</TableHeaderColumn>
-        <TableHeaderColumn>Country</TableHeaderColumn>
-        <TableHeaderColumn>Status</TableHeaderColumn>
-      </TableRow>
-    </TableHeader>
-    <TableBody displayRowCheckbox={false}>
-    {this.props.data.allInstitutes.map(institute=>(
-      <TableRow key={institute.id}>
-        <TableRowColumn>{institute.id}</TableRowColumn>
-        <TableRowColumn>{institute.name}</TableRowColumn>
-        <TableRowColumn>{institute.country}</TableRowColumn>
-        <TableRowColumn>{institute.status}</TableRowColumn>
-      </TableRow>
-      ))
-    }
-    </TableBody>
-  </Table>
-      </CenteredSection>
+      <div>
+        <div>
+          <RaisedButton style={{"float": "right","margin-top": "10px","margin-right": "10px"}} label="Add New Institute" onClick={() => this.toggleInstituteForm(this.state.showInstituteForm)} primary={true} />
+          <Dialog
+              title="Add Institute"
+              autoScrollBodyContent={true}
+              actions={actions}
+              modal={false}
+              titleStyle={{"background":"rgb(0, 188, 212)","color":"white"}}
+              open={this.state.showInstituteForm}
+              onRequestClose={()=>this.toggleInstituteForm(this.state.showInstituteForm)}
+            >
+              <InstituteForm toggleInstituteForm={this.toggleInstituteForm}/>
+          </Dialog>
+        </div>
+        <div style={{"float": "left","margin-left": "50px","margin-right": "50px","margin-bottom": "50px"}}>
+           <Table 
+            height={"350px"}
+            fixedHeader={true}
+            selectable={false}
+            multiSelectable={false}>
+            <TableHeader 
+              displaySelectAll={false}
+              adjustForCheckbox={false}
+              enableSelectAll={false}
+              >
+              <TableRow>
+                <TableHeaderColumn style={{textAlign: 'center'}}>ID</TableHeaderColumn>
+                <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
+                <TableHeaderColumn style={{textAlign: 'center'}}>Country</TableHeaderColumn>
+                <TableHeaderColumn style={{textAlign: 'center'}}>Status</TableHeaderColumn>
+              </TableRow>
+            </TableHeader>
+            <TableBody 
+              displayRowCheckbox={false}
+              deselectOnClickaway={false}
+              showRowHover={true}
+              >
+            {this.props.data.allInstitutes.map(institute=>(
+              <TableRow key={institute.id}>
+                <TableRowColumn style={{textAlign: "center"}}>{institute.id}</TableRowColumn>
+                <TableRowColumn style={{textAlign: "center"}}>{institute.name}</TableRowColumn>
+                <TableRowColumn style={{textAlign: "center"}}>{institute.country}</TableRowColumn>
+                <TableRowColumn style={{textAlign: "center"}}>{institute.status}</TableRowColumn>
+              </TableRow>
+              ))
+            }
+            </TableBody>
+         </Table>
+        </div>
+      </div>
     );
   }
 }

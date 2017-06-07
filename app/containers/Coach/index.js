@@ -29,29 +29,42 @@ class Coach extends React.PureComponent { // eslint-disable-line react/prefer-st
     return (<div>An unexpected error occurred</div>)
   }
     return (
-      <CenteredSection>
-         <Table>
-          <TableHeader displaySelectAll= {false}>
+      <div style={{"margin": "50px"}}>
+         <Table 
+            height={"350px"}
+            fixedHeader={true}
+            selectable={false}
+            multiSelectable={false}>
+            >
+          <TableHeader 
+              displaySelectAll={false}
+              adjustForCheckbox={false}
+              enableSelectAll={false}
+            >
             <TableRow>
-              <TableHeaderColumn>ID</TableHeaderColumn>
-              <TableHeaderColumn>Country</TableHeaderColumn>
-              <TableHeaderColumn>Name</TableHeaderColumn>
-              <TableHeaderColumn>Email</TableHeaderColumn>
+              <TableHeaderColumn style={{textAlign: 'center'}}>ID</TableHeaderColumn>
+              <TableHeaderColumn style={{textAlign: 'center'}}>Country</TableHeaderColumn>
+              <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
+              <TableHeaderColumn style={{textAlign: 'center'}}>Email</TableHeaderColumn>
             </TableRow>
           </TableHeader>
-          <TableBody displayRowCheckbox={false}>
+          <TableBody 
+              displayRowCheckbox={false}
+              deselectOnClickaway={false}
+              showRowHover={true}
+              >
           {this.props.data.allCoaches.map(coach=>(
             <TableRow key={coach.id}>
-              <TableRowColumn>{coach.id}</TableRowColumn>
-              <TableRowColumn>{coach.user.country}</TableRowColumn>
-              <TableRowColumn>{coach.user.firstName} {coach.user.lastName}</TableRowColumn>
-              <TableRowColumn>{coach.user.email}</TableRowColumn>
+              <TableRowColumn style={{textAlign: 'center'}}>{coach.id}</TableRowColumn>
+              <TableRowColumn style={{textAlign: 'center'}}>{coach.user.country}</TableRowColumn>
+              <TableRowColumn style={{textAlign: 'center'}}>{coach.user.firstName} {coach.user.lastName}</TableRowColumn>
+              <TableRowColumn style={{textAlign: 'center'}}>{coach.user.email}</TableRowColumn>
             </TableRow>
             ))
           }
           </TableBody>
         </Table>
-      </CenteredSection>
+      </div>
     );
   }
 }

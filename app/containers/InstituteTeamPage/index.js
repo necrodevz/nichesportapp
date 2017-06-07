@@ -47,9 +47,12 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
     return (<div>An unexpected error occurred</div>)
   }
     return (
-      <CenteredSection>
-        {this.state.showTeamForm ? <TeamForm showTeamForm={this.state.showTeamForm} toggleTeamForm={this.toggleTeamForm}/> : <RaisedButton label="Add New Team" onClick={() => this.toggleTeamForm(this.state.showTeamForm)} primary={true} />}
-         <Table>
+      <div>
+        <div >
+        {this.state.showTeamForm ? <TeamForm showTeamForm={this.state.showTeamForm} toggleTeamForm={this.toggleTeamForm}/> : <RaisedButton  label="Add New Team" style={{"float": "right","margin-top": "10px","margin-right": "10px"}} onClick={() => this.toggleTeamForm(this.state.showTeamForm)} primary={true} />}
+        </div>
+        <div style={{"float": "left"}}>
+        <Table>
     <TableHeader displaySelectAll= {false}>
       <TableRow>
         <TableHeaderColumn>Name</TableHeaderColumn>
@@ -68,7 +71,8 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
     }
     </TableBody>
   </Table>
-      </CenteredSection>
+  </div>
+      </div>
     );
   }
 }
