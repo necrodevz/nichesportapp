@@ -6,7 +6,6 @@ import MenuItem from 'material-ui/MenuItem';
 import { createStructuredSelector } from 'reselect';
 import {
   AutoComplete,
-  Checkbox,
   DatePicker,
   TimePicker,
   RadioButtonGroup,
@@ -15,6 +14,8 @@ import {
   TextField,
   Toggle
 } from 'redux-form-material-ui';
+
+import Checkbox from 'material-ui/Checkbox';
 import RaisedButton from 'material-ui/RaisedButton'
 import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql } from 'react-apollo'
@@ -31,8 +32,7 @@ const signup_email = value =>
     ? 'Invalid email'
     : undefined);
 
-const validateSignup = values => {
-  
+const validate = values => {
   errors.first_name = required(values.first_name)
   errors.last_name = required(values.last_name)
   errors.signup_password = required(values.signup_password)
@@ -47,6 +47,15 @@ const validateSignup = values => {
 
 
 class SignUpForm extends Component {
+  
+
+ constructor(props) {
+   super(props);
+   this.state ={
+    isChecked: false
+   }
+ }
+
   static propTypes = {
     SignUpAthlete: React.PropTypes.func
   }
@@ -56,8 +65,16 @@ class SignUpForm extends Component {
                     lastName: this.props.LastName,
                     email: this.props.Email,
                    password: this.props.Password}
-                 }).then(()=> this.props.GoToLogin()).then(()=>location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=> this.props.GoToLogin()).then(()=> alert('Congratulation! You have successfully signed up for Athelink! Please click on the link in the email that was sent to you in order to complete your registration.')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
+
+
+ checkboxChange()
+{
+     let check_box = null
+     this.state.isChecked ? check_box = false : check_box = true;
+     this.setState({isChecked: check_box});
+}
 
   render() {
     const {handleSubmit, pristine, reset, submitting} = this.props;
@@ -109,9 +126,11 @@ class SignUpForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={1} cellHeight={80} padding={1}>
+      <GridList cols={1} cellHeight={180} padding={1}>
         <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
-          <RaisedButton style={{"margin-right":"20px"}} label="Submit" disabled={errors.signup_email != null || errors.signup_password != null || errors.first_name != null || errors.last_name != null} onClick={()=>this.submitSignUpForm()} primary={true} />
+          <Checkbox onClick={this.checkboxChange.bind(this)} name="checkbox" label="I have read and agree with the Terms of use." style={{width: '100%', margin: '0 auto',paddingTop:"10px", backgroundColor: '#ffd699',}} />
+          <RaisedButton style={{"marginRight":"20px","paddingTop":"20px"}} label="Submit" disabled={errors.checkbox != null || errors.signup_email != null || errors.signup_password != null || errors.first_name != null || errors.last_name != null || this.state.isChecked ==false } onClick={()=>this.submitSignUpForm()} primary={true} />
+          <RaisedButton label="Clear" onClick={reset} disabled={pristine || submitting} secondary={true} />
         </GridTile>
       </GridList>
       </form>
@@ -124,7 +143,7 @@ const selector = formValueSelector('signup_form');
 
 SignUpForm = reduxForm({
   form: 'signup_form',
-  validate: validateSignup
+  validate
 })(SignUpForm);
 
 
