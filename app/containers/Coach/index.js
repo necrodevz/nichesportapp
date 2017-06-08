@@ -42,10 +42,10 @@ class Coach extends React.PureComponent { // eslint-disable-line react/prefer-st
               enableSelectAll={false}
             >
             <TableRow>
-              <TableHeaderColumn style={{textAlign: 'center'}}>ID</TableHeaderColumn>
-              <TableHeaderColumn style={{textAlign: 'center'}}>First Name</TableHeaderColumn>
-              <TableHeaderColumn style={{textAlign: 'center'}}>Last Name</TableHeaderColumn>
-              <TableHeaderColumn style={{textAlign: 'center'}}>Email</TableHeaderColumn>
+              <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>ID</TableHeaderColumn>
+              <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>First Name</TableHeaderColumn>
+              <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Last Name</TableHeaderColumn>
+              <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Email</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody 

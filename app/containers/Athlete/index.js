@@ -42,10 +42,10 @@ class Athlete extends React.PureComponent { // eslint-disable-line react/prefer-
               enableSelectAll={false}
               > 
               <TableRow>
-                <TableHeaderColumn style={{textAlign: 'center'}}>ID</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Country</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Email</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>ID</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Country</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Name</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Email</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody 

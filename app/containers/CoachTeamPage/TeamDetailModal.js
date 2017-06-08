@@ -107,11 +107,11 @@ export class TeamDetailModal extends React.Component { // eslint-disable-line re
               enableSelectAll={false}
               >
               <TableRow>
-                <TableHeaderColumn style={{textAlign: 'center'}}>ID</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Email</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Invite</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Athlete Status</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>ID</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Name</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Email</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Invite</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Athlete Status</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody 

@@ -84,10 +84,10 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
           enableSelectAll={false}
           >
           <TableRow>
-            <TableHeaderColumn style={{textAlign: 'center'}}>ID</TableHeaderColumn>
-            <TableHeaderColumn style={{textAlign: 'center'}}>Email</TableHeaderColumn>
-            <TableHeaderColumn style={{textAlign: 'center'}}>First Name</TableHeaderColumn>
-            <TableHeaderColumn style={{textAlign: 'center'}}>Last Name</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>ID</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Email</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>First Name</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Last Name</TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody 
