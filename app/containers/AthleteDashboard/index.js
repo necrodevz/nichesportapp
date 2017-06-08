@@ -13,8 +13,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AthleteProfile from '../../containers/AthleteProfile'
 import AthleteTeam from '../../containers/AthleteTeam'
-import InstituteCalendar from '../../containers/InstituteCalendar'
-import InstituteCoachPage from '../../containers/InstituteCoachPage'
+import AthleteSchedule from '../../containers/AthleteSchedule'
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import GroupWorkIcon from 'material-ui/svg-icons/action/group-work';
 import CameraEnhanceIcon from 'material-ui/svg-icons/action/camera-enhance';
@@ -32,6 +31,9 @@ export class AthleteDashboard extends React.PureComponent { // eslint-disable-li
             </Tab>
             <Tab label="Team" icon={<GroupWorkIcon />}>
               <AthleteTeam />
+            </Tab>
+            <Tab label="Schedule" icon={<GroupWorkIcon />}>
+              <AthleteSchedule />
             </Tab>
             <Tab label="Video" icon={< CameraEnhanceIcon />}>
             <div style={{"height":"400px"}}>Video Page</div>
