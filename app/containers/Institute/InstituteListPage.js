@@ -78,10 +78,10 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
               enableSelectAll={false}
               >
               <TableRow>
-                <TableHeaderColumn style={{textAlign: 'center'}}>ID</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Country</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Status</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>ID</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Name</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Country</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Status</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody 

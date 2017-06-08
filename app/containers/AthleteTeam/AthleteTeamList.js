@@ -49,13 +49,13 @@ class AthleteTeamList extends React.Component { // eslint-disable-line react/pre
           enableSelectAll={false}
           >
           <TableRow>
-            <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
-            <TableHeaderColumn style={{textAlign: 'center'}}>Season</TableHeaderColumn>
-            <TableHeaderColumn style={{textAlign: 'center'}}>Coach</TableHeaderColumn>
-            <TableHeaderColumn style={{textAlign: 'center'}}>Sport</TableHeaderColumn>
-            <TableHeaderColumn style={{textAlign: 'center'}}>Age Group</TableHeaderColumn>
-            <TableHeaderColumn style={{textAlign: 'center'}}>No. of Athletes</TableHeaderColumn>
-            <TableHeaderColumn style={{textAlign: 'center'}}>Status</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Name</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Season</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Coach</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Sport</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Age Group</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>No. of Athletes</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Status</TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody 

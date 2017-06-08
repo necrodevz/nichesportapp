@@ -71,12 +71,12 @@ export class CoachTeamPage extends React.Component { // eslint-disable-line reac
               enableSelectAll={false}
               >
               <TableRow>
-                <TableHeaderColumn style={{textAlign: 'center'}}>ID</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Season</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>Age Group</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>No. of Athetes</TableHeaderColumn>
-                <TableHeaderColumn style={{textAlign: 'center'}}>View Team Detail</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>ID</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Name</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Season</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Age Group</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>No. of Athetes</TableHeaderColumn>
+                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>View Team Detail</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody 

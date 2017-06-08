@@ -87,10 +87,10 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
       enableSelectAll={false}
       >
       <TableRow>
-        <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
-        <TableHeaderColumn style={{textAlign: 'center'}}>Coach</TableHeaderColumn>
-        <TableHeaderColumn style={{textAlign: 'center'}}>Season Hired</TableHeaderColumn>
-        <TableHeaderColumn style={{textAlign: 'center'}}>Sport</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Name</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Coach</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Season Hired</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Sport</TableHeaderColumn>
       </TableRow>
     </TableHeader>
     <TableBody 

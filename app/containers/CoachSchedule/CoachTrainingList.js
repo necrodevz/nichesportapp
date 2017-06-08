@@ -41,11 +41,11 @@ export class CoachTrainingList extends React.Component { // eslint-disable-line 
       enableSelectAll={false}
       >
       <TableRow>
-        <TableHeaderColumn style={{textAlign: 'center'}}>Training Session</TableHeaderColumn>
-        <TableHeaderColumn style={{textAlign: 'center'}}>Date</TableHeaderColumn>
-        <TableHeaderColumn style={{textAlign: 'center'}}>Time</TableHeaderColumn>
-        <TableHeaderColumn style={{textAlign: 'center'}}>Team</TableHeaderColumn>
-        <TableHeaderColumn style={{textAlign: 'center'}}>Location</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Training Session</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Date</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Time</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Team</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Location</TableHeaderColumn>
       </TableRow>
     </TableHeader>
     <TableBody 

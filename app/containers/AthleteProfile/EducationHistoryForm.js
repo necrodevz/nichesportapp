@@ -21,7 +21,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import gql from 'graphql-tag'
 import IconButton from 'material-ui/IconButton';
 import Notifications, {notify} from 'react-notify-toast';
-import PlusIcon from 'material-ui/svg-icons/social/plus-one';
+import PlusIcon from 'material-ui/svg-icons/content/add';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import {GridList, GridTile} from 'material-ui/GridList';
 
@@ -60,7 +60,6 @@ import {GridList, GridTile} from 'material-ui/GridList';
 
 const renderEducationHistory = ({fields, meta: {error, submitFailed}, SportsList, InstitutesList, submitEducationHistoryForm}) => (
   
-
   <div>
       <GridList cols={5} cellHeight={80} padding={1} style={{"margin-bottom":"-40px"}}>
         <GridTile></GridTile>
@@ -75,8 +74,10 @@ const renderEducationHistory = ({fields, meta: {error, submitFailed}, SportsList
 
       {submitFailed && error && <span>{error}</span>}
 
+
+
     {fields.map((educationHistory, index) => (
-      <span key={index}>
+      <span key={index}> 
         <GridList cols={5} cellHeight={80} padding={1}>
           <GridTile></GridTile>
           <GridTile>
