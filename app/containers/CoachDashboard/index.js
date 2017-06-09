@@ -12,6 +12,8 @@ import CoachSchedule from '../../containers/CoachSchedule';
 import CoachVideo from '../../containers/CoachVideo';
 import CoachSearch from '../../containers/CoachSearch';
 import {Tabs, Tab} from 'material-ui/Tabs';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 const userId = localStorage.getItem('userID')
 
@@ -25,7 +27,7 @@ export class CoachDashboard extends React.PureComponent { // eslint-disable-line
               <CoachTeam userId={userId} />
             </Tab>
             <Tab label="Schedule" >
-              <CoachSchedule />
+              <CoachSchedule coachProfile={this.props.data.user} />
             </Tab>
             <Tab label="Video" >
               <CoachVideo />
@@ -40,15 +42,30 @@ export class CoachDashboard extends React.PureComponent { // eslint-disable-line
   }
 }
 
-CoachDashboard.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+const coachQuery = gql`query coachQuery {
+    user { id firstName lastName email country dob profileImage gender address timeZone mobileNumber height weight bio createdAt
+    coach {
+      id graduation graduationProgramLength graduationUniversity graduationYear hightSchool hightSchoolUniversity hightSchoolYear createdAt
+      institute {
+        id
+      }
+      coachSports {
+        id
+        sport { id }
+        participateStartDate
+        coachAcadmicCertificates { id url }
+      }
+      coachAcadmic { id
+        coach { id }
+        institute { id }
+        sport { id }
+        createdAt
+      }
+    }
+  }
+}`
 
+const coachProfileData = graphql(coachQuery)(CoachDashboard);
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
+export default coachProfileData;
 
-export default connect(null, mapDispatchToProps)(CoachDashboard);

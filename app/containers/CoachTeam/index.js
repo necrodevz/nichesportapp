@@ -53,28 +53,7 @@ const coachTeamQuery = gql`query coachTeamQuery ($userId: ID){
   }
 }`
 
-const coachQuery = gql`query coachQuery {
-    user { id firstName lastName email country dob profileImage gender address timeZone mobileNumber height weight bio createdAt
-    coach {
-      id graduation graduationProgramLength graduationUniversity graduationYear hightSchool hightSchoolUniversity hightSchoolYear createdAt
-      coachSports {
-        id
-        sport { id }
-        participateStartDate
-        coachAcadmicCertificates { id url }
-      }
-      coachAcadmic { id
-        coach { id }
-        institute { id }
-        sport { id }
-        createdAt
-      }
-    }
-  }
-}`
-
 const coachQueryData = compose(
-  graphql(coachQuery),
   graphql(coachTeamQuery , {name: 'TeamsList'}, {
   options: (props) => ({ variables: { userId: props.userId } })
 }))(CoachTeam);

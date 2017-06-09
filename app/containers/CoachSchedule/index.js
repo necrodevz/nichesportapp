@@ -27,6 +27,7 @@ import {
 } from 'redux-form-material-ui';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import {GridList, GridTile} from 'material-ui/GridList';
+import TrainingForm from './TrainingForm';
 
 
 
@@ -37,61 +38,32 @@ const style = {
 
 const required = value => (value == null ? 'Required' : undefined);
 
+var userId = localStorage.getItem('userID');
 
 export class CoachSchedule extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  constructor(props) {
-    super(props);
-    this.state={
-      open : false
+  constructor() {
+    super();
+    this.state = {
+      showTrainingForm: false
     }
   }
 
-// createTraining(
-//     instituteId: "cj32wbdg7mg3a01460zdkcxoi"
-//     dateTime: "017-05-17T14:03:49.000Z"
-//     coachId: "cj32wk6prqm2v01929uytsrez"
-//     address: "Crik Train"
-//     numberOfSessions: 10
-//     trainingTeams:[ 
-//       {        teamId:"cj330pw3zrvkf0146ia97nnen" }
-//     ]
-//     trainingDates:[
-//       {        date: "017-05-17T14:03:49.000Z"        }
-//     ]
-//   ){
-//     id
-//     trainingTeams{id}
-//     trainingDates{id}
-//   }
+  closeForm() {
+    this.setState({ showTrainingForm: false });
+    notify.show('Training Created', 'success');
+  }
 
-
-// submitTeamForm = async () => {
-//     //const {description, imageUrl} = this.state
-//     await this.props.createTeam({variables: {name: this.props.FormTrainingSession,
-//                     ageGroup: this.props.FormDates,
-//                    instituteId: FormTime,
-//                    teamSport: this.props.FormSelectTeam,
-//                    address: this.props.Address
-//                     }
-//                  }).then(()=>location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
-//   }
-
-  handleOpen = () => {
-    console.log("aayaa in open")
-    this.setState({open: true});
-  };
-
-  handleClose = () => {
-    console.log("aayaa in close")
-    this.setState({open: false});
-  };
+  toggleTrainingForm(value) {
+      this.setState({ showTrainingForm: !value })
+  }
 
   render() {
+
     const actions = [
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={()=>{this.handleClose}}
+        onTouchTap={()=>this.toggleTrainingForm(this.state.showTrainingForm)}
       />
     ];
 
@@ -100,75 +72,17 @@ export class CoachSchedule extends React.Component { // eslint-disable-line reac
       <div>
       <GridList cols={1} cellHeight={80} padding={1}>
         <GridTile>
-      <RaisedButton style={{"float": "right","margin-top": "10px","margin-right": "10px"}} label="Create Training" onTouchTap={this.handleOpen} primary={true} />
+      <RaisedButton style={{"float": "right","marginTop": "10px","marginRight": "10px"}} label="Create Training" onTouchTap={()=>this.toggleTrainingForm(this.state.showTrainingForm)} primary={true} />
        <Dialog
           title="Training"
           actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
           autoScrollBodyContent={true}
+          modal={false}
+          titleStyle={{"background":"rgb(0, 188, 212)","color":"white"}}
+          open={this.state.showTrainingForm}
+          onRequestClose={()=>this.toggleTrainingForm(this.state.showTrainingForm)}
         >
-          <div>
-            <form onSubmit="">
-            <GridList cols={2} cellHeight={80} padding={1}>
-              <GridTile>
-                <Field
-                  name="training_session"
-                  component={TextField}
-                  hintText="Training Session"
-                  floatingLabelText="Training Session"
-                  validate={required}
-                />
-              </GridTile>
-              <GridTile>
-                <Field
-                  name="dates"
-                  component={TextField}
-                  hintText="Dates"
-                  floatingLabelText="Dates"
-                  validate={required}
-                />
-              </GridTile>
-            </GridList>
-            <GridList cols={2} cellHeight={80} padding={1}>
-              <GridTile>
-                <Field
-                  name="time"
-                  component={TextField}
-                  hintText="Time"
-                  floatingLabelText="Time"
-                  validate={required}
-                />
-              </GridTile>
-              <GridTile>
-                <Field
-                  name="select_team"
-                  component={TextField}
-                  hintText="Select Team"
-                  floatingLabelText="Select Team"
-                  validate={required}
-                />
-              </GridTile>
-            </GridList>
-            <GridList cols={2} cellHeight={80} padding={1}>
-              <GridTile>
-                <Field
-                  name="address"
-                  component={TextField}
-                  hintText="Address"
-                  floatingLabelText="Address"
-                  validate={required}
-                />
-              </GridTile>
-            </GridList>
-            <GridList cols={1} cellHeight={80} padding={1}>
-              <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
-                <RaisedButton label="Submit" primary={true} />
-              </GridTile>
-            </GridList>
-        </form>
-      </div>
+          <TrainingForm toggleTrainingForm={()=>this.closeForm()} userId={userId} coachProfile={this.props.coachProfile} />
         </Dialog>
       </GridTile>
       </GridList>
@@ -177,7 +91,7 @@ export class CoachSchedule extends React.Component { // eslint-disable-line reac
            <Card>
             <CardHeader
               title="Training"
-              style={{"background-color":"#757575"}}
+              style={{"backgroundColor":"#757575"}}
               subtitle=""
               actAsExpander={true}
               showExpandableButton={true}
@@ -193,7 +107,7 @@ export class CoachSchedule extends React.Component { // eslint-disable-line reac
           <Card>
             <CardHeader
               title="Event"
-              style={{"background-color":"#757575"}}
+              style={{"backgroundColor":"#757575"}}
               subtitle=""
               actAsExpander={true}
               showExpandableButton={true}
@@ -209,43 +123,4 @@ export class CoachSchedule extends React.Component { // eslint-disable-line reac
   }
 }
 
-CoachSchedule.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
-const selector = formValueSelector('coachScheduleForm');
-
-CoachSchedule = connect(state => ({
-  FormTrainingSession: selector(state, 'training_session'),
-  FormDates: selector(state, 'dates'),
-  FormSelectTeam: selector(state, 'select_team'),
-  FormTime: selector(state, 'time'),
-  FormAddress: selector(state, 'address'),
-}))(CoachSchedule);
-
-CoachSchedule = reduxForm({
-  form: 'coachScheduleForm',
-})(CoachSchedule);
-
-
-CoachSchedule.propTypes = {
-  loading: React.PropTypes.bool,
-  error: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-  ]),
-  coach: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.bool,
-  ]),
-  onSubmitForm: React.PropTypes.func,
-};
-
-
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
-
-export default connect(null, mapDispatchToProps)(CoachSchedule);
+export default CoachSchedule;
