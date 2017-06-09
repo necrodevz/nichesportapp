@@ -81,12 +81,14 @@ export class CoachTrainingList extends React.Component { // eslint-disable-line 
 }
 
 const userId = localStorage.getItem('userID');
-console.log("userId",userId)
-const TeamListQuery = gql`query TeamListQuery{
+
+const CoachTrainingListQuery = gql`query CoachTrainingListQuery($userId: ID!){
    allTrainings(
     filter:{
       coach:{
-        id: "cj32wk6prqm2v01929uytsrez"
+        user: {
+        id: $userId
+        }
       }
     }
   ){
@@ -101,6 +103,11 @@ const TeamListQuery = gql`query TeamListQuery{
   }
 }`
 
-const TeamData = graphql(TeamListQuery)(CoachTrainingList);
+const CoachTrainingData = graphql(CoachTrainingListQuery,{
+  options: {
+      variables: {
+        userId: userId      }
+    }
+  })(CoachTrainingList);
 
-export default TeamData;
+export default CoachTrainingData;
