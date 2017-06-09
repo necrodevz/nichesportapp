@@ -45,7 +45,7 @@ const validate = values => {
 const renderTrainingSessions = ({fields, meta: {error, submitFailed}, submitTrainingForm}) => (
   
   <div>
-      <GridList cols={5} cellHeight={80} padding={1} style={{"margin-bottom":"-40px"}}>
+      <GridList cols={5} cellHeight={80} padding={1} style={{"marginBottom":"-40px"}}>
         <GridTile></GridTile>
         <GridTile cols={4} >Add Date & Time for Training Sessions:
           <IconButton onTouchTap={() => fields.push({})}>
@@ -84,7 +84,7 @@ const renderTrainingSessions = ({fields, meta: {error, submitFailed}, submitTrai
                 />
             </GridTile>
           <GridTile>
-            <IconButton style={{"padding-top":"25px"}} onTouchTap={() => fields.remove(index)}>
+            <IconButton style={{"paddingTop":"25px"}} onTouchTap={() => fields.remove(index)}>
               <DeleteIcon />
             </IconButton>
           </GridTile>
@@ -124,7 +124,7 @@ class TrainingForm extends Component {
                    teams: trainingTeamsList,
                    adddress: FormAddress
                     }
-                 }).then(()=> notify.show('User Created', 'success')).then(()=>this.props.toggleTrainingForm()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>this.props.toggleTrainingForm()).then(()=> notify.show('User Created', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
    }
   }
 

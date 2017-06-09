@@ -20,7 +20,6 @@ export class CoachEventsList extends React.Component { // eslint-disable-line re
   }
 
   render() {
-    console.log('in coach team page----------');
       if (this.props.data.loading) {
     return (<div>Loading</div>)
   }

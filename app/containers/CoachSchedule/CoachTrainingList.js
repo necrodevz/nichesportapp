@@ -42,9 +42,8 @@ export class CoachTrainingList extends React.Component { // eslint-disable-line 
       >
       <TableRow>
         <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Training Session</TableHeaderColumn>
-        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Date</TableHeaderColumn>
-        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Time</TableHeaderColumn>
-        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Team</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Date & Time</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Teams</TableHeaderColumn>
         <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Location</TableHeaderColumn>
       </TableRow>
     </TableHeader>
@@ -59,15 +58,14 @@ export class CoachTrainingList extends React.Component { // eslint-disable-line 
         <TableRowColumn style={{textAlign: 'center'}}>
         {team.trainingDates.length > 0 ?
           team.trainingDates.map(trainingDate =>
-        <div key={trainingDate.id}>{trainingDate.date}</div>) : ''}
+        <div key={trainingDate.id}>{new Date(trainingDate.date.toString()).toString()}</div>) : ''}
         </TableRowColumn>
-         <TableRowColumn style={{textAlign: 'center'}}>
-        {team.trainingDates.length > 0 ?
-          team.trainingDates.map(trainingDate =>
-        <div key={trainingDate.id}>{trainingDate.date}</div>) : ''}
+        <TableRowColumn style={{textAlign: 'center'}}>
+        {team.trainingTeams.length > 0 ?
+          team.trainingTeams.map(trainingTeam =>
+        <div key={team.id+trainingTeam.team.id+Math.random()*100000}>{trainingTeam.team.name}</div>) : 'Not Available'}
         </TableRowColumn>
-        <TableRowColumn style={{textAlign: 'center'}}>{team.address}</TableRowColumn>
-        <TableRowColumn style={{textAlign: 'center'}}>{team.address}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{team.address ? team.address : 'Not Available'}</TableRowColumn>
 
 
       </TableRow>
