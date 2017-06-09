@@ -24,12 +24,10 @@ import gql from 'graphql-tag'
 import Notifications, {notify} from 'react-notify-toast';
 import {GridList, GridTile} from 'material-ui/GridList';
 
-
-var userID = localStorage.getItem('userID');
 const errors = {}
 
 var age = [{"id": 1, "value": "Under 15"}, {"id": 2, "value": "Under 18"}, {"id": 3, "value": "20+"}];
-var players = [{"id": 1, "value": "Jhon"}, {"id": 2, "value": "Marko"}, {"id": 3, "value": "Feder"}];
+
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);
 
@@ -49,15 +47,14 @@ class TeamForm extends Component {
   }
 
   submitTeamForm = async () => {
-    //const {description, imageUrl} = this.state
     await this.props.createTeam({variables: {name: this.props.TeamName,
                     ageGroup: this.props.AgeGroup,
-                   instituteId: 'cj32wbdg7mg3a01460zdkcxoi',
+                   instituteId: this.props.instituteId,
                    teamSport: this.props.TeamSport,
                    playerCount: parseInt(this.props.PlayersCount),
                    teamCoach: this.props.TeamCoach
                     }
-                 })
+                 }).then(()=>location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   componentWillMount() {
@@ -69,6 +66,7 @@ class TeamForm extends Component {
     const {loading, error, repos, handleSubmit, pristine, reset, submitting} = this.props;
     return (
       <form onSubmit={handleSubmit}>
+      <Notifications/>
       <GridList cols={2} cellHeight={80} padding={1}>
         <GridTile>
           <Field
@@ -125,6 +123,7 @@ class TeamForm extends Component {
                             name="team_coach"
                             component={SelectField}
                             style={{"textAlign":"left"}}
+                            maxHeight={200}
                             hintText="Assign Coach"
                             floatingLabelText="Assign Coach"
                             validate={required}
@@ -148,7 +147,7 @@ class TeamForm extends Component {
   }
 }
 
-const selector = formValueSelector('team_form');
+const selector = formValueSelector('teamForm');
 
 TeamForm = connect(state => ({
   TeamName: selector(state, 'team_name'),
@@ -159,7 +158,7 @@ TeamForm = connect(state => ({
 }))(TeamForm);
 
 TeamForm = reduxForm({
-  form: 'team_form',
+  form: 'teamForm',
   validate
 })(TeamForm);
 
@@ -184,8 +183,8 @@ const addMutation = gql`
   }
   }
 `
-const GetCoachListQuery = gql`query GetCoachListQuery {
-  allCoaches(filter: {institute: {id: "cj32wbdg7mg3a01460zdkcxoi"}}) {
+const GetCoachListQuery = gql`query GetCoachListQuery ($instituteId: ID!) {
+  allCoaches(filter: {institute: {id: $instituteId}}) {
     id
     user { id email firstName lastName }
   }
@@ -200,7 +199,13 @@ const GetSportsQuery = gql`query GetSportsQuery {
 
 const TeamFormMutation = compose(
   graphql(addMutation, {name: 'createTeam'}),
-  graphql(GetCoachListQuery, {name: 'CoachList'}),
+  graphql(GetCoachListQuery, {name: 'CoachList'}, {
+  options: (props) => ({
+      variables: {
+        instituteId: props.instituteId
+      }
+    })
+  }),
   graphql(GetSportsQuery, {name: 'SportsList'})
 )(TeamForm)
 

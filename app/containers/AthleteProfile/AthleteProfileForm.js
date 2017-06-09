@@ -133,7 +133,7 @@ class AthleteProfileForm extends Component {
 
     const { pristine, reset, submitting, sportsList, userData } = this.props;
     return (
-      <form style={{"margin-bottom":"40px"}}>
+      <form style={{"marginBottom":"40px"}}>
       <ProfilePictureUpload />
       <GridList cols={5} cellHeight={80} padding={1}>
         <GridTile></GridTile>

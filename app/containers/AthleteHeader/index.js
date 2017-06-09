@@ -50,12 +50,12 @@ export class AthleteHeader extends React.Component { // eslint-disable-line reac
       <div>
         {data.allNotifications ?
           <div>
-            <Avatar style={{"margin-top":"-15px"}} size={40} src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Kapil_Dev_at_Equation_sports_auction.jpg" />
+            <Avatar style={{"marginTop":"-15px"}} size={40} src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Kapil_Dev_at_Equation_sports_auction.jpg" />
             <Badge
               badgeContent={data.allNotifications.length}
               secondary={true}
               badgeStyle={{top: 20, right: 25}}
-              style={{"margin-right":"-40px"}}
+              style={{"marginRight":"-40px"}}
             >
           <IconMenu maxHeight={200} autoWidth={true} iconButtonElement={
                 <IconButton><NotificationsIcon /></IconButton>

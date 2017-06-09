@@ -72,14 +72,14 @@ export class TeamDetailModal extends React.Component { // eslint-disable-line re
         <GridTile>{activeTeam.name}</GridTile>
         <GridTile></GridTile>
         <GridTile>
-          <RaisedButton label="Invite More Athlete" style={{"float": "right","margin-top": "10px","margin-right": "10px"}} onTouchTap={() => this.toggleInviteDialog(this.state.showInvitationDialog, activeTeam.id)} primary={true} />
+          <RaisedButton label="Invite More Athlete" style={{"float": "right","marginTop": "10px","marginRight": "10px"}} onTouchTap={() => this.toggleInviteDialog(this.state.showInvitationDialog, activeTeam.id)} primary={true} />
         </GridTile>
       </GridList>
       <GridList cols={4} cellHeight={50} padding={1} >
         <GridTile><b>Age Group:</b></GridTile>
         <GridTile>{activeTeam.ageGroup}</GridTile>
         <GridTile></GridTile>
-        <GridTile><RaisedButton label="Back" style={{"float": "right","margin-top": "10px","margin-right": "10px"}} primary={true} /></GridTile>
+        <GridTile><RaisedButton label="Back" style={{"float": "right","marginTop": "10px","marginRight": "10px"}} primary={true} /></GridTile>
       </GridList>
       <GridList cols={4} cellHeight={50} padding={1}>
         <GridTile><b>Sport:</b></GridTile>

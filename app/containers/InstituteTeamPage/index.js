@@ -70,11 +70,11 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
                 open={this.state.showTeamForm}
                 onRequestClose={()=>this.toggleTeamForm(this.state.showTeamForm)}
               >
-                <TeamForm showTeamForm={this.state.showTeamForm} toggleTeamForm={this.toggleTeamForm}/>
+                <TeamForm instituteId={this.props.instituteId} showTeamForm={this.state.showTeamForm} toggleTeamForm={this.toggleTeamForm}/>
             </Dialog>
-          : <RaisedButton  label="Create Team" style={{"float": "right","margin-top": "10px","margin-right": "10px"}} onClick={() => this.toggleTeamForm(this.state.showTeamForm)} primary={true} />}
+          : <RaisedButton  label="Create Team" style={{"float": "right","marginTop": "10px","marginRight": "10px"}} onClick={() => this.toggleTeamForm(this.state.showTeamForm)} primary={true} />}
         </div>
-        <div style={{"float": "left","margin-left": "50px","margin-right": "50px","margin-bottom": "50px"}}>
+        <div style={{"float": "left","marginLeft": "50px","marginRight": "50px","marginBottom": "50px"}}>
         <Table
           height={"350px"}
           fixedHeader={true}

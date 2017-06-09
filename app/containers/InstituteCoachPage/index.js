@@ -69,9 +69,9 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
           >
             <CoachForm instituteId={this.props.userID} showCoachForm={this.state.showCoachForm} toggleCoachForm={this.toggleCoachForm}/>
         </Dialog>
-       : <RaisedButton label="Create Coach" style={{"float": "right","margin-top": "10px","margin-right": "10px"}} onClick={() => this.toggleCoachForm(this.state.showCoachForm)} primary={true} />}
+       : <RaisedButton label="Create Coach" style={{"float": "right","marginTop": "10px","marginRight": "10px"}} onClick={() => this.toggleCoachForm(this.state.showCoachForm)} primary={true} />}
       </div>  
-      <div style={{"float": "left","margin-left": "50px","margin-right": "50px","margin-bottom": "50px"}}>
+      <div style={{"float": "left","marginLeft": "50px","marginRight": "50px","marginBottom": "50px"}}>
         <Table
           height={"350px"}
           fixedHeader={true}

@@ -61,7 +61,7 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
             badgeContent={data.allNotifications.length}
             secondary={true}
             badgeStyle={{top: 20, right: 25}}
-            style={{"margin-right":"-40px"}}
+            style={{"marginRight":"-40px"}}
           >
           <IconMenu maxHeight={200} autoWidth={true} iconButtonElement={
                 <IconButton><NotificationsIcon /></IconButton>
