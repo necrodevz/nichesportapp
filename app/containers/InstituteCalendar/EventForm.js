@@ -129,7 +129,7 @@ class EventForm extends Component {
       </GridList>
       <GridList cols={1} cellHeight={80} padding={1}>
         <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
-          <RaisedButton style={{"margin-right":"15px"}} label="Submit" disabled={submitting} onClick={()=>this.submitEventForm()} primary={true} />
+          <RaisedButton style={{"marginRight":"15px"}} label="Submit" disabled={submitting} onClick={()=>this.submitEventForm()} primary={true} />
         </GridTile>
       </GridList>
       </form>

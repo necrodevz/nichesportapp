@@ -55,7 +55,7 @@ export class InstituteCalendar extends React.PureComponent { // eslint-disable-l
               >
                 <EventForm showEventForm={this.state.showEventForm} toggleEventForm={this.toggleEventForm}/> 
             </Dialog>
-            : <RaisedButton style={{"float": "right","margin-top": "10px","margin-right": "10px"}} label="Add New Event" onClick={() => this.toggleEventForm(this.state.showEventForm)} primary={true} />}
+            : <RaisedButton style={{"float": "right","marginTop": "10px","marginRight": "10px"}} label="Add New Event" onClick={() => this.toggleEventForm(this.state.showEventForm)} primary={true} />}
         </div>
       </div>
     );

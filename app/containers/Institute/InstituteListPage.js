@@ -53,7 +53,7 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
     return (
       <div>
         <div>
-          <RaisedButton style={{"float": "right","margin-top": "10px","margin-right": "10px"}} label="Add New Institute" onClick={() => this.toggleInstituteForm(this.state.showInstituteForm)} primary={true} />
+          <RaisedButton style={{"float": "right","marginTop": "10px","marginRight": "10px"}} label="Add New Institute" onClick={() => this.toggleInstituteForm(this.state.showInstituteForm)} primary={true} />
           <Dialog
               title="Add Institute"
               autoScrollBodyContent={true}
@@ -66,7 +66,7 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
               <InstituteForm toggleInstituteForm={this.toggleInstituteForm}/>
           </Dialog>
         </div>
-        <div style={{"float": "left","margin-left": "50px","margin-right": "50px","margin-bottom": "50px"}}>
+        <div style={{"float": "left","marginLeft": "50px","marginRight": "50px","marginBottom": "50px"}}>
            <Table 
             height={"350px"}
             fixedHeader={true}

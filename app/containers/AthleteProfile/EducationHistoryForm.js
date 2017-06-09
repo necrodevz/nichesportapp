@@ -61,7 +61,7 @@ import {GridList, GridTile} from 'material-ui/GridList';
 const renderEducationHistory = ({fields, meta: {error, submitFailed}, SportsList, InstitutesList, submitEducationHistoryForm}) => (
   
   <div>
-      <GridList cols={5} cellHeight={80} padding={1} style={{"margin-bottom":"-40px"}}>
+      <GridList cols={5} cellHeight={80} padding={1} style={{"marginBottom":"-40px"}}>
         <GridTile></GridTile>
         <GridTile cols={4} >If users have participated in sports, they have to enter following info:
           <IconButton onTouchTap={() => fields.push({})}>

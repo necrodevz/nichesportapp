@@ -35,7 +35,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     localStorage.setItem('role', this.props.data.user.role);
     this.props.data.user.role == 'ADMIN' ? this.props.GoToAdminDashboard(this.props.data.user.role) : '';
     this.props.data.user.role == 'ATHLETE' ? this.props.GoToAthleteDashboard(this.props.data.user.role) : '';
-    this.props.data.user.role == 'OWNER' ? this.props.GoToInstituteDashboard(this.props.data.user.role) : '';
+    this.props.data.user.role == 'OWNER' ? this.props.GoToInstituteDashboard(this.props.data) : '';
     this.props.data.user.role == 'COACH' ? this.props.GoToCoachDashboard(this.props.data.user.role) : '';
   }
 
@@ -76,7 +76,7 @@ HomePage.propTypes = {
 export function mapDispatchToProps(dispatch) {
   return {
     GoToAdminDashboard: (role) => dispatch((push({pathname: `/adminDashboard`, state: {role: role}}))),
-    GoToInstituteDashboard: (role) => dispatch((push({pathname: `/instituteDashboard`, state: {role: role}}))),
+    GoToInstituteDashboard: (data) => dispatch((push({pathname: `/instituteDashboard`, state: {role: data.user ? data.user.role : '', instituteId: data.user ? data.user.instituteOwner.id : '' }}))),
     GoToAthleteDashboard: (role) => dispatch((push({pathname: `/athleteDashboard`, state: {role: role}}))),
     GoToCoachDashboard: (role) => dispatch((push({pathname: `/coachDashboard`, state: {role: role}})))
   };
@@ -84,7 +84,9 @@ export function mapDispatchToProps(dispatch) {
 
 const UserQuery = gql`query UserQuery {
    user { id email firstName lastName role mobileNumber address profileImage bio nationality country timeZone dob gender height weight
-    isActive isFirstTimeLogin mobileVerified emailVerified messageCount notificationCount
+    isActive isFirstTimeLogin mobileVerified emailVerified messageCount notificationCount instituteOwner {
+      id
+    }
   }
 }`
 

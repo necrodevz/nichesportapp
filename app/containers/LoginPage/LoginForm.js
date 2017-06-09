@@ -88,7 +88,7 @@ class LoginForm extends Component {
       </GridList>
       <GridList cols={1} cellHeight={110} padding={1}>
         <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
-          <RaisedButton style={{"margin-right":"20px"}} label="Submit" onClick={()=>this.submitLoginForm()} disabled={errors.email != null || errors.password != null} primary={true} />
+          <RaisedButton style={{"marginRight":"20px"}} label="Submit" onClick={()=>this.submitLoginForm()} disabled={errors.email != null || errors.password != null} primary={true} />
         </GridTile>
       </GridList>
       </form>

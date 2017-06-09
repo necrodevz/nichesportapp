@@ -22,13 +22,13 @@ export class InstituteDashboard extends React.PureComponent { // eslint-disable-
         <MuiThemeProvider>
           <Tabs>
             <Tab label="Team" >
-              <InstituteTeamPage/>
+              <InstituteTeamPage instituteId={this.props.location.state.instituteId}/>
             </Tab>
             <Tab label="Calendar/Schedule" >
-              <InstituteCalendar />
+              <InstituteCalendar instituteId={this.props.location.state.instituteId}/>
             </Tab>
             <Tab label="Coach" >
-              <InstituteCoachPage />
+              <InstituteCoachPage instituteId={this.props.location.state.instituteId}/>
             </Tab>
             <Tab label="Search" >
             <div style={{"float": "left","height":"400px"}}>Search Page</div>

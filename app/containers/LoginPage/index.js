@@ -41,7 +41,7 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
   render() {
      const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
-      <div style={{"margin-top":"50px","margin-botton":"30px"}}>
+      <div style={{"marginTop":"50px","marginBotton":"30px"}}>
         <MuiThemeProvider>
           <div style={{"width": "35%","margin":"auto"}}>
             <Tabs >

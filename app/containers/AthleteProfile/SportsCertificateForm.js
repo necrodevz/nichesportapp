@@ -24,7 +24,7 @@ import {GridList, GridTile} from 'material-ui/GridList';
 
 const renderSportsCertificate = ({fields, athleteSports, meta: {error, submitFailed}, SportsList, submitSportsCertificateForm}) => (
   <div>
-    <GridList cols={5} cellHeight={80} padding={1} style={{"margin-bottom":"-40px"}}>
+    <GridList cols={5} cellHeight={80} padding={1} style={{"marginBottom":"-40px"}}>
       <GridTile></GridTile>
       <GridTile cols={4} >Upload multiple certificates:
         <IconButton onTouchTap={() => fields.push({})}>
