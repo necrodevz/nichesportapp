@@ -45,7 +45,7 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
         onTouchTap={()=>this.toggleCoachForm(this.state.showCoachForm)}
       />
     ];
-    
+
       if (this.props.data.loading) {
     return (<div>Loading</div>)
   }
@@ -67,10 +67,10 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
             open={this.state.showCoachForm}
             onRequestClose={()=>this.toggleCoachForm(this.state.showCoachForm)}
           >
-            <CoachForm instituteId={this.props.userID} showCoachForm={this.state.showCoachForm} toggleCoachForm={this.toggleCoachForm}/>
+            <CoachForm instituteId={this.props.instituteId} showCoachForm={this.state.showCoachForm} toggleCoachForm={this.toggleCoachForm}/>
         </Dialog>
        : <RaisedButton label="Create Coach" style={{"float": "right","marginTop": "10px","marginRight": "10px"}} onClick={() => this.toggleCoachForm(this.state.showCoachForm)} primary={true} />}
-      </div>  
+      </div>
       <div style={{"float": "left","marginLeft": "50px","marginRight": "50px","marginBottom": "50px"}}>
         <Table
           height={"350px"}
@@ -78,7 +78,7 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
           selectable={false}
           multiSelectable={false}>
           >
-        <TableHeader 
+        <TableHeader
           displaySelectAll={false}
           adjustForCheckbox={false}
           enableSelectAll={false}
@@ -90,7 +90,7 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
             <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Last Name</TableHeaderColumn>
           </TableRow>
         </TableHeader>
-        <TableBody 
+        <TableBody
           displayRowCheckbox={false}
           deselectOnClickaway={false}
           showRowHover={true}
