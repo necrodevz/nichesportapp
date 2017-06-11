@@ -54,19 +54,19 @@ class CoachForm extends Component {
   }
 
    submitCoachForm = async () => {
-    console.log("erorrrr",errors)
     await this.props.createCoach({variables: {firstName: this.props.FirstName,
                     lastName: this.props.LastName,
                     email: this.props.Email,
-                    instituteId: userID, 
+                    instituteId: this.props.instituteId,
                    password: this.props.Password }
-                 }).then(()=>location.reload()).catch((res)=>alert(JSON.stringify(res.message)))
+                 }).then(()=>location.reload()).then(()=>notify.show('Coach Created Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   render() {
     const {loading, error, repos, handleSubmit, pristine, reset, submitting} = this.props;
     return (
       <form onSubmit={handleSubmit}>
+      <Notifications />
       <GridList cols={2} cellHeight={80} padding={1}>
         <GridTile>
           <Field
@@ -147,8 +147,8 @@ CoachForm.propTypes = {
 };
 
 const createCoachMutation = gql`
-  mutation createCoach ($firstName: String!, $lastName: String!, $email: String!, $password: String!) {
-    createUser(authProvider: {email: {email: $email, password: $password}}, firstName: $firstName, lastName: $lastName, role: COACH, coach: {instituteId: "cj32wbdg7mg3a01460zdkcxoi"}) {
+  mutation createCoach ($firstName: String!, $lastName: String!, $email: String!, $password: String!, $instituteId: ID!) {
+    createUser(authProvider: {email: {email: $email, password: $password}}, firstName: $firstName, lastName: $lastName, role: COACH, coach: {instituteId: $instituteId}) {
     id
   }
   }
