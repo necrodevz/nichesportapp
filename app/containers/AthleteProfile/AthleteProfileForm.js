@@ -96,7 +96,7 @@ class AthleteProfileForm extends Component {
                     weight: parseInt(this.props.weight),
                     bio: this.props.bio
                      }
-                 }).then(()=>console.log('form submitted------'))
+                 }).then(()=>notify.show('Profile Saved Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   submitAthleteEducationForm = async () => {
@@ -109,7 +109,7 @@ class AthleteProfileForm extends Component {
                     highSchoolUniversity: this.props.highSchoolUniversity,
                     highSchoolYear: parseInt(this.props.highSchoolYear)
                      }
-                 }).then(()=>console.log('form submitted------'))
+                 }).then(()=>notify.show('Education History Saved Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   submitSportForm = async () => {
@@ -117,15 +117,15 @@ class AthleteProfileForm extends Component {
                     practiceYear: this.props.practiceYear,
                     athleteId: this.props.userData.athlete.id,
                      }
-                 }).then(()=>console.log('form submitted------'))
+                 }).then(()=>notify.show('Sports History Saved Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
-  
+
   componentDidMount() {
     const { userData } = this.props;
     this.props.initialize({firstName: userData.firstName, lastName: userData.lastName, email: userData.email,
      country: userData.country, dob: new Date(userData.dob), gender: userData.gender, address: userData.address,
-      mobileNumber: userData.mobileNumber, timezone: userData.timeZone, height: userData.height, weight: userData.weight, bio: userData.bio, 
-      graduationName: userData.athlete.graduation, graduationProgramLength: userData.athlete.graduationProgramLength, 
+      mobileNumber: userData.mobileNumber, timezone: userData.timeZone, height: userData.height, weight: userData.weight, bio: userData.bio,
+      graduationName: userData.athlete.graduation, graduationProgramLength: userData.athlete.graduationProgramLength,
       graduationUniversity: userData.athlete.graduationUniversity, graduationYear: userData.athlete.graduationYear,
       highSchoolName: userData.athlete.hightSchool, highSchoolUniversity: userData.athlete.hightSchoolUniversity, highSchoolYear: userData.athlete.hightSchoolYear })
   }
@@ -134,6 +134,7 @@ class AthleteProfileForm extends Component {
     const { pristine, reset, submitting, sportsList, userData } = this.props;
     return (
       <form style={{"marginBottom":"40px"}}>
+      <Notifications />
       <ProfilePictureUpload />
       <GridList cols={5} cellHeight={80} padding={1}>
         <GridTile></GridTile>
@@ -393,7 +394,7 @@ class AthleteProfileForm extends Component {
         <GridTile>
           <H3>Main Sports
             <IconButton><EditIcon /></IconButton>
-          </H3>    
+          </H3>
         </GridTile>
       </GridList>
       <GridList cols={5} cellHeight={80} padding={1}>
@@ -439,7 +440,7 @@ AthleteProfileForm = reduxForm({
   validate
 })(AthleteProfileForm);
 
-AthleteProfileForm = connect((state, ownProps) => ({  
+AthleteProfileForm = connect((state, ownProps) => ({
   firstName: selector(state, 'firstName'),
   lastName: selector(state, 'lastName'),
   email: selector(state, 'email'),

@@ -28,6 +28,7 @@ import gql from 'graphql-tag'
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import Paper from 'material-ui/Paper';
 var _ = require('lodash');
+import Notifications, {notify} from 'react-notify-toast';
 
 const style = {
   height: 300,
@@ -42,7 +43,7 @@ const errors = {}
 const required = value => (value == null ? 'Required' : undefined);
 // validation functions
 const validate = values => {
-  
+
   errors.search_team = required(values.search_team)
   return errors
 }
@@ -76,12 +77,12 @@ class ApplyTeamForm extends Component {
     await this.props.applyTeam({variables: {athleteId: this.props.userData.athlete.id,
                 athleteMessage: this.props.athleteMessage,
                 teamId: this.props.TeamsList.allTeams[index].id}
-                 }).then(()=>this.props.TeamsList)
+              }).then(()=>this.props.TeamsList).then(()=>notify.show('Applied Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   render() {
-    
-    if(this.props.TeamsList.allTeams && teamNames.length === 0){ 
+
+    if(this.props.TeamsList.allTeams && teamNames.length === 0){
     for(var index = 0; index < this.props.TeamsList.allTeams.length; index++)
       {teamNames.push(this.props.TeamsList.allTeams[index].name)}
     }
@@ -90,6 +91,7 @@ class ApplyTeamForm extends Component {
     return (
       <CenteredSection>
       <H2>
+      <Notifications />
       <form onSubmit={handleSubmit}>
         <div>
           <Field
@@ -121,10 +123,10 @@ class ApplyTeamForm extends Component {
          <br/>
          <div>No. of Players: {team.totalNumberOfAthelets}</div>
          <br/>
-         <div>Coach: {team.coach.firstName} {team.coach.lastName}</div>
+         <div>Coach: {team.coach.user.firstName} {team.coach.user.lastName}</div>
         </h4>
         <div>
-        <RaisedButton label="Apply" disabled={team.atheletTeams.length > 0 ? (team.atheletTeams[0].status == 'COACHPENDING' || team.atheletTeams[0].status == 'ATHELETPENDING'  ? true : false) : false} onTouchTap={()=>this.applyTeam(index)} primary={true} />
+        <RaisedButton label="Apply" disabled={team.atheletTeams.length > 0 ? (team.atheletTeams[0].status == 'COACHPENDING' || 'APPROVEDBYCOACH' || 'ATHELETPENDING' || 'APPROVEDBYATHLETE'  ? true : false) : false} onTouchTap={()=>this.applyTeam(index)} primary={true} />
         </div>
       </Paper>)) : ''}
 
@@ -138,7 +140,7 @@ class ApplyTeamForm extends Component {
          <br/>
          <div>No. of Players: {team.totalNumberOfAthelets}</div>
          <br/>
-         <div>Coach: {team.coach.firstName} {team.coach.lastName}</div>
+         <div>Coach: {team.coach.user.firstName} {team.coach.user.lastName}</div>
         </h4>
         <div>
         <RaisedButton label="Apply" disabled={team.atheletTeams.length > 0 ? (team.atheletTeams[0].status == 'COACHPENDING' || team.atheletTeams[0].status == 'ATHELETPENDING'  ? true : false) : false} onTouchTap={()=>this.applyTeam(index)} primary={true} />
@@ -197,4 +199,3 @@ const ApplyTeamFormMutation = compose(
 )(ApplyTeamForm)
 
 export default ApplyTeamFormMutation;
-
