@@ -30,7 +30,7 @@ export class CoachDashboard extends React.PureComponent { // eslint-disable-line
               <CoachSchedule coachProfile={this.props.data.user} />
             </Tab>
             <Tab label="Video" >
-              <CoachVideo />
+              <CoachVideo userId={userId} />
             </Tab>
             <Tab label="Search" >
               <CoachSearch />
