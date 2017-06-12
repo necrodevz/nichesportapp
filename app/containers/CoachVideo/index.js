@@ -4,26 +4,17 @@
  *
  */
 
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
-import {RadioButton} from 'material-ui/RadioButton';
+import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
-
 import H2 from 'components/H2';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import SelectField from 'material-ui/SelectField';
-
 import RaisedButton from 'material-ui/RaisedButton'
-import { withApollo } from 'react-apollo';
 import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql, compose } from 'react-apollo'
 import IconButton from 'material-ui/IconButton';
 import gql from 'graphql-tag'
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import Paper from 'material-ui/Paper';
-import { Link } from 'react-router'
-import Notifications, {notify} from 'react-notify-toast';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import AddVideoForm from './AddVideoForm'
@@ -95,7 +86,6 @@ export class CoachVideo extends React.Component { // eslint-disable-line react/p
     return (
       <CenteredSection>
       <H2>
-      <Notifications />
       <Dialog
                 title="Add Video"
                 autoScrollBodyContent={true}
@@ -105,7 +95,7 @@ export class CoachVideo extends React.Component { // eslint-disable-line react/p
                 open={this.state.showVideoForm}
                 onRequestClose={()=>this.toggleVideoForm(this.state.showVideoForm)}
               >
-                <AddVideoForm userId={this.props.userId} showVideoForm={this.state.showVideoForm} toggleVideoForm={(value)=>this.toggleVideoForm(value)}/>
+                <AddVideoForm videoTypeList={videoTypeList} userId={this.props.userId} toggleVideoForm={(value)=>this.toggleVideoForm(value)}/>
       </Dialog>
       <form onSubmit={handleSubmit}>
         <div>
@@ -178,16 +168,6 @@ const getAllVideos = gql`query getAllVideos($userId: ID) {
   }
 }`
 
-const selector = formValueSelector('searchVideoForm');
-
-CoachVideo = connect(state => ({
-  searchText: selector(state, 'searchVideo')
-}))(CoachVideo);
-
-CoachVideo = reduxForm({
-  form: 'searchVideoForm',
-  validate
-})(CoachVideo);
 
 const CoachVideoMutation = compose(
   graphql(getAllVideos, { name: 'VideosList' }, {

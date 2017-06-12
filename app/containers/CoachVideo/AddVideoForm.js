@@ -26,7 +26,6 @@ import {GridList, GridTile} from 'material-ui/GridList';
 import Dropzone from 'react-dropzone';
 
 var videoPrivacyList = [{"id": 1, "value": "PUBLIC"}, {"id": 2, "value": "PRIVATE"}];
-var videoTypeList = [{"id": 1, "value": "GAME"} , {"id": 2, "value": "PRACTICE"}, {"id": 3, "value": "SCOUT"}, {"id": 4, "value": "PLAYLIST"}];
 
 const errors = {}
 
@@ -130,7 +129,7 @@ class AddVideo extends Component {
             floatingLabelText="Video Type"
             validate={required}
           >
-            {videoTypeList.map(type => (<MenuItem value={type.value} primaryText={type.value} key={type.id} />))}
+            {this.props.videoTypeList ? this.props.videoTypeList.map(type => (<MenuItem value={type.value} primaryText={type.value} key={type.id} />)) : ''}
           </Field>
         </GridTile>
       </GridList>
