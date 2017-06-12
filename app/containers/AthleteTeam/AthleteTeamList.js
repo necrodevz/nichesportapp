@@ -83,12 +83,12 @@ class AthleteTeamList extends React.Component { // eslint-disable-line react/pre
 }
 
 
-const MyTeamsQuery = gql`query MyTeamsQuery {
+const MyTeamsQuery = gql`query MyTeamsQuery ($userId: ID) {
   allTeams(filter: {
     atheletTeams_some: {
       athlete: {
         user:{
-          id:"cj32xcep62o910192e8cgl23s"
+          id: $userId
         }
       }
     }
@@ -109,6 +109,11 @@ const MyTeamsQuery = gql`query MyTeamsQuery {
   }
 }`
 
-const InstituteData = graphql(MyTeamsQuery)(AthleteTeamList);
+const InstituteData = graphql(MyTeamsQuery, {
+  options: (props) => ({
+      variables: {
+        userId: props.userId   }
+    })
+  })(AthleteTeamList);
 
 export default InstituteData;

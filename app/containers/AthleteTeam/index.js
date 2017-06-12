@@ -13,6 +13,8 @@ import ApplyTeamForm from './ApplyTeamForm'
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
+var userId = localStorage.getItem('userID');
+
 export class AthleteTeam extends React.Component { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
     data: React.PropTypes.shape({
@@ -27,7 +29,7 @@ export class AthleteTeam extends React.Component { // eslint-disable-line react/
       <MuiThemeProvider>
           <Tabs>
             <Tab label="My Team" >
-              <AthleteTeamList />
+              <AthleteTeamList userId={userId} />
             </Tab>
             <Tab label="Apply for Team" >
               <ApplyTeamForm userData={this.props.data.user}/>
