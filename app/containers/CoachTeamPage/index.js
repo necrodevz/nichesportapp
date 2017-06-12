@@ -53,11 +53,17 @@ export class CoachTeamPage extends React.Component { // eslint-disable-line reac
   }
     return (
       <div>
-        {this.state.showTeamDetailDialog ? 
-        <div>
+        <Dialog
+          title="Team Details"
+          autoScrollBodyContent={true}
+          actions={actions}
+          modal={false}
+          autoDetectWindowHeight={true}
+          open={this.state.showTeamDetailDialog}
+          onRequestClose={()=>this.toggleTeamDetailDialog(this.state.showTeamDetailDialog)}
+        >
           <TeamDetailModal activeTeam={this.props.TeamsList.allTeams[this.state.activeIndex]} />
-        </div>
-        :
+        </Dialog>
         <div style={{"margin":"50px"}}>
            <Table
               height={"350px"}
@@ -100,7 +106,7 @@ export class CoachTeamPage extends React.Component { // eslint-disable-line reac
             </TableBody>
           </Table>
         </div>
-        }
+        
       </div>
     );
   }

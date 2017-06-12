@@ -79,7 +79,6 @@ export class TeamDetailModal extends React.Component { // eslint-disable-line re
         <GridTile><b>Age Group:</b></GridTile>
         <GridTile>{activeTeam.ageGroup}</GridTile>
         <GridTile></GridTile>
-        <GridTile><RaisedButton label="Back" style={{"float": "right","marginTop": "10px","marginRight": "10px"}} primary={true} /></GridTile>
       </GridList>
       <GridList cols={4} cellHeight={50} padding={1}>
         <GridTile><b>Sport:</b></GridTile>
@@ -110,7 +109,6 @@ export class TeamDetailModal extends React.Component { // eslint-disable-line re
                 <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>ID</TableHeaderColumn>
                 <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Name</TableHeaderColumn>
                 <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Email</TableHeaderColumn>
-                <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Invite</TableHeaderColumn>
                 <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Athlete Status</TableHeaderColumn>
               </TableRow>
             </TableHeader>

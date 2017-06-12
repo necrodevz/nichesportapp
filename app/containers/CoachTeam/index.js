@@ -10,7 +10,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import CoachTeamPage from '../../containers/CoachTeamPage';
 import CoachInvitePage from '../../containers/CoachInvitePage';
-import InviteTeamForm from './InviteTeamForm'
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
