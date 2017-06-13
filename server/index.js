@@ -10,18 +10,6 @@ const ngrok = (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel ? require('ngr
 const resolve = require('path').resolve;
 const app = express();
 
-require("appdynamics").profile({
- controllerHostName: 'paid134.saas.appdynamics.com',
- controllerPort: 443,
- 
- // If SSL, be sure to enable the next line
- controllerSslEnabled: true,
- accountName: 'nichesportsappdev-5012',
- accountAccessKey: 'rhqx8b4nqoqg',
- applicationName: 'nicheappdev',
- tierName: 'develop',
- nodeName: 'process' // The controller will automatically append the node name with a unique number
-});
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
