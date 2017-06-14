@@ -26,7 +26,6 @@ import FlatButton from 'material-ui/FlatButton';
 import localizer from 'react-big-calendar/lib/localizers/globalize';
 import globalize from 'globalize';
 import BigCalendar from 'react-big-calendar';
-import events from './events';
 require('react-big-calendar/lib/css/react-big-calendar.css');
 import Snackbar from 'material-ui/Snackbar';
 //import 'react-big-calendar/lib/less/styles.less';
