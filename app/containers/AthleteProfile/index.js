@@ -10,7 +10,6 @@ import H2 from 'components/H2';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-import FontIcon from 'material-ui/FontIcon';
 import AthleteProfileForm from './AthleteProfileForm';
 
 export class AthleteProfile extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -30,18 +29,14 @@ export class AthleteProfile extends React.Component { // eslint-disable-line rea
   }
 
   render() {
-     if (this.props.data.loading) {
-    return (<div>Loading</div>)
-  }
+    if (this.props.data.loading) {
+      return (<div>Loading</div>)
+    }
 
-  if (this.props.data.error) {
-    console.log(this.props.data.error)
-    return (<div>An unexpected error occurred</div>)
-  }
-
-  const initialValues={athlete_first_name: 'Jhon' };
-
-  this.props.data.user ? console.log('data------', this.props.data.user) : '';
+    if (this.props.data.error) {
+      console.log(this.props.data.error)
+      return (<div>An unexpected error occurred</div>)
+    }
 
     return (
       <section style={{"marginLeft":"30px"}}>
@@ -51,18 +46,6 @@ export class AthleteProfile extends React.Component { // eslint-disable-line rea
     );
   }
 }
-
-AthleteProfile.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
-AthleteProfile.propTypes = {
-  loading: React.PropTypes.bool,
-  error: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-  ])
-};
 
 const athleteQuery = gql`query athleteQuery {
    user { id firstName lastName email country dob profileImage gender address timeZone mobileNumber height weight bio createdAt

@@ -23,21 +23,26 @@ import countryList from 'components/countryList'
 import timezoneList from 'components/timezoneList'
 import PublishIcon from 'material-ui/svg-icons/editor/publish';
 import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
+
 import PlusIcon from 'material-ui/svg-icons/social/plus-one';
 import Avatar from 'material-ui/Avatar'
 import Notifications, {notify} from 'react-notify-toast';
 import EducationHistoryForm from './EducationHistoryForm';
 import SportsCertificateForm from './SportsCertificateForm';
-import ProfilePictureUpload from './ProfilePictureUpload';
+//import ProfilePictureUpload from './ProfilePictureUpload';
 import {GridList, GridTile} from 'material-ui/GridList';
+import Dropzone from 'react-dropzone';
+import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 
-var ReactS3Uploader = require('react-s3-uploader');
+//var ReactS3Uploader = require('react-s3-uploader');
 
 var userId = localStorage.getItem('userID');
 
 var genders = [{"id": 1, "value": "Male"}, {"id": 2, "value": "Female"}, {"id": 3, "value": "Other"}];
 // validation functions
-const errors = {}
+const errors = {};
+
+const style = {margin: 5};
 
 const required = value => (value == null ? 'Required' : undefined);
 const email = value =>
@@ -76,15 +81,40 @@ class AthleteProfileForm extends Component {
 
   constructor(props) {
     super(props);
+    this.deleteProfileImage = this.deleteProfileImage.bind(this);
     this.state={
+      imageUrl: this.props.userData ? this.props.userData.profileImage : '',
+      imageId: '',
       athleteSports: this.props.userData.athlete.athleteSports
     }
   }
 
+  onDrop = (files) => {
+    // prepare form data, use data key!
+    let data = new FormData()
+    data.append('data', files[0])
+
+    // use the file endpoint
+    fetch('https://api.graph.cool/file/v1/cj32ti8u8khzz0122jd4cwzh6', {
+      method: 'POST',
+      body: data
+    }).then(response => {
+      return response.json()
+    }).then(image => {
+      this.setState({
+        imageId: image.id,
+        imageUrl: image.url,
+      })
+    })
+    notify.show('Profile Picture Added Successfully', 'success')
+  }
+
    submitAthleteProfileForm = async () => {
+    const {imageUrl, imageId} = this.state
     await this.props.updateUser({variables: {firstName: this.props.firstName,
                     lastName: this.props.lastName,
                     userId: userId,
+                    imageUrl: imageUrl,
                     email: this.props.email,
                     country: this.props.country,
                     dob: this.props.dob,
@@ -112,6 +142,14 @@ class AthleteProfileForm extends Component {
                  }).then(()=>notify.show('Education History Saved Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
+  deleteProfileImage () {
+    this.setState({
+      imageUrl: '',
+      imageId: ''
+    })
+    notify.show('Please add a new Profile Picture & Click Save in Personal Info Section', 'success')
+  }
+
   submitSportForm = async () => {
     await this.props.updateAthleteSport({variables: {sportPlayed: this.props.sportPlayed,
                     practiceYear: this.props.practiceYear,
@@ -135,31 +173,35 @@ class AthleteProfileForm extends Component {
     return (
       <form style={{"marginBottom":"40px"}}>
       <Notifications />
-      <ProfilePictureUpload />
-      <GridList cols={5} cellHeight={80} padding={1}>
-        <GridTile></GridTile>
+      <H3>Profile Image
+          </H3>
         <GridTile>
-          <ReactS3Uploader
-            signingUrl="https://s3.amazonaws.com/athliche.images"
-            signingUrlMethod="GET"
-            accept="image/*"
-            preprocess={this.onUploadStart}
-            onProgress={this.onUploadProgress}
-            onError={this.onUploadError}
-            onFinish={this.onUploadFinish}
-            signingUrlWithCredentials={ false }      // in case when need to pass authentication credentials via CORS
-            uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}  // this is the default
-          />
+        {!this.state.imageUrl &&
+          <Dropzone
+            onDrop={this.onDrop}
+            accept='image/*'
+            multiple={false}
+          >
+            <div>Drop an image or click to choose</div>
+          </Dropzone>}
+          {this.state.imageUrl &&
+             <Avatar
+          src={this.state.imageUrl}
+          size={200}
+          style={{borderStyle: 'double'}}
+        />
+          }
+          {this.state.imageUrl && <IconButton tooltip={'Delete Profile Image'} onTouchTap={this.deleteProfileImage}><DeleteIcon /></IconButton>}
+          {this.state.imageUrl && <IconButton tooltip={'Edit Profile Image'} onTouchTap={this.deleteProfileImage}><EditIcon /></IconButton>}
+
         </GridTile>
-      </GridList>
-      <GridList cols={1} cellHeight={80} padding={1} >
+      <GridList cols={1} cellHeight={90} padding={1} >
         <GridTile>
-          <H3>Personal Info:
-          <IconButton><EditIcon /></IconButton>
+          <H3>Personal Info
           </H3>
         </GridTile>
       </GridList>
-      <GridList cols={5} cellHeight={80} padding={1} >
+      <GridList cols={5} cellHeight={90} padding={1} >
         <GridTile></GridTile>
         <GridTile>
           <Field
@@ -201,7 +243,7 @@ class AthleteProfileForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={5} cellHeight={80} padding={1} >
+      <GridList cols={5} cellHeight={90} padding={1} >
         <GridTile></GridTile>
         <GridTile>
           <Field
@@ -247,7 +289,7 @@ class AthleteProfileForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={5} cellHeight={80} padding={1} >
+      <GridList cols={5} cellHeight={90} padding={1} >
         <GridTile></GridTile>
         <GridTile>
           <Field
@@ -287,23 +329,22 @@ class AthleteProfileForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={5} cellHeight={80}>
+      <GridList cols={5} cellHeight={90}>
         <GridTile></GridTile>
-        <GridTile style={{"padding-top":"20px"}}>
+        <GridTile style={{"paddingTop":"20px"}}>
             <RaisedButton label="Save" disabled={errors.email != null || errors.lastName != null || errors.email != null || errors.country != null ||
             errors.dob != null || errors.gender != null || errors.address != null || errors.timezone != null || errors.mobileNumber != null || errors.height != null || errors.weight != null || errors.bio != null } onClick={()=>this.submitAthleteProfileForm()} primary={true} />
-          <a style={{"padding-left":"20px"}} href="#">Change Password</a>
+          <a style={{"paddingLeft":"20px"}} href="#">Change Password</a>
         </GridTile>
       </GridList>
 
-      <GridList cols={1} cellHeight={80} padding={1}>
+      <GridList cols={1} cellHeight={90} padding={1}>
         <GridTile>
-        <H3>Education History:
-          <IconButton><EditIcon /></IconButton>
+        <H3>Education History
         </H3>
         </GridTile>
       </GridList>
-      <GridList cols={5} cellHeight={80} padding={1}>
+      <GridList cols={5} cellHeight={90} padding={1}>
         <GridTile></GridTile>
         <GridTile>
           <Field
@@ -342,7 +383,7 @@ class AthleteProfileForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={5} cellHeight={80} padding={1}>
+      <GridList cols={5} cellHeight={90} padding={1}>
         <GridTile></GridTile>
         <GridTile>
           <Field
@@ -381,23 +422,22 @@ class AthleteProfileForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={5} cellHeight={80} >
+      <GridList cols={5} cellHeight={90} >
         <GridTile></GridTile>
-        <GridTile style={{"padding-top":"20px"}}>
+        <GridTile style={{"paddingTop":"20px"}}>
           <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitAthleteEducationForm()} primary={true} />
         </GridTile>
       </GridList>
 
       <EducationHistoryForm athleteId={this.props.userData.athlete.id} />
 
-      <GridList cols={1} cellHeight={80} padding={1}>
+      <GridList cols={1} cellHeight={90} padding={1}>
         <GridTile>
           <H3>Main Sports
-            <IconButton><EditIcon /></IconButton>
           </H3>
         </GridTile>
       </GridList>
-      <GridList cols={5} cellHeight={80} padding={1}>
+      <GridList cols={5} cellHeight={90} padding={1}>
         <GridTile></GridTile>
         <GridTile>
           <Field
@@ -420,9 +460,9 @@ class AthleteProfileForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={5} cellHeight={80} padding={1}>
+      <GridList cols={5} cellHeight={90} padding={1}>
         <GridTile></GridTile>
-        <GridTile style={{"padding-top":"20px"}}>
+        <GridTile style={{"paddingTop":"20px"}}>
           <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitSportForm()} primary={true} />
         </GridTile>
       </GridList>
@@ -468,8 +508,8 @@ AthleteProfileForm = connect((state, ownProps) => ({
 
 
 const updateProfileInfoMutation = gql`
-  mutation updateUser ($userId: ID!, $firstName: String!, $lastName: String!, $country: String!, $dob: DateTime!, $gender: String!, $address: String!, $timezone: String!, $mobileNumber: String!, $height: Float!, $weight: Float!, $bio: String!) {
-   updateUser(id: $userId, firstName: $firstName, lastName: $lastName, country: $country, dob: $dob, profileImage: "1212113asc2asc21as2c", gender: $gender, address: $address, timeZone: $timezone, mobileNumber: $mobileNumber, height: $height, weight: $weight, bio: $bio) {
+  mutation updateUser ($userId: ID!, $firstName: String!, $lastName: String!, $country: String!, $dob: DateTime!, $gender: String!, $address: String!, $timezone: String!, $mobileNumber: String!, $height: Float!, $weight: Float!, $bio: String!, $imageUrl: String) {
+   updateUser(id: $userId, firstName: $firstName, lastName: $lastName, country: $country, dob: $dob, profileImage: $imageUrl, gender: $gender, address: $address, timeZone: $timezone, mobileNumber: $mobileNumber, height: $height, weight: $weight, bio: $bio) {
     id
   }
   }
