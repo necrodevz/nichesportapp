@@ -71,6 +71,11 @@ class EventForm extends Component {
   }
 
    submitEventForm = async () => {
+    console.log('endDateAddendum', endDateAddendum);
+    console.log('startdate', this.props.startDate);
+    var endDate= new Date();
+    endDate = new Date(endDate.setDate(this.props.startDate.getDate()+endDateAddendum)) 
+    console.log('endDate', endDate);
     for(var i= 0; i < this.props.teamsSelected.length ; i++)
     {
       teamsSelected.push({teamId: this.props.teamsSelected[i]})
@@ -78,14 +83,15 @@ class EventForm extends Component {
     await this.props.createInstituteEvent({variables: {eventName: this.props.eventName,
                     sportId: this.props.sport,
                     instituteId: this.props.instituteId,
-                    teamsCount: this.props.teamsCount,
-                    matchesCount: this.props.teamsCount,
+                    teamsCount: teamsSelected.length,
+                    matchesCount: this.props.matchesCount,
+                    endDate: endDate,
                     startDate: this.props.startDate,
                     address: this.props.address,
                     selectedTeams: teamsSelected,
                     eventType: this.props.eventType
                     }
-                 }).then(()=>notify.show('Event Created Successfully', 'success')).then(()=>this.props.toggleEventForm('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(() => notify.show('Event Created Successfully', 'success')).then(()=>this.props.toggleEventForm('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   // handleStartDateChange(startDate) {
@@ -253,7 +259,7 @@ const getInstituteTeams = gql`query getInstituteTeams ($instituteId: ID) {
 }`
 
 const createEventMutation = gql`
-  mutation createEventMutation ($instituteId: ID, $eventType: String, $sportId: ID, $eventName: String, $teamsCount: Int, $matchesCount: Int, $startDate: DateTime, $address: String, $selectedTeams: [EventteamsEventTeam!] ){
+  mutation createEventMutation ($instituteId: ID, $eventType: String, $sportId: ID, $eventName: String, $teamsCount: Int, $matchesCount: Int, $startDate: DateTime, $endDate: DateTime, $address: String, $selectedTeams: [EventteamsEventTeam!] ){
     createEvent(
     name: $eventName
     instituteId: $instituteId
@@ -262,6 +268,7 @@ const createEventMutation = gql`
     numberOfTeams: $teamsCount
     address: $address
     startDate: $startDate
+    endDate: $endDate
     type: $eventType
     teams: $selectedTeams
   ){
