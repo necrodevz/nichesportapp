@@ -13,7 +13,6 @@ const loadModule = (cb) => (componentModule) => {
 };
 
 const token = localStorage.getItem('token');
-console.log('aaaaaaaa', token);
 
 const requireAuth = (nextState, replace) => {
   if (!token ? true: false) {
