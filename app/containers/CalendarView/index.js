@@ -99,7 +99,7 @@ export class CalendarView extends React.Component { // eslint-disable-line react
         style={{height: "500px", width: "100%"}}
         views={allViews}
         defaultDate={new Date(this.state.eventsList[0].start)}
-      /></div> : <div>Loading</div>
+      /></div> : <div>No Events Available</div>
     );
   }
 }
@@ -115,7 +115,7 @@ const eventDetailsQuery = gql`query eventDetailsQuery ($eventId: ID){
 const eventDetailData = graphql(eventDetailsQuery,{
   options: (props) => ({
       variables: {
-        eventId: "cj3vqczyqasdv0163hhni517p" }
+        eventId: props.activeTeam.id }
     })
   })(CalendarView);
 

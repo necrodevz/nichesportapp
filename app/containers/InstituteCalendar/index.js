@@ -163,6 +163,7 @@ const InstituteEventsListQuery = gql`query InstituteEventsListQuery ($instituteI
   )
   {
     name
+    id
     institute{ id owner{ id email firstName lastName } }
     sport{ id name }
     numberOfFixtures

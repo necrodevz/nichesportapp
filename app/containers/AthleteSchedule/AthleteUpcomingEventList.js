@@ -134,6 +134,7 @@ const UpcomingEventsListQuery = gql`query UpcomingEventsListQuery ($userId : ID!
   )
   {
     name
+    id
     institute{ id owner{ id email firstName lastName } }
     sport{ id name }
     numberOfFixtures
