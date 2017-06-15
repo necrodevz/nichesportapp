@@ -64,9 +64,9 @@ export class AthleteEventList extends React.Component { // eslint-disable-line r
           enableSelectAll={false}
          >
           <TableRow >
-            <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
-            <TableHeaderColumn style={{textAlign: 'center'}}>address</TableHeaderColumn>
-            <TableHeaderColumn style={{textAlign: 'center'}}>Start Date</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Name</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>address</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Start Date</TableHeaderColumn>
             <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>End Date</TableHeaderColumn>
             <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Number of Teams</TableHeaderColumn>
             <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Number of Matches</TableHeaderColumn>

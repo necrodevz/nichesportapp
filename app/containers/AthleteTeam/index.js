@@ -40,10 +40,6 @@ export class AthleteTeam extends React.Component { // eslint-disable-line react/
   }
 }
 
-AthleteTeam.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
 const athleteQuery = gql`query athleteQuery {
    user { id firstName lastName email country dob profileImage gender address timeZone mobileNumber height weight bio createdAt
     athlete {

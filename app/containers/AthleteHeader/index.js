@@ -93,11 +93,6 @@ export class AthleteHeader extends React.Component { // eslint-disable-line reac
   }
 }
 
-AthleteHeader.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
-
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,

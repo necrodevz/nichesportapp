@@ -60,8 +60,7 @@ class ApplyTeamForm extends Component {
   }
 
   static propTypes = {
-    applyTeam: React.PropTypes.func,
-    client: React.PropTypes.instanceOf(ApolloClient).isRequired,
+    applyTeam: React.PropTypes.func
   }
 
   submitSearchTeams () {

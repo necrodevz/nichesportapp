@@ -37,14 +37,11 @@ export class AthleteSchedule extends React.Component { // eslint-disable-line re
     return (
       
       <div>
-      <GridList cols={1} cellHeight={80} padding={1}>
-      </GridList>
-      <GridList cols={1} cellHeight={"100%"} style={{"margin": "20px"}}>
-        <GridTile>
+          <br/>
            <Card>
             <CardHeader
               title="Training"
-              style={{"background-color":"#757575"}}
+              style={{"backgroundColor":"#757575"}}
               subtitle=""
               actAsExpander={true}
               showExpandableButton={true}
@@ -53,14 +50,11 @@ export class AthleteSchedule extends React.Component { // eslint-disable-line re
               <AthleteTrainingList userId={userId} />
             </CardText>
           </Card>
-        </GridTile>
-      </GridList>
-      <GridList cols={1} cellHeight={"100%"} style={{"margin": "20px"}}>
-        <GridTile>
+          <br/>
           <Card>
             <CardHeader
               title="Event"
-              style={{"background-color":"#757575"}}
+              style={{"backgroundColor":"#757575"}}
               subtitle=""
               actAsExpander={true}
               showExpandableButton={true}
@@ -69,14 +63,11 @@ export class AthleteSchedule extends React.Component { // eslint-disable-line re
               <AthleteEventList userId={userId} />
             </CardText>
           </Card>
-        </GridTile>
-      </GridList>
-      <GridList cols={1} cellHeight={"100%"} style={{"margin": "20px"}}>
-        <GridTile>
+          <br/>
           <Card>
             <CardHeader
               title="Upcoming Event"
-              style={{"background-color":"#757575"}}
+              style={{"backgroundColor":"#757575"}}
               subtitle=""
               actAsExpander={true}
               showExpandableButton={true}
@@ -85,8 +76,7 @@ export class AthleteSchedule extends React.Component { // eslint-disable-line re
               <AthleteUpcomingEventList userId={userId} />
             </CardText>
           </Card>
-        </GridTile>
-      </GridList>
+          <br/>
       </div>
     );
   }
