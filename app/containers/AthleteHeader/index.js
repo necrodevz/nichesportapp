@@ -13,14 +13,14 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import EmailIcon from 'material-ui/svg-icons/communication/email';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import Dialog from 'material-ui/Dialog';
 import NotificationModal from '../../containers/NotificationModal';
 import FlatButton from 'material-ui/FlatButton';
 import Avatar from 'material-ui/Avatar'
 
-
+const REFRESH_INTERVAL = 200 * 1000; //2 minutes
 
 export class AthleteHeader extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -30,6 +30,18 @@ export class AthleteHeader extends React.Component { // eslint-disable-line reac
       activeIndex: 0
     }
   }
+
+  componentDidMount() {
+    this.refreshAthleteHeader = setInterval(() => {
+        this.props.data.refetch();
+        this.props.athleteProfile.refetch();
+    }, REFRESH_INTERVAL);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.refreshAthleteHeader);
+  }
+
 
   toggleNotificationDialog(value, index) {
     this.setState({ showNotificationDialog: !value, activeIndex: index })
@@ -46,11 +58,20 @@ export class AthleteHeader extends React.Component { // eslint-disable-line reac
     ];
     const{data}=this.props;
 
+    if (this.props.data.loading) {
+      return (<div>Loading</div>)
+    }
+
+    if (this.props.data.error) {
+      console.log(this.props.data.error)
+      return (<div>An unexpected error occurred</div>)
+    }
+
     return (
       <div>
         {data.allNotifications ?
           <div>
-            <Avatar style={{"marginTop":"-15px"}} size={40} src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Kapil_Dev_at_Equation_sports_auction.jpg" />
+            {this.props.athleteProfile.user.profileImage ? <Avatar style={{"marginTop":"-15px"}} size={50} src={this.props.athleteProfile.user.profileImage} /> : ''}
             <Badge
               badgeContent={data.allNotifications.length}
               secondary={true}
@@ -99,6 +120,15 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+const athleteQuery = gql`query athleteQuery {
+   user { id firstName lastName profileImage
+    athlete {
+      id
+    }
+  }
+}`
+
+
 const AthleteNotificationsQuery = gql`query AthleteNotificationsQuery ($userId: ID) {
     allNotifications(filter: {user: {id: $userId}}) {
     id
@@ -109,8 +139,10 @@ const AthleteNotificationsQuery = gql`query AthleteNotificationsQuery ($userId: 
   }
 }`
 
-const AthleteHeaderData = graphql(AthleteNotificationsQuery, {
-  options: { variables: { userId: localStorage.getItem('userID') } },
-})(AthleteHeader);
+const AthleteHeaderData = compose(
+graphql(athleteQuery, {name: 'athleteProfile'}),
+graphql(AthleteNotificationsQuery, {
+  options: (props) => ({ variables: { userId: props.athleteProfile.user ? props.athleteProfile.user.id : localStorage.getItem('userID') } })
+}))(AthleteHeader);
 
 export default AthleteHeaderData;

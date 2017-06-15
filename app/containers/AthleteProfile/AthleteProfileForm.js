@@ -23,18 +23,14 @@ import countryList from 'components/countryList'
 import timezoneList from 'components/timezoneList'
 import PublishIcon from 'material-ui/svg-icons/editor/publish';
 import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
-
 import PlusIcon from 'material-ui/svg-icons/social/plus-one';
 import Avatar from 'material-ui/Avatar'
 import Notifications, {notify} from 'react-notify-toast';
 import EducationHistoryForm from './EducationHistoryForm';
 import SportsCertificateForm from './SportsCertificateForm';
-//import ProfilePictureUpload from './ProfilePictureUpload';
 import {GridList, GridTile} from 'material-ui/GridList';
 import Dropzone from 'react-dropzone';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
-
-//var ReactS3Uploader = require('react-s3-uploader');
 
 var userId = localStorage.getItem('userID');
 
