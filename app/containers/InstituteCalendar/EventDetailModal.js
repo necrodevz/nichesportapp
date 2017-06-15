@@ -99,7 +99,7 @@ export class EventDetailModal extends React.Component { // eslint-disable-line r
         {...this.props}
         events={this.state.eventsList}
         onSelectEvent={this.handleSelectEvent}
-        style={{height: "400px", width: "100%"}}
+        style={{height: "500px", width: "100%"}}
         views={allViews}
         defaultDate={new Date(this.state.eventsList[0].start)}
       /></div> : <div>Loading</div>

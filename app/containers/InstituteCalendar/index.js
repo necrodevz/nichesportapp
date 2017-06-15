@@ -137,7 +137,7 @@ export class InstituteCalendar extends React.Component { // eslint-disable-line 
     </TableBody>
   </Table>
   <Dialog
-          title="Team Details"
+          title="Event Details"
           autoScrollBodyContent={true}
           actions={eventDetailactions}
           modal={false}
