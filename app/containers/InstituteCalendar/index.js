@@ -23,7 +23,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import Notifications, {notify} from 'react-notify-toast';
-import EventDetailModal from './EventDetailModal'
+import CalendarView from 'containers/CalendarView'
 
 export class InstituteCalendar extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -145,7 +145,7 @@ export class InstituteCalendar extends React.Component { // eslint-disable-line 
           open={this.state.showEventDetailDialog}
           onRequestClose={()=>this.toggleEventDetailDialog(this.state.showEventDetailDialog)}
         >
-          <EventDetailModal activeTeam={this.props.data.allEvents[this.state.activeIndex]} />
+          <CalendarView activeTeam={this.props.data.allEvents[this.state.activeIndex]} />
         </Dialog>
       </CenteredSection>
       </div>

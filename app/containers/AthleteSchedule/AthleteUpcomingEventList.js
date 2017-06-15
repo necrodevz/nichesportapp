@@ -12,22 +12,46 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import CalendarView from 'containers/CalendarView'
 
 export class AthleteUpcomingEventList extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor() {
+    super();
+    this.state = {
+      showEventDetailDialog: false,
+      activeIndex: 0
+    }
+  }
 
   shouldComponentUpdate() {
     return true;
   }
 
-  render() {
-  if (this.props.data.loading) {
-    return (<div>Loading</div>)
+  toggleEventDetailDialog(value, index) {     
+    this.setState({ showEventDetailDialog: !value, activeIndex: index})
+    console.log('index', index);
   }
 
-  if (this.props.data.error) {
-    console.log(this.props.data.error)
-    return (<div>An unexpected error occurred</div>)
-  }
+  render() {
+
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={()=>this.toggleEventDetailDialog(this.state.showEventDetailDialog)}
+      />
+    ];
+
+    if (this.props.data.loading) {
+      return (<div>Loading</div>)
+    }
+
+    if (this.props.data.error) {
+      console.log(this.props.data.error)
+      return (<div>An unexpected error occurred</div>)
+    }
     return (
       <CenteredSection>
          <Table 
@@ -42,8 +66,12 @@ export class AthleteUpcomingEventList extends React.Component { // eslint-disabl
      >
       <TableRow >
         <TableHeaderColumn style={{textAlign: 'center'}}>Name</TableHeaderColumn>
-        <TableHeaderColumn style={{textAlign: 'center'}}>address</TableHeaderColumn>
-        <TableHeaderColumn style={{textAlign: 'center'}}>Start Date</TableHeaderColumn>        
+          <TableHeaderColumn style={{textAlign: 'center'}}>address</TableHeaderColumn>
+          <TableHeaderColumn style={{textAlign: 'center'}}>Start Date</TableHeaderColumn>
+          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>End Date</TableHeaderColumn>
+          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Number of Teams</TableHeaderColumn>
+          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Number of Matches</TableHeaderColumn>
+          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>View Detail</TableHeaderColumn>
       </TableRow>
     </TableHeader>
     <TableBody 
@@ -56,22 +84,37 @@ export class AthleteUpcomingEventList extends React.Component { // eslint-disabl
         <TableRowColumn style={{textAlign: 'center'}}>{index+1}. {team.name}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>{team.address}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>{team.startDate}</TableRowColumn>
-
+        <TableRowColumn style={{textAlign: 'center'}}>{team.endDate}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{team.numberOfTeams}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{team.numberOfFixtures}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>
+          <RaisedButton label="View Detail" onTouchTap={()=>this.toggleEventDetailDialog(this.state.showEventDetailDialog, index)} primary={true} />
+        </ TableRowColumn>
       </TableRow>
       ))
     }
     </TableBody>
   </Table>
+  <Dialog
+          title="Event Details"
+          autoScrollBodyContent={true}
+          actions={actions}
+          modal={false}
+          autoDetectWindowHeight={true}
+          open={this.state.showEventDetailDialog}
+          onRequestClose={()=>this.toggleEventDetailDialog(this.state.showEventDetailDialog)}
+        >
+          <CalendarView activeTeam={this.props.data.allEvents[this.state.activeIndex]} />
+        </Dialog>
       </CenteredSection>
     );
   }
 }
 
-const userId = localStorage.getItem('userID');
 let dateString = new Date();
 dateString = dateString.toISOString()
-console.log("userId",userId)
-const TeamListQuery = gql`query($userId : ID!){
+
+const UpcomingEventsListQuery = gql`query UpcomingEventsListQuery ($userId : ID!){
   allEvents(
     filter:{
       endDate_gt:"0017-05-24T14:03:49.000Z"
@@ -105,11 +148,11 @@ const TeamListQuery = gql`query($userId : ID!){
   }
 }`
 
-const TeamData = graphql(TeamListQuery,{
-  options: {
+const UpcomingEventsData = graphql(UpcomingEventsListQuery,{
+  options: (props) => ({
       variables: {
-        userId: userId      }
-    }
+        userId: props.userId      }
+    })
   })(AthleteUpcomingEventList);
 
-export default TeamData;
+export default UpcomingEventsData;

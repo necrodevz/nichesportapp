@@ -80,9 +80,7 @@ export class AthleteTrainingList extends React.Component { // eslint-disable-lin
   }
 }
 
-const userId = localStorage.getItem('userID');
-console.log("userId",userId)
-const TeamListQuery = gql`query TeamListQuery {
+const TrainingsListQuery = gql`query TrainingsListQuery ($userId: ID) {
    allTrainings(
     filter:{
       trainingTeams_some:{
@@ -91,7 +89,7 @@ const TeamListQuery = gql`query TeamListQuery {
               status_in:[APPROVEDBYATHLETE APPROVEDBYCOACH APPROVEDBYINSTITUTE]
                     athlete:{
                 user:{
-                  id: "cj32xcep62o910192e8cgl23s"
+                  id: $userId
                 }
               }
                   }
@@ -110,6 +108,8 @@ const TeamListQuery = gql`query TeamListQuery {
   }
 }`
 
-const TeamData = graphql(TeamListQuery)(AthleteTrainingList);
+const TrainingData = graphql(TrainingsListQuery, {
+  options: (props) => ({ variables: { userId: props.userId } }),
+})(AthleteTrainingList);
 
-export default TeamData;
+export default TrainingData;

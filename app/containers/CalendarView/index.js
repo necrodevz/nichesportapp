@@ -1,6 +1,6 @@
 /*
  *
- * EventDetailModal
+ * CalendarView
  *
  */
 
@@ -28,9 +28,6 @@ import globalize from 'globalize';
 import BigCalendar from 'react-big-calendar';
 require('react-big-calendar/lib/css/react-big-calendar.css');
 import Snackbar from 'material-ui/Snackbar';
-//import 'react-big-calendar/lib/less/styles.less';
-// import './styles.less';
-// import './prism.less';
 
 localizer(globalize);
 
@@ -40,7 +37,7 @@ const bodyStyle = {
 
 const allViews = Object.keys(BigCalendar.views).map(k => BigCalendar.views[k])
 
-export class EventDetailModal extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class CalendarView extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
     this.handleSelectEvent = this.handleSelectEvent.bind(this);
@@ -120,7 +117,6 @@ const eventDetailData = graphql(eventDetailsQuery,{
       variables: {
         eventId: "cj3vqczyqasdv0163hhni517p" }
     })
-  })(EventDetailModal);
+  })(CalendarView);
 
 export default eventDetailData;
-

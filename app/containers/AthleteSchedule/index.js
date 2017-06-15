@@ -1,11 +1,10 @@
 /*
  *
- * AthleteDashboard
+ * AthleteSchedule
  *
  */
 
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton'
@@ -13,27 +12,9 @@ import Dialog from 'material-ui/Dialog';
 import AthleteTrainingList from './AthleteTrainingList';
 import AthleteEventList from './AthleteEventList';
 import AthleteUpcomingEventList from './AthleteUpcomingEventList';
-import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
-import {
-  AutoComplete,
-  DatePicker,
-  TimePicker,
-  RadioButtonGroup,
-  SelectField,
-  Slider,
-  TextField,
-  Toggle
-} from 'redux-form-material-ui';
 import {GridList, GridTile} from 'material-ui/GridList';
 
-
-const style = {
-  margin: 12,
-  align: 'right',
-};
-
-const required = value => (value == null ? 'Required' : undefined);
-
+const userId = localStorage.getItem('userID');
 
 export class AthleteSchedule extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -69,7 +50,7 @@ export class AthleteSchedule extends React.Component { // eslint-disable-line re
               showExpandableButton={true}
             />
             <CardText expandable={true}>
-              <AthleteTrainingList />
+              <AthleteTrainingList userId={userId} />
             </CardText>
           </Card>
         </GridTile>
@@ -85,7 +66,7 @@ export class AthleteSchedule extends React.Component { // eslint-disable-line re
               showExpandableButton={true}
             />
             <CardText expandable={true}>
-              <AthleteEventList />
+              <AthleteEventList userId={userId} />
             </CardText>
           </Card>
         </GridTile>
@@ -101,7 +82,7 @@ export class AthleteSchedule extends React.Component { // eslint-disable-line re
               showExpandableButton={true}
             />
             <CardText expandable={true}>
-              <AthleteUpcomingEventList />
+              <AthleteUpcomingEventList userId={userId} />
             </CardText>
           </Card>
         </GridTile>
@@ -111,39 +92,4 @@ export class AthleteSchedule extends React.Component { // eslint-disable-line re
   }
 }
 
-AthleteSchedule.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
-const selector = formValueSelector('AthleteScheduleForm');
-
-AthleteSchedule = connect(state => ({
-  FormTrainingSession: selector(state, 'training_session'),
-  FormDates: selector(state, 'dates'),
-  FormSelectTeam: selector(state, 'select_team'),
-  FormTime: selector(state, 'time'),
-  FormAddress: selector(state, 'address'),
-}))(AthleteSchedule);
-
-AthleteSchedule = reduxForm({
-  form: 'AthleteSchedule',
-})(AthleteSchedule);
-
-
-AthleteSchedule.propTypes = {
-  loading: React.PropTypes.bool,
-  error: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-  ]),
-  onSubmitForm: React.PropTypes.func,
-};
-
-
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
-
-export default connect(null, mapDispatchToProps)(AthleteSchedule);
+export default AthleteSchedule;
