@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import CoachTeam from '../../containers/CoachTeam';
 import CoachSchedule from '../../containers/CoachSchedule';
-import CoachVideo from '../../containers/CoachVideo';
+import UploadVideoPage from '../../containers/UploadVideoPage';
 import CoachSearch from '../../containers/CoachSearch';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import { graphql } from 'react-apollo';
@@ -30,7 +30,7 @@ export class CoachDashboard extends React.PureComponent { // eslint-disable-line
               <CoachSchedule coachProfile={this.props.data.user} />
             </Tab>
             <Tab label="Video" >
-              <CoachVideo userId={userId} />
+              <UploadVideoPage userId={userId} />
             </Tab>
             <Tab label="Search" >
               <CoachSearch />

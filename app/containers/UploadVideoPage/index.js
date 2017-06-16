@@ -19,6 +19,8 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import AddVideoForm from './AddVideoForm'
 var _ = require('lodash');
+import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
+import Notifications, {notify} from 'react-notify-toast';
 
 const style = {
   height: 300,
@@ -42,6 +44,10 @@ export class CoachVideo extends React.Component { // eslint-disable-line react/p
     }
   }
 
+  static propTypes = {
+    deleteVideo: React.PropTypes.func
+  }
+
   submitSearchVideos () {
     var filterData = _.filter(this.props.VideosList.allVideos, { 'type': this.state.searchText });
     this.setState({searchData: filterData, searchEnabled: true});
@@ -51,6 +57,14 @@ export class CoachVideo extends React.Component { // eslint-disable-line react/p
 
   resetSearch () {
     this.setState({searchEnabled: false, searchData: [], searchText: '', value: 0});
+  }
+
+  deleteVideo = async (videoId) => {
+    await this.props.deleteVideo({variables: {
+           videoId: videoId,
+           }}).then(()=>notify.show('Video Deleted', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+    this.props.VideosList.refetch();
+    this.resetSearch();
   }
 
   toggleVideoForm(value) {
@@ -77,6 +91,7 @@ export class CoachVideo extends React.Component { // eslint-disable-line react/p
     return (
       <CenteredSection>
       <H2>
+      <Notifications />
       <Dialog
                 title="Add Video"
                 autoScrollBodyContent={true}
@@ -118,6 +133,7 @@ export class CoachVideo extends React.Component { // eslint-disable-line react/p
          <br/>
          <video controls="true" width="100%" style={{width: '100%'}} src={video.url} role='presentation' />
         </h4>
+        <IconButton onTouchTap={() => this.deleteVideo(video.id)} tooltip={'Delete Video'} ><DeleteIcon /></IconButton>
       </Paper>)) : ''}
       {this.state.searchData.length > 0 && this.state.searchEnabled ? this.state.searchData.map((video,index)=>(
       <Paper  style={style} zDepth={3} key={video.id}>
@@ -128,6 +144,7 @@ export class CoachVideo extends React.Component { // eslint-disable-line react/p
          <br/>
          <video controls="true" width="100%" style={{width: '100%'}} src={video.url} role='presentation' />
         </h4>
+          <IconButton onTouchTap={() => this.deleteVideo(video.id)} tooltip={'Delete Video'} ><DeleteIcon /></IconButton>
       </Paper>)) : ''}
       </CenteredSection>
     );
@@ -157,6 +174,13 @@ const getAllVideos = gql`query getAllVideos($userId: ID) {
   }
 }`
 
+const deleteVideoMutation = gql` mutation deleteVideo ($videoId: ID!) { deleteVideo(
+    id: $videoId
+  ) {
+    id
+  }
+  }
+`
 
 const CoachVideoMutation = compose(
   graphql(getAllVideos, { name: 'VideosList' }, {
@@ -164,7 +188,8 @@ const CoachVideoMutation = compose(
       variables: {
         userId: props.userId   }
     })
-  })
+  }),
+  graphql(deleteVideoMutation, { name: 'deleteVideo'})
 )(CoachVideo)
 
 export default CoachVideoMutation;

@@ -17,8 +17,9 @@ import AthleteSchedule from '../../containers/AthleteSchedule'
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import GroupWorkIcon from 'material-ui/svg-icons/action/group-work';
 import CameraEnhanceIcon from 'material-ui/svg-icons/action/camera-enhance';
+import UploadVideoPage from 'containers/UploadVideoPage'
 
-
+const userId = localStorage.getItem('userID');
 
 export class AthleteDashboard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -36,7 +37,7 @@ export class AthleteDashboard extends React.PureComponent { // eslint-disable-li
               <AthleteSchedule />
             </Tab>
             <Tab label="Video" icon={< CameraEnhanceIcon />}>
-            <div style={{"height":"400px"}}>Video Page</div>
+            <UploadVideoPage userId={userId} />
             </Tab>
           </Tabs>
         </MuiThemeProvider>
