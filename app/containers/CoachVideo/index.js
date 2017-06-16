@@ -27,17 +27,8 @@ const style = {
   textAlign: 'center',
   display: 'inline-block',
 };
+
 var videoTypeList = [{"id": 1, "value": "GAME"} , {"id": 2, "value": "PRACTICE"}, {"id": 3, "value": "SCOUT"}, {"id": 4, "value": "PLAYLIST"}];
-
-const errors = {}
-
-const required = value => (value == null ? 'Required' : undefined);
-// validation functions
-const validate = values => {
-
-  errors.searchVideo = required(values.searchVideo)
-  return errors
-}
 
 export class CoachVideo extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -98,7 +89,6 @@ export class CoachVideo extends React.Component { // eslint-disable-line react/p
                 <AddVideoForm videoTypeList={videoTypeList} userId={this.props.userId} toggleVideoForm={(value)=>this.toggleVideoForm(value)}/>
       </Dialog>
       <form onSubmit={handleSubmit}>
-        <div>
           <SelectField
             onChange={this.handleChange}
             hintText="Search By Video Type"
@@ -106,11 +96,10 @@ export class CoachVideo extends React.Component { // eslint-disable-line react/p
             value={this.state.value}
             style={{"textAlign":"left"}}
             floatingLabelText="Search By Video Type"
-            validate={required}
+            errorText={this.state.value ? '' : 'Required'}
           >
             {videoTypeList.map(type => (<MenuItem value={type.id} primaryText={type.value} key={type.id} />))}
           </SelectField>
-        </div>
         <div>
           <IconButton onTouchTap={()=>this.submitSearchVideos()} disabled={this.state.searchText == ''}>
           <SearchIcon />
