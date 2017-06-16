@@ -78,8 +78,6 @@ export class CoachTrainingList extends React.Component { // eslint-disable-line 
   }
 }
 
-const userId = localStorage.getItem('userID');
-
 const CoachTrainingListQuery = gql`query CoachTrainingListQuery($userId: ID!){
    allTrainings(
     filter:{
@@ -102,10 +100,10 @@ const CoachTrainingListQuery = gql`query CoachTrainingListQuery($userId: ID!){
 }`
 
 const CoachTrainingData = graphql(CoachTrainingListQuery,{
-  options: {
+  options: (props) => ({
       variables: {
-        userId: userId      }
-    }
+        userId: props.userId      }
+    })
   })(CoachTrainingList);
 
 export default CoachTrainingData;

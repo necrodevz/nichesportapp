@@ -70,9 +70,9 @@ export class CoachSchedule extends React.Component { // eslint-disable-line reac
     return (
       
       <div>
-      <GridList cols={1} cellHeight={80} padding={1}>
-        <GridTile>
+      <br/>
       <RaisedButton style={{"float": "right","marginTop": "10px","marginRight": "10px"}} label="Create Training" onTouchTap={()=>this.toggleTrainingForm(this.state.showTrainingForm)} primary={true} />
+      <br/>
        <Dialog
           title="Training"
           actions={actions}
@@ -84,10 +84,7 @@ export class CoachSchedule extends React.Component { // eslint-disable-line reac
         >
           <TrainingForm toggleTrainingForm={()=>this.closeForm()} userId={userId} coachProfile={this.props.coachProfile} />
         </Dialog>
-      </GridTile>
-      </GridList>
-      <GridList cols={1} cellHeight={"100%"} style={{"margin": "20px"}}>
-        <GridTile>
+        <br/>
            <Card>
             <CardHeader
               title="Training"
@@ -97,13 +94,10 @@ export class CoachSchedule extends React.Component { // eslint-disable-line reac
               showExpandableButton={true}
             />
             <CardText expandable={true}>
-              <CoachTrainingList />
+              <CoachTrainingList userId={userId} />
             </CardText>
           </Card>
-        </GridTile>
-      </GridList>
-      <GridList cols={1} cellHeight={"100%"} style={{"margin": "20px"}}>
-        <GridTile>
+          <br/>
           <Card>
             <CardHeader
               title="Event"
@@ -113,11 +107,10 @@ export class CoachSchedule extends React.Component { // eslint-disable-line reac
               showExpandableButton={true}
             />
             <CardText expandable={true}>
-              <CoachEventsList />
+              <CoachEventsList userId={userId} />
             </CardText>
           </Card>
-        </GridTile>
-      </GridList>
+          <br/>
       </div>
     );
   }
