@@ -45,7 +45,8 @@ export class CalendarView extends React.Component { // eslint-disable-line react
     this.state={
       eventsList: [],
       open: false,
-      message: {}
+      message: {},
+      minDate: new Date()
     }
   }
 
@@ -57,11 +58,14 @@ export class CalendarView extends React.Component { // eslint-disable-line react
 
   componentWillReceiveProps(nextProps) {
     let data = [];
+    let dates = [];
     nextProps.data.allEventDates.length > 0 ?
-    nextProps.data.allEventDates.map((event,index)=>(
+    nextProps.data.allEventDates.map((event,index)=>{
       data.push({'title': event.matchType + ' ' + event.teamA.name + ' vs ' + event.teamB.name, 'start': new Date(event.date), 'end': new Date(event.date)})
-    )) : '';
-    this.setState({eventsList: data})
+      dates.push(new Date(event.date))
+    }) : '';
+    let minDate = new Date(Math.min.apply(null,dates));// to show first event by default in calendar
+    this.setState({eventsList: data, minDate: minDate})
   }
 
   handleSelectEvent() {
@@ -98,7 +102,7 @@ export class CalendarView extends React.Component { // eslint-disable-line react
         onSelectEvent={this.handleSelectEvent}
         style={{height: "500px", width: "100%"}}
         views={allViews}
-        defaultDate={new Date(this.state.eventsList[0].start)}
+        defaultDate={this.state.minDate}
       /></div> : <div>No Events Available</div>
     );
   }
