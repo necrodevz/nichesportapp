@@ -14,6 +14,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import InstituteTeamPage from '../../containers/InstituteTeamPage'
 import InstituteCalendar from '../../containers/InstituteCalendar'
 import InstituteCoachPage from '../../containers/InstituteCoachPage'
+import InstituteOrganiseMatches from '../../containers/InstituteOrganiseMatches'
 
 export class InstituteDashboard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -29,6 +30,9 @@ export class InstituteDashboard extends React.PureComponent { // eslint-disable-
             </Tab>
             <Tab label="Coach" >
               <InstituteCoachPage instituteId={this.props.location.state.instituteId}/>
+            </Tab>
+            <Tab label="Organise Matches" >
+              <InstituteOrganiseMatches instituteId={this.props.location.state.instituteId}/>
             </Tab>
             <Tab label="Search" >
             <div style={{"float": "left","height":"400px"}}>Search Page</div>
