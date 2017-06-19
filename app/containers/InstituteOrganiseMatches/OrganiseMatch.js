@@ -105,7 +105,7 @@ export class OrganiseMatch extends React.Component { // eslint-disable-line reac
       <div>
       <Paper style={style} zDepth={2}>
       <H3>Pool A Teams</H3>
-      {this.state.poolA.map((team, index)=>(<span>
+      {this.state.poolA.map((team, index)=>(<span key={index}>
           #{index+1} {team.name}
           &nbsp;
           &nbsp;
@@ -115,7 +115,7 @@ export class OrganiseMatch extends React.Component { // eslint-disable-line reac
       </Paper>
       <Paper style={style} zDepth={2}>
       <H3>Pool B Teams</H3>
-      {this.state.poolB.map((team, index)=>(<span>
+      {this.state.poolB.map((team, index)=>(<span key={index}>
           #{index+1} {team.name}
           &nbsp;
           &nbsp;
