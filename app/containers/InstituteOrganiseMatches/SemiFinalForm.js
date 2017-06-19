@@ -24,27 +24,36 @@ const errors = {}
 
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);
-// const coach_email = value =>
-//   (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
-//     ? 'Invalid email'
-//     : undefined);
+
+const poolATeams = value =>
+  (value ? (value.length != 2
+    ? 'Please Select Only 2 Teams'
+    : undefined) : '');
+
+const poolBTeams = value =>
+  (value ? (value.length != 2
+    ? 'Please Select Only 2 Teams'
+    : undefined) : '');
 
 const validate = values => {
-  errors.poolA = required(values.poolATeams)
-  errors.poolB = required(values.poolBTeams)
-  // errors.coach_email = coach_email(values.coach_email || '')
-  // if (!values.coach_email) {
-  //   errors.coach_email = 'Required'
-  // } else if (coach_email(values.coach_email)) {
-  //   errors.coach_email = 'Invalid Email'
-  // }
+  errors.poolATeams = required(values.poolATeams || '')
+  if (!values.poolATeams) {
+    errors.poolATeams = 'Required'
+  } else if (poolATeams(values.poolATeams)) {
+    errors.poolATeams = 'Please Select Only 2 Teams'
+  }
+  errors.poolBTeams = required(values.poolBTeams || '')
+  if (!values.poolBTeams) {
+    errors.poolBTeams = 'Required'
+  } else if (poolBTeams(values.poolBTeams)) {
+    errors.poolBTeams = 'Please Select Only 2 Teams'
+  }
   return errors
 }
 
 export class SemiFinalForm extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
-    console.log('22222', props);
   }
 
   static propTypes = {
@@ -52,12 +61,22 @@ export class SemiFinalForm extends React.Component { // eslint-disable-line reac
   }
 
   submitSemiFinalForm = async () => {
-    await this.props.createSemiFinal({variables: {firstName: this.props.FirstName,
-                    lastName: this.props.LastName,
-                    email: this.props.Email,
-                    instituteId: this.props.instituteId,
-                   password: this.props.Password }
-                 }).then(()=>location.reload()).then(()=>notify.show('Coach Created Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+    const{ eventId, maxDate, poolATeams, poolBTeams } = this.props;
+    var matchDate= new Date();
+    matchDate = new Date(matchDate.setDate(maxDate.getDate()+3));
+    await this.props.createSemiFinal({variables: {eventId: eventId,
+                    teamAId: poolATeams[0],
+                    teamBId: poolBTeams[0],
+                    date: matchDate,
+                    type: "SEMIFINAL"
+                   }
+                 }).then(()=>this.props.createSemiFinal({variables: {eventId: eventId,
+                    teamAId: poolATeams[1],
+                    teamBId: poolBTeams[1],
+                    date: matchDate,
+                    type: "SEMIFINAL"
+                   }
+                 })).then(()=>notify.show('SemiFinal Matches Created Successfully', 'success')).then(()=>this.props.toggleEventDetailDialog('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   render() {
@@ -65,17 +84,20 @@ export class SemiFinalForm extends React.Component { // eslint-disable-line reac
 
     return (
       this.props.poolA.length > 0 && this.props.poolB.length > 0 ? <form onSubmit={handleSubmit}>
+            <Notifications />
             <GridList cols={2} cellHeight={90} padding={1}>
               <GridTile>
                 <Field
                   name="poolATeams"
                   multiple={true}
                   component={SelectField}
+                  maxHeight={200}
+                  errorText={errors.poolATeams}
                   hintText="Select Pool A Teams"
                   floatingLabelText="Select Pool A Teams"
-                  validate={required}
+                  validate={poolATeams}
                 >
-              {this.props.poolA.map(type => (<MenuItem value={type.id} primaryText={type.name} key={type.id} />))}
+              {this.props.poolA.map((team, index) => (<MenuItem value={team.id} primaryText={team.name} key={team.id} />))}
                 </Field>
                 </GridTile>
                 </GridList>
@@ -84,18 +106,20 @@ export class SemiFinalForm extends React.Component { // eslint-disable-line reac
                 <Field
                   name="poolBTeams"
                   multiple={true}
+                  errorText={errors.poolBTeams}
+                  maxHeight={200}
                   component={SelectField}
                   hintText="Select Pool B Teams"
                   floatingLabelText="Select Pool B Teams"
-                  validate={required}
+                  validate={poolBTeams}
                 >
-              {this.props.poolB.map(type => (<MenuItem value={type.id} primaryText={type.name} key={type.id} />))}
+              {this.props.poolB.map((team, index) => (<MenuItem value={team.id} primaryText={team.name} key={team.id} />))}
                 </Field>
                 </GridTile>
             </GridList>
             <GridList cols={1} cellHeight={80} padding={1}>
               <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
-                <RaisedButton label="Submit" disabled={errors.poolA != null || errors.poolB != null} onTouchTap={()=>this.submitSemiFinalForm()} primary={true} />
+                <RaisedButton label="Submit" disabled={errors.poolATeams != null || errors.poolBTeams != null} onTouchTap={()=>this.submitSemiFinalForm()} primary={true} />
               </GridTile>
             </GridList>
             </form> : <div>Inavlid Teams Data</div>
@@ -116,10 +140,14 @@ SemiFinalForm = reduxForm({
 })(SemiFinalForm);
 
 const createSemiFinalMutation = gql`
-  mutation createSemiFinal ($firstName: String!, $lastName: String!, $email: String!, $password: String!, $instituteId: ID!) {
-    createUser(authProvider: {email: {email: $email, password: $password}}, firstName: $firstName, lastName: $lastName, role: COACH, coach: {instituteId: $instituteId}) {
-    id
-  }
+  mutation createSemiFinal ($eventId: ID!, $teamAId: ID!, $teamBId: ID!, $date: DateTime!, $type: EVENT_DATE_MATCH_TYPE!) {
+    createEventDate( 
+    eventId: $eventId
+    teamAId: $teamAId
+    teamBId: $teamBId
+    matchType: $type
+    date: $date
+  ){ id }
   }
 `
 

@@ -114,7 +114,7 @@ export class InstituteOrganiseMatches extends React.Component { // eslint-disabl
           open={this.state.showEventDetailDialog}
           onRequestClose={()=>this.toggleEventDetailDialog(this.state.showEventDetailDialog)}
         >
-          <OrganiseMatch activeTeam={this.props.data.allEvents[this.state.activeIndex]} />
+          <OrganiseMatch toggleEventDetailDialog={(value)=>this.toggleEventDetailDialog(value)} activeEvent={this.props.data.allEvents[this.state.activeIndex]} />
         </Dialog>
       </CenteredSection>
       </div>
