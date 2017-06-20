@@ -1,25 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
-import {RadioButton} from 'material-ui/RadioButton';
-import MenuItem from 'material-ui/MenuItem';
 import { push } from 'react-router-redux';
-import { createStructuredSelector } from 'reselect';
 import {
-  AutoComplete,
-  Checkbox,
-  DatePicker,
-  TimePicker,
-  RadioButtonGroup,
-  SelectField,
-  Slider,
-  TextField,
-  Toggle
+  TextField
 } from 'redux-form-material-ui';
-import RaisedButton from 'material-ui/RaisedButton'
-import CenteredSection from '../../containers/HomePage/CenteredSection'
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
+import RaisedButton from 'material-ui/RaisedButton';
+import CenteredSection from '../../containers/HomePage/CenteredSection';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import Notifications, {notify} from 'react-notify-toast';
 import {GridList, GridTile} from 'material-ui/GridList';
 
@@ -51,7 +40,6 @@ class LoginForm extends Component {
   }
 
   submitLoginForm = async () => {
-    //const {description, imageUrl} = this.state
     await this.props.LoginUser({variables: {email: this.props.Email,
                     password: this.props.Password}
                  }).then((res)=>localStorage.setItem('token', res.data.signinUser.token)).then(()=> this.props.GoToHome()).then(()=>location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))

@@ -1,25 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
-import {RadioButton} from 'material-ui/RadioButton';
-import MenuItem from 'material-ui/MenuItem';
-import { createStructuredSelector } from 'reselect';
 import {
-  AutoComplete,
-  DatePicker,
-  TimePicker,
-  RadioButtonGroup,
-  SelectField,
-  Slider,
-  TextField,
-  Toggle
+  TextField
 } from 'redux-form-material-ui';
-
 import Checkbox from 'material-ui/Checkbox';
-import RaisedButton from 'material-ui/RaisedButton'
-import CenteredSection from '../../containers/HomePage/CenteredSection'
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
+import RaisedButton from 'material-ui/RaisedButton';
+import CenteredSection from '../../containers/HomePage/CenteredSection';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import { push } from 'react-router-redux';
 import Notifications, {notify} from 'react-notify-toast';
 import {GridList, GridTile} from 'material-ui/GridList';
@@ -65,7 +54,7 @@ class SignUpForm extends Component {
                     lastName: this.props.LastName,
                     email: this.props.Email,
                    password: this.props.Password}
-                 }).then(()=> this.props.GoToLogin()).then(()=> alert('Congratulation! You have successfully signed up for Athelink! Please click on the link in the email that was sent to you in order to complete your registration.')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=> alert('Congratulation! You have successfully signed up for Athelink! Please click on the link in the email that was sent to you in order to complete your registration.')).then(()=> location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
 
@@ -140,10 +129,10 @@ class SignUpForm extends Component {
   }
 }
 
-const selector = formValueSelector('signup_form');
+const selector = formValueSelector('signupForm');
 
 SignUpForm = reduxForm({
-  form: 'signup_form',
+  form: 'signupForm',
   validate
 })(SignUpForm);
 
@@ -154,12 +143,6 @@ SignUpForm = connect(state => ({
   Email: selector(state, 'signup_email'),
   Password: selector(state, 'signup_password')
 }))(SignUpForm);
-
-export function mapDispatchToProps(dispatch) {
-  return {
-    GoToLogin: () => dispatch(push('/login'))
-  };
-}
 
 
 const addMutation = gql`
@@ -174,4 +157,4 @@ const addMutation = gql`
 
 const SignUpMutation = graphql(addMutation, {name: 'SignUpAthlete'})(SignUpForm)
 
-export default connect (null, mapDispatchToProps)(SignUpMutation);
+export default SignUpMutation;
