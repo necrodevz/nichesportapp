@@ -56,15 +56,11 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
   }
 
     return (
-      <MuiThemeProvider>
       <article>
-        <div>
           <CenteredSection>
-            <H3>Hey, {this.props.data.user ? this.props.data.user.email : 'no Data'}.</H3>
+            <H3>Welcome to NicheSportsApp, {this.props.data.user ? this.props.data.user.email : 'no Data'}.</H3>
           </CenteredSection>
-        </div>
       </article>
-      </MuiThemeProvider>
     );
   }
 }
