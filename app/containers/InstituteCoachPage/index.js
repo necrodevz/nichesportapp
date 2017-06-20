@@ -7,7 +7,6 @@
 import React, { PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton'
 import CoachForm from './CoachForm';
-import CenteredSection from '../../containers/HomePage/CenteredSection';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import {
@@ -34,7 +33,8 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
 
   toggleCoachForm(value) {
     console.log('value', value);
-      this.setState({ showCoachForm: !value })
+    this.setState({ showCoachForm: !value });
+    this.props.data.refetch();
   }
 
   render() {
@@ -46,7 +46,7 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
       />
     ];
 
-      if (this.props.data.loading) {
+  if (this.props.data.loading) {
     return (<div>Loading</div>)
   }
 
@@ -67,7 +67,7 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
             open={this.state.showCoachForm}
             onRequestClose={()=>this.toggleCoachForm(this.state.showCoachForm)}
           >
-            <CoachForm instituteId={this.props.instituteId} showCoachForm={this.state.showCoachForm} toggleCoachForm={this.toggleCoachForm}/>
+            <CoachForm instituteId={this.props.instituteId} toggleCoachForm={(value) => this.toggleCoachForm(value)}/>
         </Dialog>
        : <RaisedButton label="Create Coach" style={{"float": "right","marginTop": "10px","marginRight": "10px"}} onClick={() => this.toggleCoachForm(this.state.showCoachForm)} primary={true} />}
       </div>
@@ -84,7 +84,6 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
           enableSelectAll={false}
           >
           <TableRow>
-            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>ID</TableHeaderColumn>
             <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Email</TableHeaderColumn>
             <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>First Name</TableHeaderColumn>
             <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Last Name</TableHeaderColumn>
@@ -95,10 +94,9 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
           deselectOnClickaway={false}
           showRowHover={true}
           >
-        {this.props.data.allCoaches.map(coach=>(
+        {this.props.data.allCoaches.map((coach, index)=>(
           <TableRow key={coach.id}>
-            <TableRowColumn style={{textAlign: 'center'}}>{coach.id}</TableRowColumn>
-            <TableRowColumn style={{textAlign: 'center'}}>{coach.user.email}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{index+1}  {coach.user.email}</TableRowColumn>
             <TableRowColumn style={{textAlign: 'center'}}>{coach.user.firstName}</TableRowColumn>
             <TableRowColumn style={{textAlign: 'center'}}>{coach.user.lastName}</TableRowColumn>
           </TableRow>

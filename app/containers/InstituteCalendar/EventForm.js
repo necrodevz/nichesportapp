@@ -2,33 +2,19 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
 import MenuItem from 'material-ui/MenuItem';
-import {AutoComplete as MUIAutoComplete} from 'material-ui';
 import {
-  AutoComplete,
-  Checkbox,
   DatePicker,
-  TimePicker,
-  RadioButtonGroup,
   SelectField,
-  Slider,
-  TextField,
-  Toggle
+  TextField
 } from 'redux-form-material-ui';
-import RaisedButton from 'material-ui/RaisedButton'
-import CenteredSection from '../../containers/HomePage/CenteredSection'
-import { graphql, compose } from 'react-apollo'
-import gql from 'graphql-tag'
+import RaisedButton from 'material-ui/RaisedButton';
+import CenteredSection from '../../containers/HomePage/CenteredSection';
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
 import {GridList, GridTile} from 'material-ui/GridList';
 import Notifications, {notify} from 'react-notify-toast';
 
-
-const optionsStyle = {
-  maxWidth: 255,
-  marginRight: 'auto',
-};
-
-// validation functions
-const errors = {}
+const errors = {};
 
 const required = value => (value == null ? 'Required' : undefined);
 const teamCount = value =>
@@ -63,7 +49,6 @@ class EventForm extends Component {
   constructor(props) {
     super(props);
      this.handleSelectTeamsChange = this.handleSelectTeamsChange.bind(this);
-     //this.handleStartDateChange = this.handleStartDateChange.bind(this);
   }
   static propTypes = {
     createInstituteEvent: React.PropTypes.func,
@@ -97,10 +82,8 @@ class EventForm extends Component {
   // handleStartDateChange(startDate) {
   //   //console.log('value of endDateAddendum', endDateAddendum);
   //   //console.log('startdate', startDate);
-  //   console.log('2222222', this.props);
   //   var endDate= new Date();
   //   endDate = new Date(endDate.setDate(startDate.getDate()+endDateAddendum)) 
-  //   //console.log('33333', endDate);
   //   this.props.initialize({ eventName: this.props.eventName,
   //     address: this.props.address,
   //     sport: this.props.sport,
@@ -126,7 +109,6 @@ class EventForm extends Component {
       matchesCount: (n*(n-1))+3
     })
     endDateAddendum = ((n*(n-1))/2)-1+3+3;
-    //console.log('value of endDateAddendum', endDateAddendum);
   }
 
   // componentWillReceiveProps(nextProps) {

@@ -4,14 +4,13 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton'
 import { connect } from 'react-redux';
 import EventForm from './EventForm';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import H3 from 'components/H3';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import {
@@ -45,11 +44,11 @@ export class InstituteCalendar extends React.Component { // eslint-disable-line 
       this.setState({ showEventForm: !value })
       this.props.data.refetch();
   }
-  // Since state and props are static,
-  // there's no need to re-render this component
+
   shouldComponentUpdate() {
     return true;
   }
+
   render() {
     const actions = [
       <FlatButton
@@ -107,7 +106,7 @@ export class InstituteCalendar extends React.Component { // eslint-disable-line 
      >
       <TableRow >
         <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Name</TableHeaderColumn>
-        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>address</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Address</TableHeaderColumn>
         <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Start Date</TableHeaderColumn>
         <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>End Date</TableHeaderColumn>
         <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Number of Teams</TableHeaderColumn>

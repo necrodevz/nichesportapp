@@ -1,30 +1,18 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
-import {RadioButton} from 'material-ui/RadioButton';
 import MenuItem from 'material-ui/MenuItem';
-import { createStructuredSelector } from 'reselect';
-import { createInstitute } from '../DashboardPage/actions';
-import {AutoComplete as MUIAutoComplete} from 'material-ui';
 import {
-  AutoComplete,
-  Checkbox,
-  DatePicker,
-  TimePicker,
-  RadioButtonGroup,
   SelectField,
-  Slider,
-  TextField,
-  Toggle
+  TextField
 } from 'redux-form-material-ui';
-import RaisedButton from 'material-ui/RaisedButton'
-import CenteredSection from '../../containers/HomePage/CenteredSection'
-import { graphql, compose } from 'react-apollo'
-import gql from 'graphql-tag'
+import RaisedButton from 'material-ui/RaisedButton';
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
 import Notifications, {notify} from 'react-notify-toast';
 import {GridList, GridTile} from 'material-ui/GridList';
 
-const errors = {}
+const errors = {};
 
 var age = [{"id": 1, "value": "Under 15"}, {"id": 2, "value": "Under 18"}, {"id": 3, "value": "20+"}];
 
@@ -54,12 +42,7 @@ class TeamForm extends Component {
                    playerCount: parseInt(this.props.PlayersCount),
                    teamCoach: this.props.TeamCoach
                     }
-                 }).then(()=>location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
-  }
-
-  componentWillMount() {
-    this.props.GetCoachListQuery;
-    this.props.GetSportsQuery;
+                 }).then(() => notify.show('Team Created Successfully', 'success')).then(() => this.props.toggleTeamForm('false')).catch((res) => notify.show(JSON.stringify(res.message), 'error'))
   }
 
   render() {
@@ -161,20 +144,6 @@ TeamForm = reduxForm({
   form: 'teamForm',
   validate
 })(TeamForm);
-
-
-TeamForm.propTypes = {
-  loading: React.PropTypes.bool,
-  error: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-  ]),
-  coach: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.bool,
-  ]),
-  onSubmitForm: React.PropTypes.func,
-};
 
 const addMutation = gql`
   mutation createTeam ($name: String!, $instituteId: ID! ,$teamSport: ID!, $teamCoach: ID!, $playerCount: Int!) {

@@ -4,15 +4,12 @@
  *
  */
 import React from 'react';
-import H3 from 'components/H3';
-import TeamForm from './TeamForm'
-import RaisedButton from 'material-ui/RaisedButton'
-import CenteredSection from '../../containers/HomePage/CenteredSection';
+import TeamForm from './TeamForm';
+import RaisedButton from 'material-ui/RaisedButton';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-
 import {
   Table,
   TableBody,
@@ -32,10 +29,10 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
 
   toggleTeamForm(value) {
     console.log('value', value);
-      this.setState({ showTeamForm: !value })
+    this.setState({ showTeamForm: !value })
+    this.props.data.refetch()
   }
-  // Since state and props are static,
-  // there's no need to re-render this component
+
   shouldComponentUpdate() {
     return true;
   }
@@ -49,7 +46,7 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
       />
     ];
 
-      if (this.props.data.loading) {
+  if (this.props.data.loading) {
     return (<div>Loading</div>)
   }
 
@@ -70,7 +67,7 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
                 open={this.state.showTeamForm}
                 onRequestClose={()=>this.toggleTeamForm(this.state.showTeamForm)}
               >
-                <TeamForm instituteId={this.props.instituteId} showTeamForm={this.state.showTeamForm} toggleTeamForm={this.toggleTeamForm}/>
+                <TeamForm instituteId={this.props.instituteId} toggleTeamForm={(value) => this.toggleTeamForm(value)}/>
             </Dialog>
           : <RaisedButton  label="Create Team" style={{"float": "right","marginTop": "10px","marginRight": "10px"}} onClick={() => this.toggleTeamForm(this.state.showTeamForm)} primary={true} />}
         </div>

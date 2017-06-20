@@ -1,32 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
-import {RadioButton} from 'material-ui/RadioButton';
-import MenuItem from 'material-ui/MenuItem';
-import { createStructuredSelector } from 'reselect';
-import { createInstitute } from '../DashboardPage/actions';
-import {AutoComplete as MUIAutoComplete} from 'material-ui';
 import {
-  AutoComplete,
-  Checkbox,
-  DatePicker,
-  TimePicker,
-  RadioButtonGroup,
-  SelectField,
-  Slider,
-  TextField,
-  Toggle
+  TextField
 } from 'redux-form-material-ui';
-import RaisedButton from 'material-ui/RaisedButton'
-import CenteredSection from '../../containers/HomePage/CenteredSection'
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
+import RaisedButton from 'material-ui/RaisedButton';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import Notifications, {notify} from 'react-notify-toast';
 import {GridList, GridTile} from 'material-ui/GridList';
 
 
 var userID = localStorage.getItem('userID');
-const errors = {}
+const errors = {};
 
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);
@@ -59,7 +45,7 @@ class CoachForm extends Component {
                     email: this.props.Email,
                     instituteId: this.props.instituteId,
                    password: this.props.Password }
-                 }).then(()=>location.reload()).then(()=>notify.show('Coach Created Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Coach Created Successfully', 'success')).then(()=>this.props.toggleCoachForm('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   render() {
@@ -131,20 +117,6 @@ CoachForm = reduxForm({
   form: 'coach_form',
   validate
 })(CoachForm);
-
-
-CoachForm.propTypes = {
-  loading: React.PropTypes.bool,
-  error: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-  ]),
-  coach: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.bool,
-  ]),
-  onSubmitForm: React.PropTypes.func,
-};
 
 const createCoachMutation = gql`
   mutation createCoach ($firstName: String!, $lastName: String!, $email: String!, $password: String!, $instituteId: ID!) {
