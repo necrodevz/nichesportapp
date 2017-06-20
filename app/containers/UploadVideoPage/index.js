@@ -8,16 +8,16 @@ import React from 'react';
 import MenuItem from 'material-ui/MenuItem';
 import H2 from 'components/H2';
 import SelectField from 'material-ui/SelectField';
-import RaisedButton from 'material-ui/RaisedButton'
-import CenteredSection from '../../containers/HomePage/CenteredSection'
-import { graphql, compose } from 'react-apollo'
+import RaisedButton from 'material-ui/RaisedButton';
+import CenteredSection from '../../containers/HomePage/CenteredSection';
+import { graphql, compose } from 'react-apollo';
 import IconButton from 'material-ui/IconButton';
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import Paper from 'material-ui/Paper';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import AddVideoForm from './AddVideoForm'
+import AddVideoForm from './AddVideoForm';
 var _ = require('lodash');
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import Notifications, {notify} from 'react-notify-toast';
@@ -73,8 +73,7 @@ export class CoachVideo extends React.Component { // eslint-disable-line react/p
     this.props.VideosList.refetch();
     this.resetSearch();
   }
-  // Since state and props are static,
-  // there's no need to re-render this component
+
   shouldComponentUpdate() {
     return true;
   }

@@ -66,7 +66,7 @@ export class AthleteUpcomingEventList extends React.Component { // eslint-disabl
      >
       <TableRow >
         <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Name</TableHeaderColumn>
-          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>address</TableHeaderColumn>
+          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Address</TableHeaderColumn>
           <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Start Date</TableHeaderColumn>
           <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>End Date</TableHeaderColumn>
           <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Number of Teams</TableHeaderColumn>

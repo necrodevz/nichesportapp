@@ -6,11 +6,9 @@
 
 import React, { PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton'
-import { connect } from 'react-redux';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import H3 from 'components/H3';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import {
@@ -38,8 +36,6 @@ export class InstituteOrganiseMatches extends React.Component { // eslint-disabl
     console.log('index', index);
   }
 
-  // Since state and props are static,
-  // there's no need to re-render this component
   shouldComponentUpdate() {
     return true;
   }
@@ -62,62 +58,60 @@ export class InstituteOrganiseMatches extends React.Component { // eslint-disabl
     }
 
     return (
-      <div>
-      <Notifications />
-        <CenteredSection>
-         <Table 
-          fixedHeader={true}
-          selectable={false}
-          multiSelectable={false}>
-         >
-    <TableHeader
-      displaySelectAll={false}
-      adjustForCheckbox={false}
-      enableSelectAll={false}
-     >
-      <TableRow >
-        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Name</TableHeaderColumn>
-        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>address</TableHeaderColumn>
-        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Start Date</TableHeaderColumn>
-        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>End Date</TableHeaderColumn>
-        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Number of Teams</TableHeaderColumn>
-        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Number of Matches</TableHeaderColumn>
-        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Organise</TableHeaderColumn>
-      </TableRow>
-    </TableHeader>
-    <TableBody 
-      displayRowCheckbox={false}
-      deselectOnClickaway={false}
-      showRowHover={true}
-    >
-    {this.props.data.allEvents.map((team, index)=>(
-      <TableRow key={index+1} >
-        <TableRowColumn style={{textAlign: 'center'}}>{index+1}. {team.name}</TableRowColumn>
-        <TableRowColumn style={{textAlign: 'center'}}>{team.address}</TableRowColumn>
-        <TableRowColumn style={{textAlign: 'center'}}>{team.startDate}</TableRowColumn>
-        <TableRowColumn style={{textAlign: 'center'}}>{team.endDate}</TableRowColumn>
-        <TableRowColumn style={{textAlign: 'center'}}>{team.numberOfTeams}</TableRowColumn>
-        <TableRowColumn style={{textAlign: 'center'}}>{team.numberOfFixtures}</TableRowColumn>
-        <TableRowColumn style={{textAlign: 'center'}}>
-        <RaisedButton label="SemiFinal/Final" onTouchTap={()=>this.toggleEventDetailDialog(this.state.showEventDetailDialog, index)} primary={true} />
-        </TableRowColumn>
-      </TableRow>
-      ))
-    }
-    </TableBody>
-  </Table>
-  <Dialog
-          title="Organise SemiFinal/Final"
-          autoScrollBodyContent={true}
-          actions={actions}
-          modal={false}
-          open={this.state.showEventDetailDialog}
-          onRequestClose={()=>this.toggleEventDetailDialog(this.state.showEventDetailDialog)}
+      <CenteredSection>
+        <Notifications />
+        <Table 
+         fixedHeader={true}
+         selectable={false}
+         multiSelectable={false}>
         >
+        <TableHeader
+          displaySelectAll={false}
+          adjustForCheckbox={false}
+          enableSelectAll={false}
+         >
+        <TableRow >
+          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Name</TableHeaderColumn>
+          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Address</TableHeaderColumn>
+          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Start Date</TableHeaderColumn>
+          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>End Date</TableHeaderColumn>
+          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Number of Teams</TableHeaderColumn>
+          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Number of Matches</TableHeaderColumn>
+          <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Organise</TableHeaderColumn>
+        </TableRow>
+        </TableHeader>
+        <TableBody 
+          displayRowCheckbox={false}
+          deselectOnClickaway={false}
+          showRowHover={true}
+        >
+        {this.props.data.allEvents.map((team, index)=>(
+          <TableRow key={index+1} >
+            <TableRowColumn style={{textAlign: 'center'}}>{index+1}. {team.name}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{team.address}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{team.startDate}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{team.endDate}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{team.numberOfTeams}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{team.numberOfFixtures}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>
+            <RaisedButton label="SemiFinal/Final" onTouchTap={()=>this.toggleEventDetailDialog(this.state.showEventDetailDialog, index)} primary={true} />
+            </TableRowColumn>
+          </TableRow>
+          ))
+        }
+        </TableBody>
+        </Table>
+          <Dialog
+            title="Organise SemiFinal/Final"
+            autoScrollBodyContent={true}
+            actions={actions}
+            modal={false}
+            open={this.state.showEventDetailDialog}
+            onRequestClose={()=>this.toggleEventDetailDialog(this.state.showEventDetailDialog)}
+          >
           <OrganiseMatch toggleEventDetailDialog={(value)=>this.toggleEventDetailDialog(value)} activeEvent={this.props.data.allEvents[this.state.activeIndex]} />
         </Dialog>
       </CenteredSection>
-      </div>
     );
   }
 }
