@@ -6,8 +6,6 @@
 
 import React, { PropTypes } from 'react';
 import { graphql } from 'react-apollo';
-import H3 from 'components/H3';
-import CenteredSection from '../../containers/HomePage/CenteredSection';
 import gql from 'graphql-tag';
 import {
   Table,
@@ -18,7 +16,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 
-class Athlete extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+class Athlete extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
      if (this.props.data.loading) {
     return (<div>Loading</div>)
@@ -75,6 +73,6 @@ const AthleteQuery = gql`query AthleteQuery {
   }
 }`
 
-const AthleteData = graphql(AthleteQuery)(Athlete);
+const AthleteData = graphql(AthleteQuery, {options: { pollInterval: 200000 }})(Athlete);
 
 export default AthleteData;

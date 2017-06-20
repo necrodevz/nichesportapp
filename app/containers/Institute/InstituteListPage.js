@@ -15,6 +15,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import Notifications, {notify} from 'react-notify-toast';
 
 
 class InstituteListPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -27,6 +28,7 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
 
   toggleInstituteForm(value) {
     this.setState({ showInstituteForm: !value })
+    this.props.data.refetch();
   }
 
   shouldComponentUpdate() {
@@ -52,6 +54,7 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
   }
     return (
       <div>
+      <Notifications />
         <div>
           <RaisedButton style={{"float": "right","marginTop": "10px","marginRight": "10px"}} label="Add New Institute" onClick={() => this.toggleInstituteForm(this.state.showInstituteForm)} primary={true} />
           <Dialog
@@ -63,7 +66,7 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
               open={this.state.showInstituteForm}
               onRequestClose={()=>this.toggleInstituteForm(this.state.showInstituteForm)}
             >
-              <InstituteForm toggleInstituteForm={this.toggleInstituteForm}/>
+              <InstituteForm toggleInstituteForm={(value)=>this.toggleInstituteForm(value)}/>
           </Dialog>
         </div>
         <div style={{"float": "left","marginLeft": "50px","marginRight": "50px","marginBottom": "50px"}}>

@@ -1,32 +1,19 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
-import {RadioButton} from 'material-ui/RadioButton';
 import MenuItem from 'material-ui/MenuItem';
-import { createStructuredSelector } from 'reselect';
-import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/App/selectors';
-import { createInstitute } from '../DashboardPage/actions';
-import {AutoComplete as MUIAutoComplete} from 'material-ui';
 import {
-  AutoComplete,
-  Checkbox,
-  DatePicker,
-  TimePicker,
-  RadioButtonGroup,
   SelectField,
-  Slider,
-  TextField,
-  Toggle
+  TextField
 } from 'redux-form-material-ui';
 import countryList from 'components/countryList';
-import RaisedButton from 'material-ui/RaisedButton'
-import CenteredSection from '../../containers/HomePage/CenteredSection'
-import { graphql, compose } from 'react-apollo'
-import gql from 'graphql-tag'
-import Notifications, {notify} from 'react-notify-toast'
+import RaisedButton from 'material-ui/RaisedButton';
+import { graphql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
+import Notifications, {notify} from 'react-notify-toast';
 import {GridList, GridTile} from 'material-ui/GridList';
 
-const errors = {}
+const errors = {};
 
 const required = value => (value == null ? 'Required' : undefined);
 const institute_email = value =>
@@ -51,7 +38,7 @@ const validate = values => {
 }
 // validation functions
 
-const sportsObject=[]
+const sportsObject=[];
 
 class InstituteForm extends Component {
   static propTypes = {
@@ -62,14 +49,13 @@ class InstituteForm extends Component {
     for(var i = 0; i < this.props.InstituteSports.length; i++){
       sportsObject.push({"sportId": this.props.InstituteSports[i]})
     }
-    //const {description, imageUrl} = this.state
     await this.props.createInstitute({variables: {name: this.props.InstituteName,
                     country: this.props.InstituteCountry,
                     typeOfInstitute: this.props.InstituteType,
                     email: this.props.InstituteEmail,
                     password: this.props.InstitutePassword,
                     sport: sportsObject}
-                 }).then(()=>location.reload()).then(()=>notify.show('Institute Created', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Institute Created', 'success')).then(()=>this.props.toggleInstituteForm('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   componentWillMount() {
@@ -195,20 +181,6 @@ InstituteForm.propTypes = {
   onSubmitForm: React.PropTypes.func,
 };
 
-export function mapDispatchToProps(dispatch) {
-  return {
-    onSubmitForm: () => {
-      dispatch(createInstitute());
-    },
-  };
-}
-
-const mapStateToProps = createStructuredSelector({
-  repos: makeSelectRepos(),
-  loading: makeSelectLoading(),
-  error: makeSelectError(),
-});
-
 const addMutation = gql`
   mutation createInstitute ($email: String!, $password: String!, $country: String!, $name: String!, $typeOfInstitute: String!) {
   createUser(authProvider: {email: {email: $email, password: $password}}, firstName: $name, lastName: $name, role: OWNER, instituteOwner: {country: $country, name: $name, typeOfInstitute: $typeOfInstitute, instituteSport: [{sportId: "cj32w829hbqfo01565f0zeimp"}]}) {
@@ -229,4 +201,4 @@ const PageWithMutation = compose(
   graphql(GetSportsQuery)
 )(InstituteForm)
 
-export default connect(mapStateToProps, mapDispatchToProps)(PageWithMutation);
+export default PageWithMutation;
