@@ -19,7 +19,8 @@ import Loading from 'components/LoadingIndicator';
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
   constructor(props) {
-    super(props)
+    super(props);
+    this.updateProfile = this.updateProfile.bind(this);
   }
 
   static propTypes = {
@@ -30,14 +31,18 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     }).isRequired,
   }
 
-  updateProfile() {
-    localStorage.setItem('userID', this.props.data.user.id);
-    localStorage.setItem('userName', this.props.data.user.firstName);
-    localStorage.setItem('role', this.props.data.user.role);
-    this.props.data.user.role == 'ADMIN' ? this.props.GoToAdminDashboard(this.props.data.user.role) : '';
-    this.props.data.user.role == 'ATHLETE' ? this.props.GoToAthleteDashboard(this.props.data.user.role) : '';
-    this.props.data.user.role == 'OWNER' ? this.props.GoToInstituteDashboard(this.props.data) : '';
-    this.props.data.user.role == 'COACH' ? this.props.GoToCoachDashboard(this.props.data.user.role) : '';
+  componentWillReceiveProps(nextProps) {
+    nextProps.data.user ? this.updateProfile(nextProps) : '';
+  }
+
+  updateProfile(nextProps) {
+    localStorage.setItem('userID', nextProps.data.user.id);
+    localStorage.setItem('userName', nextProps.data.user.firstName);
+    localStorage.setItem('role', nextProps.data.user.role);
+    nextProps.data.user.role == 'ADMIN' ? nextProps.GoToAdminDashboard(nextProps.data.user.role) : '';
+    nextProps.data.user.role == 'ATHLETE' ? nextProps.GoToAthleteDashboard(nextProps.data.user.role) : '';
+    nextProps.data.user.role == 'OWNER' ? nextProps.GoToInstituteDashboard(nextProps.data) : '';
+    nextProps.data.user.role == 'COACH' ? nextProps.GoToCoachDashboard(nextProps.data.user.role) : '';
   }
 
   render() {
@@ -49,8 +54,6 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     console.log(this.props.data.error)
     return (<div>An unexpected error occurred</div>)
   }
-
-  this.props.data.user ? this.updateProfile() : '';
 
     return (
       <MuiThemeProvider>
