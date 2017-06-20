@@ -11,6 +11,7 @@ import gql from 'graphql-tag';
 import RaisedButton from 'material-ui/RaisedButton';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import Notifications, {notify} from 'react-notify-toast';
+import Loading from 'components/LoadingIndicator';
 
 const userRole = localStorage.getItem('role');
 
@@ -41,7 +42,7 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
     const{notification, data}=this.props;
     const team = data.AtheletTeam ?  data.AtheletTeam.team : '';
     if (data.loading) {
-      return (<div>Loading</div>)
+      return (<Loading />)
     }
 
     if (data.error) {

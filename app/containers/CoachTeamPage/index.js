@@ -1,6 +1,6 @@
 import React from 'react';
 import H3 from 'components/H3';
-import RaisedButton from 'material-ui/RaisedButton'
+import RaisedButton from 'material-ui/RaisedButton';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -14,7 +14,8 @@ import {
 } from 'material-ui/Table';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import TeamDetailModal from './TeamDetailModal'
+import TeamDetailModal from './TeamDetailModal';
+import Loading from 'components/LoadingIndicator';
 
 export class CoachTeamPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -44,7 +45,7 @@ export class CoachTeamPage extends React.Component { // eslint-disable-line reac
     ];
     
     if (this.props.TeamsList.loading) {
-    return (<div>Loading</div>)
+    return (<Loading />)
   }
 
   if (this.props.TeamsList.error) {

@@ -23,7 +23,8 @@ import {GridList, GridTile} from 'material-ui/GridList';
 import Divider from 'material-ui/Divider';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import CoachInviteModal from '../../containers/CoachTeam/CoachInviteModal'
+import CoachInviteModal from '../../containers/CoachTeam/CoachInviteModal';
+import Loading from 'components/LoadingIndicator';
 
 
 export class TeamDetailModal extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -128,7 +129,7 @@ export class TeamDetailModal extends React.Component { // eslint-disable-line re
               }
             </TableBody>
           </Table>
-    </div> : <div>Loading</div>
+    </div> : <Loading />
     );
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import H3 from 'components/H3';
-import InstituteForm from './InstituteForm'
-import RaisedButton from 'material-ui/RaisedButton'
+import InstituteForm from './InstituteForm';
+import RaisedButton from 'material-ui/RaisedButton';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -16,6 +16,7 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import Notifications, {notify} from 'react-notify-toast';
+import Loading from 'components/LoadingIndicator';
 
 
 class InstituteListPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -45,7 +46,7 @@ class InstituteListPage extends React.Component { // eslint-disable-line react/p
     ];
 
       if (this.props.data.loading) {
-    return (<div>Loading</div>)
+    return (<Loading />)
   }
 
   if (this.props.data.error) {

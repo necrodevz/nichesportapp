@@ -22,7 +22,8 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import Notifications, {notify} from 'react-notify-toast';
-import CalendarView from 'containers/CalendarView'
+import CalendarView from 'containers/CalendarView';
+import Loading from 'components/LoadingIndicator';
 
 export class InstituteCalendar extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -67,7 +68,7 @@ export class InstituteCalendar extends React.Component { // eslint-disable-line 
     ];
 
     if (this.props.data.loading) {
-      return (<div>Loading</div>)
+      return (<Loading />)
     }
 
     if (this.props.data.error) {

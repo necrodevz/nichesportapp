@@ -5,7 +5,7 @@
  */
 
 import React, { PropTypes } from 'react';
-import RaisedButton from 'material-ui/RaisedButton'
+import RaisedButton from 'material-ui/RaisedButton';
 import CoachForm from './CoachForm';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -19,6 +19,7 @@ import {
 } from 'material-ui/Table';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import Loading from 'components/LoadingIndicator';
 
 
 var userID = localStorage.getItem('userID');
@@ -47,7 +48,7 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
     ];
 
   if (this.props.data.loading) {
-    return (<div>Loading</div>)
+    return (<Loading />)
   }
 
   if (this.props.data.error) {

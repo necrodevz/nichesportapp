@@ -14,6 +14,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Loading from 'components/LoadingIndicator';
 
 export class HomePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
 
@@ -41,7 +42,7 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
 
   render() {
     if (this.props.data.loading) {
-    return (<div>Loading</div>)
+    return (<Loading />)
   }
 
   if (this.props.data.error) {

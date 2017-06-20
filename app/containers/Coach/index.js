@@ -15,11 +15,12 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import Loading from 'components/LoadingIndicator';
 
 class Coach extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
      if (this.props.data.loading) {
-    return (<div>Loading</div>)
+    return (<Loading />)
   }
 
   if (this.props.data.error) {

@@ -20,6 +20,7 @@ import NotificationModal from '../../containers/NotificationModal';
 import FlatButton from 'material-ui/FlatButton';
 import Avatar from 'material-ui/Avatar';
 var _ = require('lodash');
+import Loading from 'components/LoadingIndicator';
 
 const REFRESH_INTERVAL = 200 * 1000; //2 minutes
 
@@ -56,7 +57,7 @@ export class AthleteHeader extends React.Component { // eslint-disable-line reac
     const{data}=this.props;
 
     if (this.props.data.loading) {
-      return (<div>Loading</div>)
+      return (<Loading />)
     }
 
     if (this.props.data.error) {

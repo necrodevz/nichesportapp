@@ -19,6 +19,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import Loading from 'components/LoadingIndicator';
 
 
 export class CoachInviteModal extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -64,7 +65,7 @@ export class CoachInviteModal extends React.Component { // eslint-disable-line r
     }
     </TableBody>
   </Table>
-            </CenteredSection> : <div>Loading</div>
+            </CenteredSection> : <Loading />
     );
   }
 }

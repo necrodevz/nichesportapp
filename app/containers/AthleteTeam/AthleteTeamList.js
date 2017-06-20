@@ -6,7 +6,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import H3 from 'components/H3';
-import RaisedButton from 'material-ui/RaisedButton'
+import RaisedButton from 'material-ui/RaisedButton';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -18,6 +18,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import Loading from 'components/LoadingIndicator';
 
 
 class AthleteTeamList extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -28,7 +29,7 @@ class AthleteTeamList extends React.Component { // eslint-disable-line react/pre
 
   render() {
       if (this.props.data.loading) {
-    return (<div>Loading</div>)
+    return (<Loading />)
   }
 
   if (this.props.data.error) {

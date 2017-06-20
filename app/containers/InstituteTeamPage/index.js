@@ -18,6 +18,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import Loading from 'components/LoadingIndicator';
 
 export class InstituteTeamPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -47,7 +48,7 @@ export class InstituteTeamPage extends React.Component { // eslint-disable-line 
     ];
 
   if (this.props.data.loading) {
-    return (<div>Loading</div>)
+    return (<Loading />)
   }
 
   if (this.props.data.error) {

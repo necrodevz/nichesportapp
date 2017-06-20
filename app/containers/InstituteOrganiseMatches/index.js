@@ -5,7 +5,7 @@
  */
 
 import React, { PropTypes } from 'react';
-import RaisedButton from 'material-ui/RaisedButton'
+import RaisedButton from 'material-ui/RaisedButton';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -21,6 +21,7 @@ import {
 } from 'material-ui/Table';
 import Notifications, {notify} from 'react-notify-toast';
 import OrganiseMatch from './OrganiseMatch';
+import Loading from 'components/LoadingIndicator';
 
 export class InstituteOrganiseMatches extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
@@ -49,7 +50,7 @@ export class InstituteOrganiseMatches extends React.Component { // eslint-disabl
     ];
 
     if (this.props.data.loading) {
-      return (<div>Loading</div>)
+      return (<Loading />)
     }
 
     if (this.props.data.error) {

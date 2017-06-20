@@ -31,7 +31,8 @@ import {
 import Chip from 'material-ui/Chip';
 import H3 from 'components/H3';
 var _ = require('lodash');
-import FinalForm from './FinalForm'
+import FinalForm from './FinalForm';
+import Loading from 'components/LoadingIndicator';
 
 const style = {
   margin: 20,
@@ -92,7 +93,7 @@ export class OrganiseMatch extends React.Component { // eslint-disable-line reac
 
   render() {
     if (this.props.data.loading) {
-    return (<div>Loading</div>)
+    return (<Loading />)
     }
 
     if (this.props.data.error) {

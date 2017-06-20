@@ -11,6 +11,7 @@ import CenteredSection from '../../containers/HomePage/CenteredSection';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import AthleteProfileForm from './AthleteProfileForm';
+import Loading from 'components/LoadingIndicator'
 
 export class AthleteProfile extends React.Component { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
@@ -31,7 +32,7 @@ export class AthleteProfile extends React.Component { // eslint-disable-line rea
   render() {
     const{...props}=this.props;
     if (this.props.data.loading) {
-      return (<div>Loading</div>)
+      return (<Loading />)
     }
 
     if (this.props.data.error) {
@@ -81,4 +82,4 @@ const AthleteProfileData = compose(
   graphql(GetSportsQuery, {name: 'sportsList'} ))(AthleteProfile);
 
 
-export default (AthleteProfileData);
+export default AthleteProfileData;

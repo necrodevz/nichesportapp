@@ -28,6 +28,7 @@ import globalize from 'globalize';
 import BigCalendar from 'react-big-calendar';
 require('react-big-calendar/lib/css/react-big-calendar.css');
 import Snackbar from 'material-ui/Snackbar';
+import Loading from 'components/LoadingIndicator';
 
 localizer(globalize);
 
@@ -74,7 +75,7 @@ export class CalendarView extends React.Component { // eslint-disable-line react
 
   render() {
     if (this.props.data.loading) {
-    return (<div>Loading</div>)
+    return (<Loading />)
     }
 
     if (this.props.data.error) {

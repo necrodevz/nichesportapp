@@ -1,6 +1,6 @@
 import React from 'react';
 import H3 from 'components/H3';
-import RaisedButton from 'material-ui/RaisedButton'
+import RaisedButton from 'material-ui/RaisedButton';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -15,6 +15,7 @@ import {
 import CalendarView from 'containers/CalendarView';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
+import Loading from 'components/LoadingIndicator';
 
 export class CoachEventsList extends React.Component { // eslint-disable-line react/prefer-stateless-function
 
@@ -45,7 +46,7 @@ export class CoachEventsList extends React.Component { // eslint-disable-line re
     ];
 
     if (this.props.data.loading) {
-      return (<div>Loading</div>)
+      return (<Loading />)
     }
 
     if (this.props.data.error) {
