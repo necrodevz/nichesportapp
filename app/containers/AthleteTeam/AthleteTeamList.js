@@ -111,7 +111,7 @@ const MyTeamsQuery = gql`query MyTeamsQuery ($userId: ID) {
 }`
 
 const InstituteData = graphql(MyTeamsQuery, {
-  options: (props) => ({
+  options: (props) => ({ pollInterval: 200000,
       variables: {
         userId: props.userId   }
     })

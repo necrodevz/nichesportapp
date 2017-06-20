@@ -76,7 +76,7 @@ class ApplyTeamForm extends Component {
     await this.props.applyTeam({variables: {athleteId: this.props.userData.athlete.id,
                 athleteMessage: this.props.athleteMessage,
                 teamId: this.props.TeamsList.allTeams[index].id}
-              }).then(()=>this.props.TeamsList).then(()=>notify.show('Applied Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+              }).then(()=>this.props.TeamsList.refetch()).then(()=>notify.show('Applied Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   render() {
