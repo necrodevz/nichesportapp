@@ -29,6 +29,7 @@ export class AthleteProfile extends React.Component { // eslint-disable-line rea
   }
 
   render() {
+    const{...props}=this.props;
     if (this.props.data.loading) {
       return (<div>Loading</div>)
     }
@@ -41,7 +42,7 @@ export class AthleteProfile extends React.Component { // eslint-disable-line rea
     return (
       <section style={{"marginLeft":"30px"}}>
       <H2>My Account</H2>
-       {this.props.data.user ? <AthleteProfileForm userData={this.props.data.user ? this.props.data.user : [] } sportsList={this.props.sportsList.allSports ? this.props.sportsList.allSports : [] }/> : ''}
+       {this.props.data.user ? <AthleteProfileForm userData={this.props.data.user ? this.props.data.user : [] } {...props} sportsList={this.props.sportsList.allSports ? this.props.sportsList.allSports : [] }/> : ''}
       </section>
     );
   }

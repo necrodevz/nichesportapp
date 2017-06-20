@@ -122,7 +122,7 @@ class AthleteProfileForm extends Component {
                     weight: parseInt(this.props.weight),
                     bio: this.props.bio
                      }
-                 }).then(()=>notify.show('Profile Saved Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Profile Saved Successfully', 'success')).then(()=> this.props.data.refetch()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   submitAthleteEducationForm = async () => {

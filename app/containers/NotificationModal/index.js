@@ -18,25 +18,38 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
   static propTypes = {
     approveTeam: React.PropTypes.func,
     rejectTeam: React.PropTypes.func,
+    updateNotification: React.PropTypes.func,
+  }
+
+  componentDidMount() {
+    this.props.updateNotification({ variables : { notificationId: this.props.notification.id }})
   }
 
   approveTeam = async (index) => {
     await this.props.approveTeam({variables: {notificationId: this.props.notification.typeId,
       status: `APPROVEDBY`+userRole}
-                 }).then(()=>location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Approved', 'success')).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   rejectTeam = async (index) => {
     await this.props.rejectTeam({variables: {notificationId: this.props.notification.typeId,
       status: `REJECTEDBY`+userRole}
-                 }).then(()=>location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Rejected', 'success')).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   render() {
     const{notification, data}=this.props;
-    const team = this.props.data.AtheletTeam ?  data.AtheletTeam.team : '';
+    const team = data.AtheletTeam ?  data.AtheletTeam.team : '';
+    if (data.loading) {
+      return (<div>Loading</div>)
+    }
+
+    if (data.error) {
+      console.log(data.error)
+      return (<div>An unexpected error occurred</div>)
+    }
     return (
-      this.props.data.AtheletTeam ? <CenteredSection>
+      data.AtheletTeam ? <CenteredSection>
       <Notifications />
             <h3>Team Name: {team.name}</h3>
               <h4>
@@ -104,7 +117,19 @@ const NotificationDataQuery = gql`query NotificationDataQuery ($notificationId: 
   }
 }`
 
+const updateNotification = gql`
+  mutation updateNotification ($notificationId: ID!){
+    updateNotification(
+    id: $notificationId
+    isRead:true
+  ){
+    id
+  }
+  }
+`
+
 const NotificationData = compose(
+  graphql(updateNotification, {name: 'updateNotification'}),
   graphql(approveTeamMutation, {name: 'approveTeam'}),
   graphql(rejectTeamMutation, {name: 'rejectTeam'}),
   graphql(NotificationDataQuery, {

@@ -12,38 +12,34 @@ import H3 from 'components/H3';
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
 import IconMenu from 'material-ui/IconMenu';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import EmailIcon from 'material-ui/svg-icons/communication/email';
 import Dialog from 'material-ui/Dialog';
 import NotificationModal from '../../containers/NotificationModal';
-
-// export const CoachNotificationsContent = ({notificationsList, toggleNotificationDialog}) => (
-//   <IconMenu maxHeight={200} autoWidth={true} iconButtonElement={
-//                 <IconButton><NotificationsIcon /></IconButton>
-//               }
-//               targetOrigin={{horizontal: 'right', vertical: 'bottom'}}
-//               anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-//             >
-//         {notificationsList.map(notification =>
-//           <MenuItem key={notification.id} onTouchTap={() => toggleNotificationDialog(this.state.showInstituteForm)} primaryText={notification.title} />)
-//         }
-//   </IconMenu>
-// )
+var _ = require('lodash');
 
 export class CoachHeader extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor() {
     super();
     this.state = {
       showNotificationDialog: false,
-      activeIndex: 0
+      activeIndex: 0,
+      readNotifications: []
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let notificationsRead = []
+    nextProps.data.allNotifications ? notificationsRead = _.groupBy(nextProps.data.allNotifications, {'isRead': true}) : ''
+    this.setState({readNotifications: notificationsRead});
   }
 
   toggleNotificationDialog(value, index) {
     this.setState({ showNotificationDialog: !value, activeIndex: index })
     console.log('index', index);
+    this.props.data.refetch();
   }
 
   render() {
@@ -58,7 +54,7 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
     return (
       <div>
         {data.allNotifications ? <div><Badge
-            badgeContent={data.allNotifications.length}
+            badgeContent={this.state.readNotifications.false ? this.state.readNotifications.false.length : data.allNotifications.length}
             secondary={true}
             badgeStyle={{top: 20, right: 25}}
             style={{"marginRight":"-40px"}}
@@ -70,7 +66,7 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
               anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
             >
                 {data.allNotifications.map((notification, index) => (
-                  <MenuItem key={notification.id} onTouchTap={() => this.toggleNotificationDialog(this.state.showNotificationDialog, index)} primaryText={notification.title} />))
+                  <MenuItem key={notification.id} onTouchTap={() => this.toggleNotificationDialog(this.state.showNotificationDialog, index)} primaryText={notification.title + ' at ' + new Date(notification.createdAt).getDate() + '/' + new Date(notification.createdAt).getMonth() + '/' + new Date(notification.createdAt).getFullYear()  + ' ' + new Date(notification.createdAt).getHours() + ':' + new Date(notification.createdAt).getMinutes() + ':' + new Date(notification.createdAt).getSeconds()} />))
                 }
           </IconMenu>
            <Dialog
@@ -82,7 +78,7 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
           open={this.state.showNotificationDialog}
           onRequestClose={()=>this.toggleNotificationDialog(this.state.showNotificationDialog)}
         >
-          <NotificationModal toggleNotificationDialog={()=>this.toggleNotificationDialog()} notification={data.allNotifications[this.state.activeIndex]} />
+          <NotificationModal toggleNotificationDialog={(value)=>this.toggleNotificationDialog(value)} notification={data.allNotifications[this.state.activeIndex]} />
         </Dialog>
           </Badge>
           <Badge
@@ -99,9 +95,18 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
   }
 }
 
+const coachQuery = gql`query coachQuery {
+   user { id firstName lastName
+    athlete {
+      id
+    }
+  }
+}`
+
 const CoachNotificationsQuery = gql`query CoachNotificationsQuery ($userId: ID) {
     allNotifications(filter: {user: {id: $userId}}) {
     id
+    createdAt
     type
     typeId
     title
@@ -109,9 +114,12 @@ const CoachNotificationsQuery = gql`query CoachNotificationsQuery ($userId: ID) 
   }
 }`
 
-const CoachHeaderData = graphql(CoachNotificationsQuery, {
-  options: { variables: { userId: localStorage.getItem('userID') } },
-})(CoachHeader);
+const CoachHeaderData = compose(
+graphql(coachQuery, {name: 'coachProfile'}),
+graphql(CoachNotificationsQuery, {
+  options: (props) => ({ pollInterval : 200000, variables: { userId: props.coachProfile.user ? props.coachProfile.user.id : localStorage.getItem('userID') } })
+})
+)(CoachHeader);
 
 export default CoachHeaderData;
 
