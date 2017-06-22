@@ -4,15 +4,9 @@ import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
 import {RadioButton} from 'material-ui/RadioButton';
 import MenuItem from 'material-ui/MenuItem';
 import {
-  AutoComplete,
-  Checkbox,
   DatePicker,
-  TimePicker,
-  RadioButtonGroup,
   SelectField,
-  Slider,
-  TextField,
-  Toggle
+  TextField
 } from 'redux-form-material-ui';
 import RaisedButton from 'material-ui/RaisedButton'
 import { graphql, compose } from 'react-apollo'
@@ -31,6 +25,16 @@ import SportsCertificateForm from './SportsCertificateForm';
 import {GridList, GridTile} from 'material-ui/GridList';
 import Dropzone from 'react-dropzone';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
 
 var userId = localStorage.getItem('userID');
 
@@ -72,7 +76,8 @@ class AthleteProfileForm extends Component {
     updateUser: React.PropTypes.func,
     updateAthlete: React.PropTypes.func,
     updateAthleteSport: React.PropTypes.func,
-    initialize: React.PropTypes.func.isRequired
+    initialize: React.PropTypes.func.isRequired,
+    deleteCertificate: React.PropTypes.func
   }
 
   constructor(props) {
@@ -81,7 +86,8 @@ class AthleteProfileForm extends Component {
     this.state={
       imageUrl: this.props.userData ? this.props.userData.profileImage : '',
       imageId: '',
-      athleteSports: this.props.userData.athlete.athleteSports
+      athleteSports: this.props.userData.athlete.athleteSports,
+      showSportsCertificateForm: false
     }
   }
 
@@ -130,6 +136,7 @@ class AthleteProfileForm extends Component {
                     graduationProgramLength: this.props.graduationProgramLength,
                     athleteId: this.props.userData.athlete.id,
                     graduationUniversity: this.props.graduationUniversity,
+                    highSchoolProgramLength: this.props.highSchoolProgramLength,
                     graduationYear: parseInt(this.props.graduationYear),
                     highSchoolName: this.props.highSchoolName,
                     highSchoolUniversity: this.props.highSchoolUniversity,
@@ -144,6 +151,17 @@ class AthleteProfileForm extends Component {
       imageId: ''
     })
     notify.show('Please add a new Profile Picture & Click Save in Personal Info Section', 'success')
+  }
+
+  deleteCertificate = async (certificateId) => {
+    await this.props.deleteCertificate({variables: {certificateId: certificateId }
+                 }).then(()=>notify.show('Certificate Deleted Successfully', 'success')).then(()=> this.props.data.refetch()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+  }
+
+  toggleSportsCertificateForm(value) {
+    console.log('value', value);
+      this.setState({ showSportsCertificateForm: !value })
+    //this.props.VideosList.refetch();
   }
 
   submitSportForm = async () => {
@@ -161,9 +179,17 @@ class AthleteProfileForm extends Component {
       mobileNumber: userData.mobileNumber, timezone: userData.timeZone, height: userData.height, weight: userData.weight, bio: userData.bio,
       graduationName: userData.athlete.graduation, graduationProgramLength: userData.athlete.graduationProgramLength,
       graduationUniversity: userData.athlete.graduationUniversity, graduationYear: userData.athlete.graduationYear,
-      highSchoolName: userData.athlete.hightSchool, highSchoolUniversity: userData.athlete.hightSchoolUniversity, highSchoolYear: userData.athlete.hightSchoolYear })
+      highSchoolName: userData.athlete.hightSchool, highschoolLength: userData.athlete.hightProgramLength, highSchoolUniversity: userData.athlete.hightSchoolUniversity, highSchoolYear: userData.athlete.hightSchoolYear, sportPlayed: userData.athlete.athleteSports[0] ? userData.athlete.athleteSports[0].sport.id : '', practiceYear: userData.athlete.athleteSports[0] ? new Date(userData.athlete.athleteSports[0].participateStartDate) : '' })
   }
+
   render() {
+    const actions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={()=>this.toggleSportsCertificateForm(this.state.showSportsCertificateForm)}
+      />
+    ];
 
     const { pristine, reset, submitting, sportsList, userData } = this.props;
     return (
@@ -425,7 +451,7 @@ class AthleteProfileForm extends Component {
         </GridTile>
       </GridList>
 
-      <EducationHistoryForm athleteId={this.props.userData.athlete.id} />
+      <EducationHistoryForm athleteAcademic={this.props.userData.athlete.athletAcadmic} athleteId={this.props.userData.athlete.id} />
 
       <GridList cols={1} cellHeight={90} padding={1}>
         <GridTile>
@@ -462,7 +488,63 @@ class AthleteProfileForm extends Component {
           <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitSportForm()} primary={true} />
         </GridTile>
       </GridList>
-      <SportsCertificateForm athleteSports={this.state.athleteSports} />
+      <GridList cols={5} cellHeight={80} padding={1} style={{"marginBottom":"-40px"}}>
+      <GridTile></GridTile>
+      <GridTile cols={4} >Upload multiple certificates:
+        <IconButton onTouchTap={() => this.toggleSportsCertificateForm(this.state.showSportsCertificateForm)}>
+          <PlusIcon />
+        </IconButton>
+      </GridTile>
+      </GridList>
+      <Dialog
+                title="Add Certificate"
+                autoScrollBodyContent={true}
+                actions={actions}
+                autoDetectWindowHeight={true}
+                modal={false}
+                titleStyle={{"background":"rgb(0, 188, 212)","color":"white"}}
+                open={this.state.showSportsCertificateForm}
+                onRequestClose={()=>this.toggleSportsCertificateForm(this.state.showSportsCertificateForm)}
+              >
+      <SportsCertificateForm refetchAthlete={this.props.data} toggleSportsCertificateForm={(value)=>this.toggleSportsCertificateForm(value)} athleteSports={this.state.athleteSports} />
+      </Dialog>
+      <div style={{"margin": "50px"}}>
+         <Table 
+            height={"350px"}
+            fixedHeader={true}
+            selectable={false}
+            multiSelectable={false}>
+            >
+          <TableHeader 
+              displaySelectAll={false}
+              adjustForCheckbox={false}
+              enableSelectAll={false}
+            >
+            <TableRow>
+              <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Certificate Url</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody 
+              displayRowCheckbox={false}
+              deselectOnClickaway={false}
+              showRowHover={true}
+              >
+          {this.props.userData.athlete.athleteSports.map(sport=>(
+            <TableRow key={sport.id}>
+              <TableRowColumn style={{textAlign: 'center'}}>
+              {sport.athleteAcadmicCertificates.map((certificate, index)=> (
+                <div key={certificate.id}><a target="_blank" href={certificate.url}>{certificate.url}</a>
+                  <IconButton tooltip={'Delete Certificate'} onTouchTap={() => this.deleteCertificate(certificate.id)}><DeleteIcon /></IconButton>
+                </div>
+              ))
+              }
+              </TableRowColumn>
+            </TableRow>
+            ))
+          }
+          </TableBody>
+        </Table>
+      </div>
       </form>
     );
   }
@@ -492,7 +574,7 @@ AthleteProfileForm = connect((state, ownProps) => ({
   highSchoolName: selector(state, 'highSchoolName'),
   highSchoolYear: selector(state, 'highSchoolYear'),
   highSchoolUniversity: selector(state, 'highSchoolUniversity'),
-  highSchoolProgramLength: selector(state, 'highSchoolLength'),
+  highSchoolProgramLength: selector(state, 'highschoolLength'),
   graduationName: selector(state, 'graduationName'),
   graduationYear: selector(state, 'graduationYear'),
   graduationUniversity: selector(state, 'graduationUniversity'),
@@ -504,7 +586,7 @@ AthleteProfileForm = connect((state, ownProps) => ({
 
 
 const updateProfileInfoMutation = gql`
-  mutation updateUser ($userId: ID!, $firstName: String!, $lastName: String!, $country: String!, $dob: DateTime!, $gender: String!, $address: String!, $timezone: String!, $mobileNumber: String!, $height: Float!, $weight: Float!, $bio: String!, $imageUrl: String) {
+  mutation updateUser ($userId: ID!, $firstName: String, $lastName: String, $country: String, $dob: DateTime, $gender: String, $address: String, $timezone: String, $mobileNumber: String, $height: Float, $weight: Float, $bio: String, $imageUrl: String) {
    updateUser(id: $userId, firstName: $firstName, lastName: $lastName, country: $country, dob: $dob, profileImage: $imageUrl, gender: $gender, address: $address, timeZone: $timezone, mobileNumber: $mobileNumber, height: $height, weight: $weight, bio: $bio) {
     id
   }
@@ -512,8 +594,8 @@ const updateProfileInfoMutation = gql`
 `
 
 const updateEducationInfoMutation = gql`
-  mutation updateAthlete ($athleteId: ID!, $graduationName: String!, $graduationYear: Int!, $graduationProgramLength: String!, $graduationUniversity: String!, $highSchoolName: String!, $highSchoolYear: Int!, $highSchoolUniversity: String! ) {
-    updateAthlete(id: $athleteId, graduation: $graduationName, graduationProgramLength: $graduationProgramLength, graduationUniversity: $graduationUniversity, graduationYear: $graduationYear, hightSchool: $highSchoolName, hightSchoolUniversity: $highSchoolUniversity, hightSchoolYear: $highSchoolYear) {
+  mutation updateAthlete ($athleteId: ID!, $graduationName: String, $graduationYear: Int, $graduationProgramLength: String, $highSchoolProgramLength: String $graduationUniversity: String, $highSchoolName: String, $highSchoolYear: Int, $highSchoolUniversity: String ) {
+    updateAthlete(id: $athleteId, graduation: $graduationName, graduationProgramLength: $graduationProgramLength, hightProgramLength: $highSchoolProgramLength, graduationUniversity: $graduationUniversity, graduationYear: $graduationYear, hightSchool: $highSchoolName, hightSchoolUniversity: $highSchoolUniversity, hightSchoolYear: $highSchoolYear) {
     id
   }
   }
@@ -527,10 +609,19 @@ const updateSportInfoMutation = gql`
   }
 `
 
+const deleteSportCertificate = gql`
+  mutation deleteAthleteCertificate ($certificateId: ID!) {
+    deleteAthleteAcadmicCertificate(id: $certificateId) {
+    id
+  }
+  }
+`
+
 const AthleteFormMutation = compose(
   graphql(updateProfileInfoMutation, {name: 'updateUser'}),
   graphql(updateEducationInfoMutation, {name: 'updateAthlete'}),
-  graphql(updateSportInfoMutation, {name: 'updateAthleteSport'})
+  graphql(updateSportInfoMutation, {name: 'updateAthleteSport'}),
+  graphql(deleteSportCertificate, {name: 'deleteCertificate'})
 )(AthleteProfileForm)
 
 export default AthleteFormMutation;

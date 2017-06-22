@@ -52,7 +52,7 @@ export class AthleteProfile extends React.Component { // eslint-disable-line rea
 const athleteQuery = gql`query athleteQuery {
    user { id firstName lastName email country dob profileImage gender address timeZone mobileNumber height weight bio createdAt
     athlete {
-      id graduation graduationProgramLength graduationUniversity graduationYear hightSchool hightSchoolUniversity hightSchoolYear createdAt
+      id graduation graduationProgramLength graduationUniversity graduationYear hightSchool hightSchoolUniversity hightProgramLength hightSchoolYear createdAt
       athleteSports {
         id
         sport { id }

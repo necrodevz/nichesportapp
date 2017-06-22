@@ -3,15 +3,8 @@ import {connect} from 'react-redux';
 import MenuItem from 'material-ui/MenuItem';
 import { Field, FieldArray, reduxForm, formValueSelector} from 'redux-form/immutable';
 import {
-  AutoComplete,
-  Checkbox,
-  DatePicker,
-  TimePicker,
-  RadioButtonGroup,
   SelectField,
-  Slider,
-  TextField,
-  Toggle
+  TextField
 } from 'redux-form-material-ui';
 import { graphql, compose } from 'react-apollo'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -21,81 +14,97 @@ import Notifications, {notify} from 'react-notify-toast';
 import PlusIcon from 'material-ui/svg-icons/content/add';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import {GridList, GridTile} from 'material-ui/GridList';
+import Dropzone from 'react-dropzone';
+import CenteredSection from '../../containers/HomePage/CenteredSection';
 
-const renderSportsCertificate = ({fields, athleteSports, meta: {error, submitFailed}, SportsList, submitSportsCertificateForm}) => (
-  <div>
-    <GridList cols={5} cellHeight={80} padding={1} style={{"marginBottom":"-40px"}}>
-      <GridTile></GridTile>
-      <GridTile cols={4} >Upload multiple certificates:
-        <IconButton onTouchTap={() => fields.push({})}>
-          <PlusIcon />
-        </IconButton>
-      </GridTile>
-    </GridList>
+const errors = {}
 
-    {submitFailed && error && <span>{error}</span>}
+// validation functions
+const required = value => (value == null ? 'Required' : undefined);
 
-
-    {fields.map((sportsCertificates, index) => (
-      <span key={index}>
-        <GridList cols={5} cellHeight={80} padding={1}>
-          <GridTile></GridTile>
-          <GridTile>
-            <Field
-              name={`${sportsCertificates}.certificateUrl`}
-              type="text"
-              component={TextField}
-              hintText="Sports Certificate"
-              floatingLabelText="Sports Certificate"
-            />
-          </GridTile>
-          <GridTile>
-            {SportsList.allSports ? <Field
-              name={`${sportsCertificates}.sport`}
-              type="text"
-              maxHeight={200}
-              component={SelectField}
-              hintText="Sport"
-              floatingLabelText="Sport"
-            >
-            {athleteSports.map(sport => (<MenuItem value={sport.id} primaryText={sport.id} key={sport.id} />))}
-            </Field> : '' }
-          </GridTile>
-          <GridTile>
-            <RaisedButton style={{"padding-top":"25px"}} label="Save" onClick={()=>submitSportsCertificateForm(index)} primary={true} />
-            <IconButton onTouchTap={() => fields.remove(index)}>
-              <DeleteIcon />
-            </IconButton>
-          </GridTile>
-        </GridList>
-      </span>
-    ))}
-  </div>
-)
-
+const validate = values => {
+  errors.sportsCertificatesSport = required(values.sportsCertificatesSport)
+  return errors
+}
 
 class SportsCertificateForm extends Component {
   static propTypes = {
     submitSportsCertificates: React.PropTypes.func
   }
 
-  submitSportsCertificateForm = async (index) => {
-    await this.props.submitSportsCertificates({variables: {certificateUrl: this.props.sportsCertificates[index].certificateUrl,
-                   athleteSportId: this.props.sportsCertificates[index].sport,
-                    }
-                 }).catch((res)=>console.log('error', JSON.stringify(res.message)))
+  constructor(props) {
+    super(props);
+    this.state={
+      certificateUrl: '',
+      certificateId: ''
+    }
   }
 
-  componentWillMount() {
-    this.props.GetSportsQuery;
+  resetFile() {
+    this.setState({certificateUrl: '', certificateId: ''});
+  }
+
+    onDrop = (files) => {
+    // prepare form data, use data key!
+    let data = new FormData()
+    data.append('data', files[0])
+
+    // use the file endpoint
+    fetch('https://api.graph.cool/file/v1/cj32ti8u8khzz0122jd4cwzh6', {
+      method: 'POST',
+      body: data
+    }).then(response => {
+      return response.json()
+    }).then(certificate => {
+      this.setState({
+        certificateId: certificate.id,
+        certificateUrl: certificate.url,
+      })
+    })
+  }
+
+  submitSportsCertificateForm = async () => {
+    await this.props.submitSportsCertificates({variables: {certificateUrl: this.state.certificateUrl,
+                   athleteSportId: this.props.athleteSportId
+                    }
+                 }).then(()=>notify.show('Certificate Uploaded', 'success')).then(()=>this.props.refetchAthlete.refetch()).then(()=>this.props.toggleSportsCertificateForm('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   render() {
     const {handleSubmit, pristine, reset, submitting, athleteSports} = this.props;
     return (
-         <div>
-         <FieldArray athleteSports={athleteSports} SportsList={this.props.SportsList} submitSportsCertificateForm={(index)=>this.submitSportsCertificateForm(index)} name="sportsCertificates" component={renderSportsCertificate} />
-          </div>
+          <form onSubmit={handleSubmit}>
+          <Notifications />
+              {!this.state.certificateId &&
+              <Dropzone
+                onDrop={this.onDrop}
+                
+                multiple={false}
+              >
+                <div>Drop a certificate or click to choose</div>
+              </Dropzone>}
+              {this.state.certificateUrl &&
+                <a target="_blank" href={this.state.certificateUrl}>{this.state.certificateUrl}</a>
+              }
+              {this.props.SportsList.allSports ? <Field
+                name="sportsCertificatesSport"
+                maxHeight={200}
+                validate={required}
+                component={SelectField}
+                hintText="Sport"
+                floatingLabelText="Sport"
+              >
+              {athleteSports.map(sport => (<MenuItem value={sport.id} primaryText={sport.id} key={sport.id} />))}
+              </Field> : '' }     
+            <GridList cols={5} cellHeight={90} padding={1}>
+            <GridTile>
+              <RaisedButton disabled={this.state.certificateUrl == null || errors.sportsCertificatesSport != null} label="Save" onClick={()=>this.submitSportsCertificateForm()} primary={true} />
+              <IconButton>
+                <DeleteIcon onTouchTap={() => this.resetFile()} />
+              </IconButton>
+            </GridTile>
+            </GridList>
+          </form>
     );
   }
 }
@@ -103,11 +112,12 @@ class SportsCertificateForm extends Component {
 const selector = formValueSelector('sportsCertificateForm');
 
 SportsCertificateForm = reduxForm({
-  form: 'sportsCertificateForm'
+  form: 'sportsCertificateForm',
+  validate
 })(SportsCertificateForm);
 
 SportsCertificateForm = connect(state => ({
-  sportsCertificates: selector(state, 'sportsCertificates')
+  athleteSportId: selector(state, 'sportsCertificatesSport')
 }))(SportsCertificateForm);
 
 

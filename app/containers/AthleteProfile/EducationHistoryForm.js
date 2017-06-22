@@ -6,15 +6,8 @@ import MenuItem from 'material-ui/MenuItem';
 import { push } from 'react-router-redux';
 import { createStructuredSelector } from 'reselect';
 import {
-  AutoComplete,
-  Checkbox,
-  DatePicker,
-  TimePicker,
-  RadioButtonGroup,
   SelectField,
-  Slider,
-  TextField,
-  Toggle
+  TextField
 } from 'redux-form-material-ui';
 import { graphql, compose } from 'react-apollo'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -58,8 +51,16 @@ import {GridList, GridTile} from 'material-ui/GridList';
 //   return errors
 // }
 
-const renderEducationHistory = ({fields, meta: {error, submitFailed}, SportsList, InstitutesList, submitEducationHistoryForm}) => (
-  
+const renderEducationHistory = React.createClass({
+
+  componentDidMount() {
+    this.props.fields.push({});
+  },
+
+  render (){
+  var fieldsData = this.props.fields.getAll();
+  const {fields, meta: {error, submitFailed}, SportsList, InstitutesList, deleteEducationHistoryForm, submitEducationHistoryForm}=this.props;
+  return(
   <div>
       <GridList cols={5} cellHeight={80} padding={1} style={{"marginBottom":"-40px"}}>
         <GridTile></GridTile>
@@ -114,22 +115,32 @@ const renderEducationHistory = ({fields, meta: {error, submitFailed}, SportsList
             </Field> : '' }
           </GridTile>
           <GridTile>
-            <RaisedButton style={{"padding-top":"25px"}} label="Save" onClick={()=>submitEducationHistoryForm(index)} primary={true} />
-            <IconButton onTouchTap={() => fields.remove(index)}>
+            <RaisedButton style={{"paddingTop":"25px"}} disabled={fieldsData[index].academicYear == null || fieldsData[index].sport == null} label="Save" onClick={()=>submitEducationHistoryForm(index)} primary={true} />
+            <IconButton onTouchTap={() => deleteEducationHistoryForm(index).then(()=>fields.remove(index))}>
               <DeleteIcon />
             </IconButton>
           </GridTile>
         </GridList>
       </span>
     ))}
-  </div>
-
-)
+  </div>)
+  }
+})
 
 
 class educationHistoryForm extends Component {
   static propTypes = {
-    submitEducationHistory: React.PropTypes.func
+    submitEducationHistory: React.PropTypes.func,
+    deleteEducationHistory: React.PropTypes.func
+  }
+
+  deleteEducationHistoryForm = async (index) => {
+    console.log('index========', index)
+    this.props.athleteAcademic[index] ?
+    //const {description, imageUrl} = this.state
+    await this.props.deleteEducationHistory({variables: { educationId: this.props.athleteAcademic[index].id }
+                 }).then(()=>notify.show('Sports Participated Deleted Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+    : '';
   }
 
   submitEducationHistoryForm = async (index) => {
@@ -140,20 +151,25 @@ class educationHistoryForm extends Component {
                    institute: this.props.educationHistory[index].institute,
                    sport: this.props.educationHistory[index].sport,
                     }
-                 }).catch((res)=>console.log('error', JSON.stringify(res.message)))
+                 }).then(()=>notify.show('Sports Participated Added Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
 
-  componentWillMount() {
-    this.props.GetSportsQuery;
-    this.props.GetInstitutesQuery;
+  componentDidMount() {
+    const{athleteAcademic}=this.props;
+    var data = [];
+    for(var i=0; i < athleteAcademic.length; i++){
+      data.push({academicYear: athleteAcademic[i].createdAt ? new Date(athleteAcademic[i].createdAt).getFullYear() : '', institute: athleteAcademic[i].institute ? athleteAcademic[i].institute.id : '', sport: athleteAcademic[i].sport ? athleteAcademic[i].sport.id : ''})
+    }
+    this.props.initialize({educationHistory: data});
   }
 
   render() {
     const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
          <div>
-         <FieldArray SportsList={this.props.SportsList} InstitutesList={this.props.InstitutesList} submitEducationHistoryForm={(index)=>this.submitEducationHistoryForm(index)} name="educationHistory" component={renderEducationHistory} />
+         <Notifications />
+         <FieldArray SportsList={this.props.SportsList} InstitutesList={this.props.InstitutesList} submitEducationHistoryForm={(index)=>this.submitEducationHistoryForm(index)} deleteEducationHistoryForm={(index)=>this.deleteEducationHistoryForm(index)} name="educationHistory" component={renderEducationHistory} />
           </div>
     );
   }
@@ -162,7 +178,8 @@ class educationHistoryForm extends Component {
 const selector = formValueSelector('educationHistoryForm');
 
 educationHistoryForm = reduxForm({
-  form: 'educationHistoryForm'
+  form: 'educationHistoryForm',
+  enableReinitialize: true
 })(educationHistoryForm);
 
 educationHistoryForm = connect(state => ({
@@ -171,11 +188,19 @@ educationHistoryForm = connect(state => ({
 
 
 const educationMutation = gql`
-  mutation submitEducationHistory ($athleteId: ID, $instituteId: ID, $academicYear: Int , $sport: ID) {
-    createAthleteAcadmic(athleteId: $athleteId, instituteId: $instituteId, sportId: $sport, academicYear: $academicYear) {
+  mutation submitEducationHistory ($athleteId: ID!, $institute: ID!, $academicYear: Int , $sport: ID!) {
+    createAthleteAcadmic(athleteId: $athleteId, instituteId: $institute, sportId: $sport, academicYear: $academicYear) {
     id
   }
   }`
+
+const deleteEducationMutation = gql`
+  mutation deleteEducationHistory ($educationId: ID!) {
+  deleteAthleteAcadmic(id: $educationId) {
+    id
+  }
+  }`
+
 
 const GetSportsQuery = gql`query GetSportsQuery {
   allSports {
@@ -193,6 +218,7 @@ const GetInstitutesQuery = gql`query GetInstitutesQuery {
 
 const educationHistoryMutation = compose(
   graphql(educationMutation, {name: 'submitEducationHistory'}),
+  graphql(deleteEducationMutation, {name: 'deleteEducationHistory'}),
   graphql(GetSportsQuery, {name: 'SportsList'}),
   graphql(GetInstitutesQuery, {name: 'InstitutesList'})
 )(educationHistoryForm)
