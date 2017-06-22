@@ -117,7 +117,7 @@ const CoachNotificationsQuery = gql`query CoachNotificationsQuery ($userId: ID) 
 const CoachHeaderData = compose(
 graphql(coachQuery, {name: 'coachProfile'}),
 graphql(CoachNotificationsQuery, {
-  options: (props) => ({ pollInterval : 200000, variables: { userId: props.coachProfile.user ? props.coachProfile.user.id : localStorage.getItem('userID') } })
+  options: (props) => ({ pollInterval : 50000, variables: { userId: props.coachProfile.user ? props.coachProfile.user.id : localStorage.getItem('userID') } })
 })
 )(CoachHeader);
 

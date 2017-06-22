@@ -71,7 +71,7 @@ export class AthleteHeader extends React.Component { // eslint-disable-line reac
           <div>
             {this.props.athleteProfile.user ? <Avatar style={{"marginTop":"-15px"}} size={50} src={this.props.athleteProfile.user.profileImage} /> : ''}
             <Badge
-              badgeContent={this.state.readNotifications.false.length}
+              badgeContent={this.state.readNotifications.false ? this.state.readNotifications.false.length : data.allNotifications.length}
               secondary={true}
               badgeStyle={{top: 20, right: 25}}
               style={{"marginRight":"-40px"}}
@@ -141,7 +141,7 @@ const AthleteNotificationsQuery = gql`query AthleteNotificationsQuery ($userId: 
 const AthleteHeaderData = compose(
 graphql(athleteQuery, {name: 'athleteProfile'}),
 graphql(AthleteNotificationsQuery, {
-  options: (props) => ({ pollInterval : 200000, variables: { userId: props.athleteProfile.user ? props.athleteProfile.user.id : localStorage.getItem('userID') } })
+  options: (props) => ({ pollInterval : 50000, variables: { userId: props.athleteProfile.user ? props.athleteProfile.user.id : localStorage.getItem('userID') } })
 }))(AthleteHeader);
 
 export default AthleteHeaderData;
