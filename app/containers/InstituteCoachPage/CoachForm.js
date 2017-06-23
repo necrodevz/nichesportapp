@@ -53,7 +53,7 @@ class CoachForm extends Component {
     return (
       <form onSubmit={handleSubmit}>
       <Notifications />
-      <GridList cols={2} cellHeight={80} padding={1}>
+      <GridList cols={2} cellHeight={90} padding={1}>
         <GridTile>
           <Field
             name="coach_first_name"
@@ -73,7 +73,7 @@ class CoachForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={2} cellHeight={80} padding={1}>
+      <GridList cols={2} cellHeight={90} padding={1}>
         <GridTile>
           <Field
             name="coach_email"
@@ -94,7 +94,7 @@ class CoachForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={1} cellHeight={80} padding={1}>
+      <GridList cols={1} cellHeight={90} padding={1}>
         <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
           <RaisedButton label="Submit" disabled={errors.coach_last_name != null || errors.coach_first_name != null || errors.coach_email != null || errors.coach_password != null || submitting} onTouchTap={()=>this.submitCoachForm()} primary={true} />
         </GridTile>

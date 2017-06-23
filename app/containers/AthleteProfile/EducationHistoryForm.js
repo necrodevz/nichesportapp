@@ -62,7 +62,7 @@ const renderEducationHistory = React.createClass({
   const {fields, meta: {error, submitFailed}, SportsList, InstitutesList, deleteEducationHistoryForm, submitEducationHistoryForm}=this.props;
   return(
   <div>
-      <GridList cols={5} cellHeight={80} padding={1} style={{"marginBottom":"-40px"}}>
+      <GridList cols={5} cellHeight={90} padding={1} style={{"marginBottom":"-40px"}}>
         <GridTile></GridTile>
         <GridTile cols={4} >If users have participated in sports, they have to enter following info:
           <IconButton onTouchTap={() => fields.push({})}>
@@ -79,7 +79,7 @@ const renderEducationHistory = React.createClass({
 
     {fields.map((educationHistory, index) => (
       <span key={index}> 
-        <GridList cols={5} cellHeight={80} padding={1}>
+        <GridList cols={5} cellHeight={90} padding={1}>
           <GridTile></GridTile>
           <GridTile>
             <Field

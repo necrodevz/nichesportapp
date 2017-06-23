@@ -3,22 +3,11 @@ import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
 import {RadioButton} from 'material-ui/RadioButton';
 import MenuItem from 'material-ui/MenuItem';
-import { createStructuredSelector } from 'reselect';
-import { createInstitute } from '../DashboardPage/actions';
-import {AutoComplete as MUIAutoComplete} from 'material-ui';
 import {
-  AutoComplete,
-  Checkbox,
-  DatePicker,
-  TimePicker,
-  RadioButtonGroup,
   SelectField,
-  Slider,
-  TextField,
-  Toggle
+  TextField
 } from 'redux-form-material-ui';
 import RaisedButton from 'material-ui/RaisedButton'
-import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import Notifications, {notify} from 'react-notify-toast';
@@ -147,7 +136,7 @@ class AddVideo extends Component {
           {this.state.description && this.state.videoUrl &&
             <button onClick={this.handlePost}>Post</button>
           }
-      <GridList cols={1} cellHeight={80} padding={1}>
+      <GridList cols={1} cellHeight={90} padding={1}>
         <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
           <RaisedButton label="Submit" disabled={errors.videoDescription != null || errors.videoDescription != null || errors.videoPrivacy != null || errors.videoType != null || this.state.videoId == '' } onTouchTap={()=>this.handlePost()} primary={true} />
         </GridTile>

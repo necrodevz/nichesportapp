@@ -85,9 +85,9 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
           enableSelectAll={false}
           >
           <TableRow>
-            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Email</TableHeaderColumn>
             <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>First Name</TableHeaderColumn>
             <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Last Name</TableHeaderColumn>
+            <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Email</TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody
@@ -97,9 +97,9 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
           >
         {this.props.data.allCoaches.map((coach, index)=>(
           <TableRow key={coach.id}>
-            <TableRowColumn style={{textAlign: 'center'}}>{index+1}  {coach.user.email}</TableRowColumn>
             <TableRowColumn style={{textAlign: 'center'}}>{coach.user.firstName}</TableRowColumn>
             <TableRowColumn style={{textAlign: 'center'}}>{coach.user.lastName}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center'}}>{coach.user.email}</TableRowColumn>
           </TableRow>
           ))
         }

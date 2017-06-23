@@ -50,7 +50,7 @@ class TeamForm extends Component {
     return (
       <form onSubmit={handleSubmit}>
       <Notifications/>
-      <GridList cols={2} cellHeight={80} padding={1}>
+      <GridList cols={2} cellHeight={90} padding={1}>
         <GridTile>
           <Field
             name="team_name"
@@ -73,7 +73,7 @@ class TeamForm extends Component {
           </Field>
         </GridTile>
       </GridList>
-      <GridList cols={2} cellHeight={80} padding={1}>
+      <GridList cols={2} cellHeight={90} padding={1}>
         <GridTile>
         {this.props.SportsList.allSports ? <div>
                           <Field
@@ -99,7 +99,7 @@ class TeamForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={2} cellHeight={80} padding={1}>
+      <GridList cols={2} cellHeight={90} padding={1}>
         <GridTile>
         {this.props.CoachList.allCoaches ? <div>
                           <Field
@@ -120,7 +120,7 @@ class TeamForm extends Component {
           
         </GridTile>
       </GridList>
-      <GridList cols={1} cellHeight={80} padding={1}>
+      <GridList cols={1} cellHeight={90} padding={1}>
         <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
           <RaisedButton label="Submit" disabled={errors.team_name != null || errors.age_group != null || errors.team_sport != null || errors.players_count != null || errors.team_coach != null || submitting} onClick={()=>this.submitTeamForm()} primary={true} />
         </GridTile>

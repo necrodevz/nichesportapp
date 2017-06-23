@@ -1,26 +1,13 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
-import {RadioButton} from 'material-ui/RadioButton';
-import MenuItem from 'material-ui/MenuItem';
-import { createStructuredSelector } from 'reselect';
 import H2 from 'components/H2';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import {AutoComplete as MUIAutoComplete} from 'material-ui';
 import {
   AutoComplete,
-  Checkbox,
-  DatePicker,
-  TimePicker,
-  RadioButtonGroup,
-  SelectField,
-  Slider,
-  TextField,
-  Toggle
 } from 'redux-form-material-ui';
 import RaisedButton from 'material-ui/RaisedButton'
-import { withApollo } from 'react-apollo';
-import ApolloClient from 'apollo-client';
 import CenteredSection from '../../containers/HomePage/CenteredSection'
 import { graphql, compose } from 'react-apollo'
 import IconButton from 'material-ui/IconButton';

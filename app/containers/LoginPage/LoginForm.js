@@ -42,7 +42,7 @@ class LoginForm extends Component {
   submitLoginForm = async () => {
     await this.props.LoginUser({variables: {email: this.props.Email,
                     password: this.props.Password}
-                 }).then((res)=>localStorage.setItem('token', res.data.signinUser.token)).then(()=> this.props.GoToHome()).then(()=>location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then((res)=>localStorage.setItem('token', res.data.signinUser.token)).then(()=> this.props.GoToHome()).then(()=>location.reload()).catch((res)=>alert(JSON.stringify(res.message)))
   }
 
   render() {

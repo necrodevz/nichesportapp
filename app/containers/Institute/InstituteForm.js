@@ -55,7 +55,7 @@ class InstituteForm extends Component {
                     email: this.props.InstituteEmail,
                     password: this.props.InstitutePassword,
                     sport: sportsObject}
-                 }).then(()=>notify.show('Institute Created', 'success')).then(()=>this.props.toggleInstituteForm('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Institute Created', 'success')).then(()=>this.props.toggleInstituteForm('false')).catch((res)=>alert(JSON.stringify(res.message)))
   }
 
   componentWillMount() {
@@ -68,7 +68,7 @@ class InstituteForm extends Component {
       <div>
       <Notifications />
       <form onSubmit={handleSubmit}>
-        <GridList cols={2} cellHeight={80} padding={1}>
+        <GridList cols={2} cellHeight={90} padding={1}>
           <GridTile>
             <Field
               name="institute_name"
@@ -88,11 +88,11 @@ class InstituteForm extends Component {
               floatingLabelText="Country"
               validate={required}
             >
-              {countryList.map(country => (<MenuItem value={country[1]} primaryText={country[0]} key={country[1]} />))}
+              {countryList.map(country => (<MenuItem value={country[0]} primaryText={country[0]} key={country[1]} />))}
             </Field>
           </GridTile>
         </GridList>
-      <GridList cols={2} cellHeight={80} padding={1}>
+      <GridList cols={2} cellHeight={90} padding={1}>
         <GridTile>
            <Field
             name="institute_type"
@@ -119,7 +119,7 @@ class InstituteForm extends Component {
                   :""}
         </GridTile>
       </GridList>
-      <GridList cols={2} cellHeight={80} padding={1}>
+      <GridList cols={2} cellHeight={90} padding={1}>
         <GridTile>
           <Field
             name="institute_email"
@@ -140,7 +140,7 @@ class InstituteForm extends Component {
           />
         </GridTile>
       </GridList>
-      <GridList cols={1} cellHeight={80} padding={1}>
+      <GridList cols={1} cellHeight={90} padding={1}>
         <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
           <RaisedButton label="Submit" disabled={errors.institute_email != null || errors.institute_password != null || errors.institute_name != null || errors.institute_country != null || errors.institute_type != null || errors.institute_sport != null} onClick={()=>this.submitInstituteForm()} primary={true} />
         </GridTile>
@@ -151,7 +151,7 @@ class InstituteForm extends Component {
   }
 }
 
-const selector = formValueSelector('add_institute_form');
+const selector = formValueSelector('addInstituteForm');
 
 InstituteForm = connect(state => ({
   InstituteName: selector(state, 'institute_name'),
@@ -163,23 +163,9 @@ InstituteForm = connect(state => ({
 }))(InstituteForm);
 
 InstituteForm = reduxForm({
-  form: 'add_institute_form',
+  form: 'addInstituteForm',
   validate
 })(InstituteForm);
-
-
-InstituteForm.propTypes = {
-  loading: React.PropTypes.bool,
-  error: React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-  ]),
-  repos: React.PropTypes.oneOfType([
-    React.PropTypes.array,
-    React.PropTypes.bool,
-  ]),
-  onSubmitForm: React.PropTypes.func,
-};
 
 const addMutation = gql`
   mutation createInstitute ($email: String!, $password: String!, $country: String!, $name: String!, $typeOfInstitute: String!) {

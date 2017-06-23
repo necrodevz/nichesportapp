@@ -45,6 +45,15 @@ var n = 0;
 var endDateAddendum = 0;
 var teamsSelected = [];
 
+const startDate = new Date();
+
+function disablePrevDates() {
+  const startSeconds = Date.parse(startDate);
+  return (date) => {
+    return Date.parse(date) < startSeconds;
+  }
+}
+
 class EventForm extends Component {
   constructor(props) {
     super(props);
@@ -209,6 +218,7 @@ class EventForm extends Component {
           <Field
             name="startDate"
             component={DatePicker}
+            shouldDisableDate={disablePrevDates()}
             hintText="Start Date"
             floatingLabelText="Start Date"
             errorText = {errors.startDate}

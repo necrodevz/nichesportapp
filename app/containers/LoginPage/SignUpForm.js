@@ -54,7 +54,7 @@ class SignUpForm extends Component {
                     lastName: this.props.LastName,
                     email: this.props.Email,
                    password: this.props.Password}
-                 }).then(()=> alert('Congratulation! You have successfully signed up for Athelink! Please click on the link in the email that was sent to you in order to complete your registration.')).then(()=> location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=> alert('Congratulation! You have successfully signed up for Athliche Sports! Please click on the link in the email that was sent to you in order to complete your registration.')).then(()=> location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
 

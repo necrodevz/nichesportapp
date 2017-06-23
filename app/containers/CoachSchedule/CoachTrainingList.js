@@ -44,7 +44,7 @@ export class CoachTrainingList extends React.Component { // eslint-disable-line 
       <TableRow>
         <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Training Session</TableHeaderColumn>
         <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Date & Time</TableHeaderColumn>
-        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Teams</TableHeaderColumn>
+        <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Teams List</TableHeaderColumn>
         <TableHeaderColumn style={{fontSize:"18px",textAlign: 'center'}}>Location</TableHeaderColumn>
       </TableRow>
     </TableHeader>

@@ -68,6 +68,16 @@ const validate = values => {
   } else if (email(values.email)) {
     errors.email = 'Invalid Email'
   }
+  errors.highSchoolName = required(values.highSchoolName)
+  errors.highSchoolYear = required(values.highSchoolYear)
+  errors.highSchoolUniversity = required(values.highSchoolUniversity)
+  errors.highschoolLength = required(values.highschoolLength)
+  errors.graduationName = required(values.graduationName)
+  errors.graduationYear = required(values.graduationYear)
+  errors.graduationUniversity = required(values.graduationUniversity)
+  errors.graduationProgramLength = required(values.graduationProgramLength)
+  errors.sportPlayed = required(values.sportPlayed)
+  errors.practiceYear = required(values.practiceYear)
   return errors
 }
 
@@ -447,7 +457,9 @@ class AthleteProfileForm extends Component {
       <GridList cols={5} cellHeight={90} >
         <GridTile></GridTile>
         <GridTile style={{"paddingTop":"20px"}}>
-          <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitAthleteEducationForm()} primary={true} />
+          <RaisedButton label="Save" disabled={errors.highSchoolName != null ||  errors.highSchoolYear != null ||  errors.highSchoolUniversity != null ||
+           errors.highschoolLength != null || errors.graduationName != null || errors.graduationYear != null || errors.graduationUniversity != null ||
+            errors.graduationProgramLength != null || submitting} onClick={()=>this.submitAthleteEducationForm()} primary={true} />
         </GridTile>
       </GridList>
 
@@ -485,10 +497,10 @@ class AthleteProfileForm extends Component {
       <GridList cols={5} cellHeight={90} padding={1}>
         <GridTile></GridTile>
         <GridTile style={{"paddingTop":"20px"}}>
-          <RaisedButton label="Save" disabled={submitting} onClick={()=>this.submitSportForm()} primary={true} />
+          <RaisedButton label="Save" disabled={errors.sportPlayed != null || errors.practiceYear != null || submitting} onClick={()=>this.submitSportForm()} primary={true} />
         </GridTile>
       </GridList>
-      <GridList cols={5} cellHeight={80} padding={1} style={{"marginBottom":"-40px"}}>
+      <GridList cols={5} cellHeight={90} padding={1} style={{"marginBottom":"-40px"}}>
       <GridTile></GridTile>
       <GridTile cols={4} >Upload multiple certificates:
         <IconButton onTouchTap={() => this.toggleSportsCertificateForm(this.state.showSportsCertificateForm)}>
@@ -550,11 +562,12 @@ class AthleteProfileForm extends Component {
   }
 }
 
-const selector = formValueSelector('athleteProfileForm');
+const selector = formValueSelector('athleteProfileDetailsForm');
 
 AthleteProfileForm = reduxForm({
-  form: 'athleteProfileForm',
+  form: 'athleteProfileDetailsForm',
   enableReinitialize: true,
+  keepDirtyOnReinitialize: true,
   validate
 })(AthleteProfileForm);
 

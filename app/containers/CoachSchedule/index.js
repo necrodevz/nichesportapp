@@ -4,7 +4,7 @@
  *
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import CoachTeam from '../../containers/CoachTeam';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
@@ -13,19 +13,6 @@ import RaisedButton from 'material-ui/RaisedButton'
 import Dialog from 'material-ui/Dialog';
 import CoachTrainingList from './CoachTrainingList';
 import CoachEventsList from './CoachEventsList';
-import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
-import {
-  AutoComplete,
-  Checkbox,
-  DatePicker,
-  TimePicker,
-  RadioButtonGroup,
-  SelectField,
-  Slider,
-  TextField,
-  Toggle
-} from 'redux-form-material-ui';
-import CenteredSection from '../../containers/HomePage/CenteredSection';
 import {GridList, GridTile} from 'material-ui/GridList';
 import TrainingForm from './TrainingForm';
 

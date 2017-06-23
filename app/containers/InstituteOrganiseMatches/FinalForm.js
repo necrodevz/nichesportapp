@@ -91,7 +91,7 @@ export class FinalForm extends React.Component { // eslint-disable-line react/pr
                 </Field>
                 </GridTile>
             </GridList>
-            <GridList cols={1} cellHeight={80} padding={1}>
+            <GridList cols={1} cellHeight={90} padding={1}>
               <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
                 <RaisedButton label="Submit" disabled={errors.poolATeams != null || errors.poolBTeams != null} onTouchTap={()=>this.submitFinalForm()} primary={true} />
               </GridTile>

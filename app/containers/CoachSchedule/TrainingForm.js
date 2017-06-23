@@ -41,11 +41,19 @@ const validate = values => {
 
   return errors
 }
+const startDate = new Date();
+
+function disablePrevDates() {
+  const startSeconds = Date.parse(startDate);
+  return (date) => {
+    return Date.parse(date) < startSeconds;
+  }
+}
 
 const renderTrainingSessions = ({fields, meta: {error, submitFailed}, submitTrainingForm}) => (
   
   <div>
-      <GridList cols={5} cellHeight={80} padding={1} style={{"marginBottom":"-40px"}}>
+      <GridList cols={5} cellHeight={90} padding={1} style={{"marginBottom":"-40px"}}>
         <GridTile></GridTile>
         <GridTile cols={4} >Add Date & Time for Training Sessions:
           <IconButton onTouchTap={() => fields.push({})}>
@@ -62,13 +70,14 @@ const renderTrainingSessions = ({fields, meta: {error, submitFailed}, submitTrai
 
     {fields.map((trainingSessions, index) => (
       <span key={index}> 
-        <GridList cols={4} cellHeight={80} padding={1}>
+        <GridList cols={4} cellHeight={90} padding={1}>
           <GridTile></GridTile>
            <GridTile>
                 <Field
                   name={`${trainingSessions}.date`}
                   component={DatePicker}
                   hintText="Session Date"
+                  shouldDisableDate={disablePrevDates()}
                   floatingLabelText="Session Date"
                   validate={required}
                 />
@@ -133,7 +142,7 @@ class TrainingForm extends Component {
     return (
       <form onSubmit="">
       <Notifications />
-            <GridList cols={2} cellHeight={80} padding={1}>
+            <GridList cols={2} cellHeight={90} padding={1}>
               <GridTile>
                 <Field
                   name="numberOfSessions"
@@ -153,7 +162,7 @@ class TrainingForm extends Component {
                 />
               </GridTile>
             </GridList>
-            <GridList cols={2} cellHeight={80} padding={1}>
+            <GridList cols={2} cellHeight={90} padding={1}>
             <GridTile>
                 {this.props.TeamList.allTeams ? <div>
                           <Field
@@ -173,7 +182,7 @@ class TrainingForm extends Component {
               </GridTile>
             </GridList>
             <FieldArray submitTrainingForm={(index)=>this.submitTrainingForm(index)} name="trainingSessions" component={renderTrainingSessions} />
-            <GridList cols={1} cellHeight={80} padding={1}>
+            <GridList cols={1} cellHeight={90} padding={1}>
               <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
                 <RaisedButton disabled={errors.numberOfSessions != null || errors.selectTeams != null || errors.trainingSessions != null || errors.address != null} onTouchTap={()=> this.submitTrainingForm()} label="Submit" primary={true} />
               </GridTile>
