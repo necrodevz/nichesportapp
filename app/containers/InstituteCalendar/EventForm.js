@@ -4,6 +4,7 @@ import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
 import MenuItem from 'material-ui/MenuItem';
 import {
   DatePicker,
+  TimePicker,
   SelectField,
   TextField
 } from 'redux-form-material-ui';
@@ -28,6 +29,7 @@ const validate = values => {
   errors.eventName = required(values.eventName)
   errors.sport = required(values.sport)
   errors.startDate = required(values.startDate)
+  errors.startTime = required(values.startTime)
   errors.eventType = required(values.eventType)
   errors.teamCount = required(values.teamCount || '')
   if (!values.teamCount) {
@@ -70,6 +72,10 @@ class EventForm extends Component {
     var endDate= new Date();
     endDate = new Date(endDate.setDate(this.props.startDate.getDate()+endDateAddendum)) 
     console.log('endDate', endDate);
+    var startDateTime = new Date(""+this.props.startDate.toDateString() +' '+ this.props.startTime.toString().split(' ')[4]);
+console.log('startDate', this.props.startDate);
+console.log('startTime', this.props.startTime);
+    console.log('startDateTime', startDateTime);
     for(var i= 0; i < this.props.teamsSelected.length ; i++)
     {
       teamsSelected.push({teamId: this.props.teamsSelected[i]})
@@ -105,7 +111,7 @@ class EventForm extends Component {
 
   handleSelectTeamsChange() {
     var that = this;
-    n = errors.teamCount != null && this.props.teamsSelected ? Math.ceil((that.props.teamsSelected.length+1)/2) : 0;
+    n = errors.teamCount != null && this.props.teamsSelected ? Math.ceil((that.props.teamsSelected.length+1)/2) : 1;
     //console.log("handle Select Teams change", that.props);
     //console.log('value of n', n);
     this.props.initialize({
@@ -115,7 +121,7 @@ class EventForm extends Component {
       teamsSelected: this.props.teamsSelected,
       startDate: this.props.startDate,
       teamCount: this.props.teamsSelected ? that.props.teamsSelected.length+1 : 0,
-      matchesCount: (n*(n-1))+3
+      matchesCount: this.props.teamsSelected ? (that.props.teamsSelected.length+1 == 2 ? 1 : (that.props.teamsSelected.length+1 >= 6 ? (n*(n-1))+3 : (n*(n-1)) ) ): 0
     })
     endDateAddendum = ((n*(n-1))/2)-1+3+3;
   }
@@ -225,6 +231,16 @@ class EventForm extends Component {
             validate={required}
           />
         </GridTile>
+        <GridTile>
+        <Field
+            name="startTime"
+            component={TimePicker}
+            hintText="Time"
+            floatingLabelText="Time"
+            errorText = {errors.startTime}
+            validate={required}
+          />
+        </GridTile>
       </GridList>
       <GridList cols={1} cellHeight={90} padding={1}>
         <GridTile style={{textAlign: "center",paddingTop:"20px"}}>
@@ -277,6 +293,7 @@ EventForm = connect(state => ({
   teamsSelected: selector(state, 'teamsSelected'),
   address: selector(state, 'address'),
   startDate: selector(state, 'startDate'),
+  startTime: selector(state, 'startTime'),
   teamCount: selector(state, 'teamCount'),
   matchesCount: selector(state, 'matchesCount'),
   eventType: selector(state, 'eventType'),

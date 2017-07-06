@@ -50,6 +50,18 @@ export class InstituteCalendar extends React.Component { // eslint-disable-line 
     return true;
   }
 
+  calculateTime(dateTime){
+    let time = dateTime.toTimeString();
+    let timeString = time.substring(0,9);
+    let H = +timeString.substr(0, 2);
+    let h = H % 12 || 12;
+    let ampm = H < 12 ? "AM" : "PM";
+    timeString = h + timeString.substr(2, 3) + ampm;
+    let date = dateTime.toDateString();
+    let formattedDateTime = date + ', ' + timeString;
+    return formattedDateTime;
+  }
+
   render() {
     const actions = [
       <FlatButton
@@ -92,7 +104,7 @@ export class InstituteCalendar extends React.Component { // eslint-disable-line 
               >
                 <EventForm instituteId={this.props.instituteId} toggleEventForm={(value)=>this.toggleEventForm(value)}/> 
             </Dialog>
-            : <RaisedButton style={{"float": "right","marginTop": "10px","marginRight": "10px"}} label="Add New Event" onClick={() => this.toggleEventForm(this.state.showEventForm)} primary={true} />}
+            : <RaisedButton style={{"float": "right","marginTop": "-40px","marginRight": "10px"}} label="Add New Event" onClick={() => this.toggleEventForm(this.state.showEventForm)} primary={true} />}
         </div>
          <CenteredSection>
          <Table 
@@ -124,8 +136,8 @@ export class InstituteCalendar extends React.Component { // eslint-disable-line 
       <TableRow key={index+1} >
         <TableRowColumn style={{textAlign: 'center'}}>{index+1}. {team.name}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>{team.address}</TableRowColumn>
-        <TableRowColumn style={{textAlign: 'center'}}>{team.startDate}</TableRowColumn>
-        <TableRowColumn style={{textAlign: 'center'}}>{team.endDate}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{this.calculateTime(new Date(team.startDate))}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{this.calculateTime(new Date(team.endDate))}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>{team.numberOfTeams}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>{team.numberOfFixtures}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>

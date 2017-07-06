@@ -36,6 +36,18 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
     this.setState({readNotifications: notificationsRead});
   }
 
+  calculateTime(dateTime){
+    let time = dateTime.toTimeString();
+    let timeString = time.substring(0,9);
+    let H = +timeString.substr(0, 2);
+    let h = H % 12 || 12;
+    let ampm = H < 12 ? "AM" : "PM";
+    timeString = h + timeString.substr(2, 3) + ampm;
+    let date = dateTime.toDateString();
+    let formattedDateTime = date + ', ' + timeString;
+    return formattedDateTime;
+  }
+
   toggleNotificationDialog(value, index) {
     this.setState({ showNotificationDialog: !value, activeIndex: index })
     console.log('index', index);
@@ -66,7 +78,7 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
               anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
             >
                 {data.allNotifications.map((notification, index) => (
-                  <MenuItem key={notification.id} onTouchTap={() => this.toggleNotificationDialog(this.state.showNotificationDialog, index)} primaryText={notification.title + ' at ' + new Date(notification.createdAt).getDate() + '/' + new Date(notification.createdAt).getMonth() + '/' + new Date(notification.createdAt).getFullYear()  + ' ' + new Date(notification.createdAt).getHours() + ':' + new Date(notification.createdAt).getMinutes() + ':' + new Date(notification.createdAt).getSeconds()} />))
+                  <MenuItem key={notification.id} onTouchTap={() => this.toggleNotificationDialog(this.state.showNotificationDialog, index)} primaryText={notification.title + ' at ' + this.calculateTime(new Date(notification.createdAt))} />))
                 }
           </IconMenu>
            <Dialog

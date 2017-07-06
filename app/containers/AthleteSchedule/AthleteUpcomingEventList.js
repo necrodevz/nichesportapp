@@ -35,6 +35,18 @@ export class AthleteUpcomingEventList extends React.Component { // eslint-disabl
     console.log('index', index);
   }
 
+  calculateTime(dateTime){
+    let time = dateTime.toTimeString();
+    let timeString = time.substring(0,9);
+    let H = +timeString.substr(0, 2);
+    let h = H % 12 || 12;
+    let ampm = H < 12 ? "AM" : "PM";
+    timeString = h + timeString.substr(2, 3) + ampm;
+    let date = dateTime.toDateString();
+    let formattedDateTime = date + ', ' + timeString;
+    return formattedDateTime;
+  }
+
   render() {
 
     const actions = [
@@ -84,8 +96,8 @@ export class AthleteUpcomingEventList extends React.Component { // eslint-disabl
       <TableRow key={index+1} >
         <TableRowColumn style={{textAlign: 'center'}}>{index+1}. {team.name}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>{team.address}</TableRowColumn>
-        <TableRowColumn style={{textAlign: 'center'}}>{team.startDate}</TableRowColumn>
-        <TableRowColumn style={{textAlign: 'center'}}>{team.endDate}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{this.calculateTime(new Date(team.startDate))}</TableRowColumn>
+        <TableRowColumn style={{textAlign: 'center'}}>{this.calculateTime(new Date(team.endDate))}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>{team.numberOfTeams}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>{team.numberOfFixtures}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>

@@ -28,14 +28,14 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
 
   approveTeam = async (index) => {
     await this.props.approveTeam({variables: {notificationId: this.props.notification.typeId,
-      status: `APPROVEDBY`+userRole}
-                 }).then(()=>notify.show('Approved', 'success')).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+      status: `APPROVEDBY`+`${userRole}`}
+                 }).then(()=>notify.show('Approved', 'success')).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>alert(JSON.stringify(res.message)))
   }
 
   rejectTeam = async (index) => {
     await this.props.rejectTeam({variables: {notificationId: this.props.notification.typeId,
-      status: `REJECTEDBY`+userRole}
-                 }).then(()=>notify.show('Rejected', 'success')).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+      status: `REJECTEDBY`+`${userRole}`}
+                 }).then(()=>notify.show('Rejected', 'success')).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>alert(JSON.stringify(res.message)))
   }
 
   render() {

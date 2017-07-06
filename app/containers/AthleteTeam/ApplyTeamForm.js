@@ -42,7 +42,8 @@ class ApplyTeamForm extends Component {
     super(props);
     this.state={
       searchEnabled: false,
-      searchData: []
+      searchData: [],
+      teamsList: []
     }
   }
 
@@ -51,7 +52,7 @@ class ApplyTeamForm extends Component {
   }
 
   submitSearchTeams () {
-    var filterData = _.filter(this.props.TeamsList.allTeams, { 'name': this.props.searchText });
+    var filterData = _.filter(this.state.teamsList, { 'name': this.props.searchText });
     this.setState({searchData: filterData, searchEnabled: true});
   }
 
@@ -59,11 +60,17 @@ class ApplyTeamForm extends Component {
     this.setState({searchEnabled: false, searchData: []});
   }
 
-  applyTeam = async (index) => {
+  componentWillReceiveProps(nextProps) {
+    this.setState({teamsList: nextProps.TeamsList.allTeams})
+  }
+
+  applyTeam = async (teamId) => {
+    console.log('11111', teamId);
     await this.props.applyTeam({variables: {athleteId: this.props.userData.athlete.id,
                 athleteMessage: this.props.athleteMessage,
-                teamId: this.props.TeamsList.allTeams[index].id}
+                teamId: teamId}
               }).then(()=>this.props.TeamsList.refetch()).then(()=>notify.show('Applied Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+  this.state.searchData.length > 0 ? this.submitSearchTeams() : '';
   }
 
   render() {
@@ -112,7 +119,7 @@ class ApplyTeamForm extends Component {
          <div>Coach: {team.coach.user.firstName} {team.coach.user.lastName}</div>
         </h4>
         <div>
-        <RaisedButton label="Apply" disabled={team.atheletTeams.length > 0 ? (team.atheletTeams[0].status == 'COACHPENDING' || 'APPROVEDBYCOACH' || 'ATHELETPENDING' || 'APPROVEDBYATHLETE'  ? true : false) : false} onTouchTap={()=>this.applyTeam(index)} primary={true} />
+        <RaisedButton label="Apply" disabled={team.atheletTeams.length > 0 ? (team.atheletTeams[0].status == 'COACHPENDING' || 'APPROVEDBYCOACH' || 'ATHELETPENDING' || 'APPROVEDBYATHLETE'  ? true : false) : false} onTouchTap={()=>this.applyTeam(team.id)} primary={true} />
         </div>
       </Paper>)) : ''}
 
@@ -129,7 +136,7 @@ class ApplyTeamForm extends Component {
          <div>Coach: {team.coach.user.firstName} {team.coach.user.lastName}</div>
         </h4>
         <div>
-        <RaisedButton label="Apply" disabled={team.atheletTeams.length > 0 ? (team.atheletTeams[0].status == 'COACHPENDING' || team.atheletTeams[0].status == 'ATHELETPENDING'  ? true : false) : false} onTouchTap={()=>this.applyTeam(index)} primary={true} />
+        <RaisedButton label="Apply" disabled={team.atheletTeams.length > 0 ? (team.atheletTeams[0].status == 'COACHPENDING' || 'APPROVEDBYCOACH' || 'ATHELETPENDING' || 'APPROVEDBYATHLETE' ? true : false) : false} onTouchTap={()=>this.applyTeam(team.id)} primary={true} />
         </div>
       </Paper>)) : ''}
       </CenteredSection>

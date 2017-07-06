@@ -20,6 +20,18 @@ export class AthleteTrainingList extends React.Component { // eslint-disable-lin
     return true;
   }
 
+  calculateTime(dateTime){
+    let time = dateTime.toTimeString();
+    let timeString = time.substring(0,9);
+    let H = +timeString.substr(0, 2);
+    let h = H % 12 || 12;
+    let ampm = H < 12 ? "AM" : "PM";
+    timeString = h + timeString.substr(2, 3) + ampm;
+    let date = dateTime.toDateString();
+    let formattedDateTime = date + ', ' + timeString;
+    return formattedDateTime;
+  }
+
   render() {
   if (this.props.data.loading) {
     return (<Loading />)
@@ -60,12 +72,12 @@ export class AthleteTrainingList extends React.Component { // eslint-disable-lin
         <TableRowColumn style={{textAlign: 'center'}}>
         {team.trainingDates.length > 0 ?
           team.trainingDates.map(trainingDate =>
-        <div key={trainingDate.id}>{trainingDate.date}</div>) : ''}
+        <div key={trainingDate.id}>{this.calculateTime(new Date(trainingDate.date))}</div>) : ''}
         </TableRowColumn>
          <TableRowColumn style={{textAlign: 'center'}}>
         {team.trainingDates.length > 0 ?
           team.trainingDates.map(trainingDate =>
-        <div key={trainingDate.id}>{trainingDate.date}</div>) : ''}
+        <div key={trainingDate.id}>{this.calculateTime(new Date(trainingDate.date))}</div>) : ''}
         </TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>{team.address}</TableRowColumn>
         <TableRowColumn style={{textAlign: 'center'}}>{team.address}</TableRowColumn>
