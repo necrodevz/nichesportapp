@@ -68,6 +68,7 @@ export class CoachEventsList extends React.Component { // eslint-disable-line re
     return (
       <CenteredSection>
         <Table 
+         height={"350px"}
          fixedHeader={true}
          selectable={false}
          multiSelectable={false}>
@@ -127,12 +128,16 @@ export class CoachEventsList extends React.Component { // eslint-disable-line re
 const CoachEventsListQuery = gql`query CoachEventsListQuery ($userId: ID!){
    allEvents(
     filter:{
-      coach:{
-        user: {
-        id: $userId
+      teams_some:{
+        team:{
+            coach:{
+              user:{
+                id: $userId
+              }
+          }
         }
       }
-                }
+    }
   )
   {
     name

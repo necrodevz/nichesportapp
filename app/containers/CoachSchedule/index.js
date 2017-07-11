@@ -37,7 +37,6 @@ export class CoachSchedule extends React.Component { // eslint-disable-line reac
 
   closeForm() {
     this.setState({ showTrainingForm: false });
-    notify.show('Training Created', 'success');
   }
 
   toggleTrainingForm(value) {

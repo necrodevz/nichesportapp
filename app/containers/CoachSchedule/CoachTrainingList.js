@@ -44,6 +44,7 @@ export class CoachTrainingList extends React.Component { // eslint-disable-line 
     return (
       <CenteredSection>
          <Table
+          height={"350px"}
           fixedHeader={true}
           selectable={false}
           multiSelectable={false}>

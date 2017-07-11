@@ -83,7 +83,7 @@ const approveTeamMutation = gql`
   }
 `
 
-const NotificationDataQuery = gql`query NotificationDataQuery ($sportId: ID) {
+const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: ID) {
     allAthletes(
     filter:{
       atheletTeams_none:{
@@ -103,7 +103,7 @@ const NotificationDataQuery = gql`query NotificationDataQuery ($sportId: ID) {
 
 const NotificationData = compose(
   graphql(approveTeamMutation, {name: 'approveTeam'}),
-  graphql(NotificationDataQuery, {name: 'athletesList'}, {
+  graphql(AthleteDataQuery, {name: 'athletesList'}, {
   options: (props) => ({ variables: { sportId: props.activeTeam.sport ? props.activeTeam.sport.id : '' } }),
 }))(CoachInviteModal);
 

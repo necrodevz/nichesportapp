@@ -55,8 +55,7 @@ export class TeamDetailModal extends React.Component { // eslint-disable-line re
     const{activeTeam}=this.props;
     return (
       activeTeam ? <div style={{"margin":"80px"}}>
-      <Notifications />
-
+        <Notifications />
         <Dialog
           title="Invite Athlete List"
           autoScrollBodyContent={true}

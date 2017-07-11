@@ -52,6 +52,7 @@ import { ApolloProvider } from 'react-apollo'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // Apolo Client
 
+
 const networkInterface = createNetworkInterface({
   uri: 'https://api.graph.cool/simple/v1/cj32ti8u8khzz0122jd4cwzh6',
 });
