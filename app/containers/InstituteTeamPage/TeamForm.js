@@ -146,8 +146,8 @@ TeamForm = reduxForm({
 })(TeamForm);
 
 const addMutation = gql`
-  mutation createTeam ($name: String!, $instituteId: ID! ,$teamSport: ID!, $teamCoach: ID!, $playerCount: Int!) {
-   createTeam(instituteId: $instituteId, sportId: $teamSport, coachId: $teamCoach, managerId: "cj32whu1xpomj01800euaosy8", name: $name, season: 2015, ageGroup: 5, totalNumberOfAthelets: $playerCount) {
+  mutation createTeam ($name: String!, $instituteId: ID! ,$teamSport: ID!, $ageGroup: String!, $teamCoach: ID!, $playerCount: Int!) {
+   createTeam(instituteId: $instituteId, sportId: $teamSport, coachId: $teamCoach, managerId: "cj32whu1xpomj01800euaosy8", name: $name, season: 2015, ageGroup: $ageGroup, totalNumberOfAthelets: $playerCount) {
     id
   }
   }

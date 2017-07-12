@@ -1,0 +1,14 @@
+.toast-notification {
+	z-index: 999999 !important ;
+}
+.login-signin-form{
+    width: 35%;
+    margin: auto;
+}
+
+
+@media (max-width: 500px) {
+    .login-signin-form{
+	    width: 80%;
+	}
+}

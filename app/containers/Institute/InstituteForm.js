@@ -55,7 +55,7 @@ class InstituteForm extends Component {
                     email: this.props.InstituteEmail,
                     password: this.props.InstitutePassword,
                     sport: sportsObject}
-                 }).then(()=>notify.show('Institute Created', 'success')).then(()=>this.props.toggleInstituteForm('false')).catch((res)=>alert(JSON.stringify(res.message)))
+                 }).then(()=>notify.show('Institute Created', 'success')).then(()=>this.props.toggleInstituteForm('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
   }
 
   componentWillMount() {

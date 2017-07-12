@@ -18,7 +18,7 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
     return (
       <div style={{"marginTop":"50px","marginBotton":"30px"}}>
         <MuiThemeProvider>
-          <div style={{"width": "35%","margin":"auto"}}>
+          <div className="login-signin-form">
             <Tabs >
               <Tab label="LogIn" >
                 <LoginForm />

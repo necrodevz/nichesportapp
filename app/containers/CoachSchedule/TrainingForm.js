@@ -131,9 +131,9 @@ class TrainingForm extends Component {
                    sessionCount: parseInt(this.props.SessionCount),
                    trainingSessions: trainingDateTimes,
                    teams: trainingTeamsList,
-                   adddress: FormAddress
+                   address: FormAddress
                     }
-                 }).then(()=>this.props.toggleTrainingForm()).then(()=> notify.show('User Created', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>this.props.toggleTrainingForm()).then(()=> notify.show('You have successfully created training sessions', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
    }
   }
 

@@ -11,6 +11,7 @@ import Helmet from 'react-helmet';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import withProgressBar from 'components/ProgressBar';
+import '../../../app/main.css';
 
 const AppStyle = {
   display: 'flex !important',

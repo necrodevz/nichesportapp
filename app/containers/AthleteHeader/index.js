@@ -128,7 +128,7 @@ const athleteQuery = gql`query athleteQuery {
 
 
 const AthleteNotificationsQuery = gql`query AthleteNotificationsQuery ($userId: ID) {
-    allNotifications(filter: {user: {id: $userId}}) {
+    allNotifications(orderBy: createdAt_DESC,filter: {user: {id: $userId}}) {
     id
     createdAt
     type
