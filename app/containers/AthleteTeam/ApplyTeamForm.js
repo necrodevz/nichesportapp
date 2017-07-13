@@ -16,6 +16,7 @@ import SearchIcon from 'material-ui/svg-icons/action/search';
 import Paper from 'material-ui/Paper';
 var _ = require('lodash');
 import Notifications, {notify} from 'react-notify-toast';
+import {removeExtraChar} from '../Global/GlobalFun';
 
 const style = {
   height: 300,
@@ -69,7 +70,7 @@ class ApplyTeamForm extends Component {
     await this.props.applyTeam({variables: {athleteId: this.props.userData.athlete.id,
                 athleteMessage: this.props.athleteMessage,
                 teamId: teamId}
-              }).then(()=>this.props.TeamsList.refetch()).then(()=>notify.show('Applied Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+              }).then(()=>this.props.TeamsList.refetch()).then(()=>notify.show('Applied Successfully', 'success')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   this.state.searchData.length > 0 ? this.submitSearchTeams() : '';
   }
 

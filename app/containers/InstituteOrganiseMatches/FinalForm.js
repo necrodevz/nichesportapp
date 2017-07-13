@@ -19,6 +19,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { createStructuredSelector } from 'reselect';
 import {Field, reduxForm, formValueSelector} from 'redux-form/immutable';
 import {GridList, GridTile} from 'material-ui/GridList';
+import {removeExtraChar} from '../Global/GlobalFun';
 
 const errors = {}
 
@@ -49,7 +50,7 @@ export class FinalForm extends React.Component { // eslint-disable-line react/pr
                     date: matchDate,
                     type: "FINAL"
                    }
-                 }).then(()=>notify.show('Final Matches Created Successfully', 'success')).then(()=>this.props.toggleEventDetailDialog('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Final Matches Created Successfully', 'success')).then(()=>this.props.toggleEventDetailDialog('false')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   render() {

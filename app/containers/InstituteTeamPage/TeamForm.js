@@ -11,6 +11,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import Notifications, {notify} from 'react-notify-toast';
 import {GridList, GridTile} from 'material-ui/GridList';
+import {removeExtraChar} from '../Global/GlobalFun';
 
 const errors = {};
 

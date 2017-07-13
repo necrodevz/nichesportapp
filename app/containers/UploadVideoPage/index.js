@@ -21,6 +21,7 @@ import AddVideoForm from './AddVideoForm';
 var _ = require('lodash');
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import Notifications, {notify} from 'react-notify-toast';
+import {removeExtraChar} from '../Global/GlobalFun';
 
 const style = {
   height: 300,
@@ -62,7 +63,7 @@ export class CoachVideo extends React.Component { // eslint-disable-line react/p
   deleteVideo = async (videoId) => {
     await this.props.deleteVideo({variables: {
            videoId: videoId,
-           }}).then(()=>notify.show('Video Deleted', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+           }}).then(()=>notify.show('Video Deleted', 'success')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
     this.props.VideosList.refetch();
     this.resetSearch();
   }

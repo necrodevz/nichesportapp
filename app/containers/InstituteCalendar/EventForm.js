@@ -14,6 +14,8 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import {GridList, GridTile} from 'material-ui/GridList';
 import Notifications, {notify} from 'react-notify-toast';
+import {removeExtraChar} from '../Global/GlobalFun';
+
 
 const errors = {};
 
@@ -91,7 +93,7 @@ console.log('startTime', this.props.startTime);
                     selectedTeams: teamsSelected,
                     eventType: this.props.eventType
                     }
-                 }).then(() => notify.show('Event Created Successfully', 'success')).then(()=>this.props.toggleEventForm('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(() => notify.show('Event Created Successfully', 'success')).then(()=>this.props.toggleEventForm('false')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   // handleStartDateChange(startDate) {

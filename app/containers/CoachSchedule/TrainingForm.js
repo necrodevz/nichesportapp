@@ -26,6 +26,8 @@ import Notifications, {notify} from 'react-notify-toast';
 import PlusIcon from 'material-ui/svg-icons/content/add';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import {GridList, GridTile} from 'material-ui/GridList';
+import {removeExtraChar} from '../Global/GlobalFun';
+
 
 var userID = localStorage.getItem('userID');
 const errors = {}
@@ -133,7 +135,7 @@ class TrainingForm extends Component {
                    teams: trainingTeamsList,
                    address: FormAddress
                     }
-                 }).then(()=>this.props.toggleTrainingForm()).then(()=> notify.show('You have successfully created training sessions', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>this.props.toggleTrainingForm()).then(()=> notify.show('You have successfully created training sessions', 'success')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
    }
   }
 

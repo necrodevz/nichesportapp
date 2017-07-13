@@ -17,6 +17,7 @@ import Notifications, {notify} from 'react-notify-toast';
 import PlusIcon from 'material-ui/svg-icons/content/add';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import {GridList, GridTile} from 'material-ui/GridList';
+import {removeExtraChar} from '../Global/GlobalFun';
 
 
 // const errors = {}
@@ -139,7 +140,7 @@ class educationHistoryForm extends Component {
     this.props.athleteAcademic[index] ?
     //const {description, imageUrl} = this.state
     await this.props.deleteEducationHistory({variables: { educationId: this.props.athleteAcademic[index].id }
-                 }).then(()=>notify.show('Sports Participated Deleted Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Sports Participated Deleted Successfully', 'success')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
     : '';
   }
 
@@ -151,7 +152,7 @@ class educationHistoryForm extends Component {
                    institute: this.props.educationHistory[index].institute,
                    sport: this.props.educationHistory[index].sport,
                     }
-                 }).then(()=>notify.show('Sports Participated Added Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Sports Participated Added Successfully', 'success')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
 
