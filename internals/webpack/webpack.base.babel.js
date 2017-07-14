@@ -76,6 +76,7 @@ module.exports = (options) => ({
     // drop any unreachable code.
     new webpack.DefinePlugin({
       'process.env': {
+        GRAPHCOOL_PROJECTID: JSON.stringify(process.env.GRAPHCOOL_PROJECTID),
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         AUTH0_CLIENTID: JSON.stringify(process.env.AUTH0_CLIENTID),
         AUTH0_DOMAIN: JSON.stringify(process.env.AUTH0_DOMAIN),

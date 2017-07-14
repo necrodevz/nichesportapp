@@ -49,7 +49,7 @@ class AddVideo extends Component {
     data.append('data', files[0])
 
     // use the file endpoint
-    fetch('https://api.graph.cool/file/v1/cj32ti8u8khzz0122jd4cwzh6', {
+    fetch('https://api.graph.cool/file/v1/'+`${process.env.GRAPHCOOL_PROJECTID}`, {
       method: 'POST',
       body: data
     }).then(response => {
