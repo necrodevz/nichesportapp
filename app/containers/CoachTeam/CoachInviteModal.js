@@ -110,6 +110,7 @@ const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: [ID!], $athleteId
       {athleteSports_some:   
         {    
         id_in: $sportId
+
         }
       }
      ]
