@@ -16,6 +16,7 @@ import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import {GridList, GridTile} from 'material-ui/GridList';
 import Dropzone from 'react-dropzone';
 import CenteredSection from '../../containers/HomePage/CenteredSection';
+import {removeExtraChar} from '../Global/GlobalFun';
 
 const errors = {}
 
@@ -67,7 +68,7 @@ class SportsCertificateForm extends Component {
     await this.props.submitSportsCertificates({variables: {certificateUrl: this.state.certificateUrl,
                    athleteSportId: this.props.athleteSportId
                     }
-                 }).then(()=>notify.show('Certificate Uploaded', 'success')).then(()=>this.props.refetchAthlete.refetch()).then(()=>this.props.toggleSportsCertificateForm('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Certificate Uploaded', 'success')).then(()=>this.props.refetchAthlete.refetch()).then(()=>this.props.toggleSportsCertificateForm('false')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   render() {

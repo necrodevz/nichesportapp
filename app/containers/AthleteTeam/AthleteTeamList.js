@@ -27,6 +27,7 @@ class AthleteTeamList extends React.Component { // eslint-disable-line react/pre
     return true;
   }
 
+
   render() {
       if (this.props.data.loading) {
     return (<Loading />)
@@ -72,7 +73,7 @@ class AthleteTeamList extends React.Component { // eslint-disable-line react/pre
             <TableRowColumn style={{textAlign: 'center'}}>{team.sport ? team.sport.name : 'Not Available'}</TableRowColumn>
             <TableRowColumn style={{textAlign: 'center'}}>{team.ageGroup}</TableRowColumn>
             <TableRowColumn style={{textAlign: 'center'}}>{team.totalNumberOfAthelets}</TableRowColumn>
-            <TableRowColumn style={{textAlign: 'center'}}>{team.atheletTeams[0].status}</TableRowColumn>
+            <TableRowColumn style={{textAlign: 'center',width: '200px'}}>{team.atheletTeams[0].status}</TableRowColumn>
           </TableRow>
           ))
         }

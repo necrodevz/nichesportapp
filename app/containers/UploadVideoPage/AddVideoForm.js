@@ -13,8 +13,9 @@ import gql from 'graphql-tag'
 import Notifications, {notify} from 'react-notify-toast';
 import {GridList, GridTile} from 'material-ui/GridList';
 import Dropzone from 'react-dropzone';
-
 var videoPrivacyList = [{"id": 1, "value": "PUBLIC"}, {"id": 2, "value": "PRIVATE"}];
+import {removeExtraChar} from '../Global/GlobalFun';
+
 
 const errors = {}
 
@@ -70,7 +71,7 @@ class AddVideo extends Component {
            videoUrl: videoUrl,
            videoPrivacy: this.props.videoPrivacy,
            videoType: this.props.videoType,
-           videoTitle: this.props.videoTitle }}).then(()=>notify.show('Video Uploaded', 'success')).then(()=>this.props.toggleVideoForm('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+           videoTitle: this.props.videoTitle }}).then(()=>notify.show('Video Uploaded', 'success')).then(()=>this.props.toggleVideoForm('false')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   render() {

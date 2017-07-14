@@ -12,7 +12,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import Notifications, {notify} from 'react-notify-toast';
 import {GridList, GridTile} from 'material-ui/GridList';
-
+import {removeExtraChar} from '../Global/GlobalFun';
 const errors = {};
 
 const required = value => (value == null ? 'Required' : undefined);
@@ -49,13 +49,14 @@ class InstituteForm extends Component {
     for(var i = 0; i < this.props.InstituteSports.length; i++){
       sportsObject.push({"sportId": this.props.InstituteSports[i]})
     }
+
     await this.props.createInstitute({variables: {name: this.props.InstituteName,
                     country: this.props.InstituteCountry,
                     typeOfInstitute: this.props.InstituteType,
                     email: this.props.InstituteEmail,
                     password: this.props.InstitutePassword,
                     sport: sportsObject}
-                 }).then(()=>notify.show('Institute Created', 'success')).then(()=>this.props.toggleInstituteForm('false')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Institute Created', 'success')).then(()=>this.props.toggleInstituteForm('false')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   componentWillMount() {

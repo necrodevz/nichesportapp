@@ -35,6 +35,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import {removeExtraChar} from '../Global/GlobalFun';
 
 var userId = localStorage.getItem('userID');
 
@@ -138,7 +139,7 @@ class AthleteProfileForm extends Component {
                     weight: parseInt(this.props.weight),
                     bio: this.props.bio
                      }
-                 }).then(()=>notify.show('Profile Saved Successfully', 'success')).then(()=> this.props.data.refetch()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Profile Saved Successfully', 'success')).then(()=> this.props.data.refetch()).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   submitAthleteEducationForm = async () => {
@@ -152,7 +153,7 @@ class AthleteProfileForm extends Component {
                     highSchoolUniversity: this.props.highSchoolUniversity,
                     highSchoolYear: parseInt(this.props.highSchoolYear)
                      }
-                 }).then(()=>notify.show('Education History Saved Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Education History Saved Successfully', 'success')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   deleteProfileImage () {
@@ -165,7 +166,7 @@ class AthleteProfileForm extends Component {
 
   deleteCertificate = async (certificateId) => {
     await this.props.deleteCertificate({variables: {certificateId: certificateId }
-                 }).then(()=>notify.show('Certificate Deleted Successfully', 'success')).then(()=> this.props.data.refetch()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Certificate Deleted Successfully', 'success')).then(()=> this.props.data.refetch()).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   toggleSportsCertificateForm(value) {
@@ -179,7 +180,7 @@ class AthleteProfileForm extends Component {
                     practiceYear: this.props.practiceYear,
                     athleteId: this.props.userData.athlete.id,
                      }
-                 }).then(()=>notify.show('Sports History Saved Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Sports History Saved Successfully', 'success')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   componentDidMount() {

@@ -5,6 +5,7 @@
  */
 
 import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -20,27 +21,38 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import Loading from 'components/LoadingIndicator';
+import {removeExtraChar} from '../Global/GlobalFun';
 
 
 export class CoachInviteModal extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  constructor(props) {
+    super(props);
+    this.state = {
+      invites: []
+    }
+  }
+
   static propTypes = {
     approveTeam: React.PropTypes.func,
     rejectTeam: React.PropTypes.func,
   }
+  
+  disableInvitesList (index) {
+    var invites = this.state.invites;
+    invites.push(index);
+    this.setState({ invites: invites });
+  }  
 
   approveTeam = async (index) => {
-    console.log("id",this.props.activeTeam.id)
-    console.log("index",index)
-    console.log("id",this.props.athletesList.allAthletes[index].id)
     await this.props.approveTeam({variables: {teamId: this.props.activeTeam.id,
       athleteId: this.props.athletesList.allAthletes[index].id}
-                 }).then(()=>notify.show('Athlete Invited Successfully', 'success')).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=>notify.show('Athlete Invited Successfully', 'success')).then(()=>this.disableInvitesList(index)).then(()=>this.props.TeamsList.refetch()).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   render() {
     const{activeTeam, athletesList}=this.props;
     return (
-      athletesList.allAthletes ? <CenteredSection>
+      athletesList.allAthletes ? (athletesList.allAthletes.length > 0 ? <CenteredSection>
       <Notifications />
             <Table>
     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
@@ -58,14 +70,14 @@ export class CoachInviteModal extends React.Component { // eslint-disable-line r
         <TableRowColumn>{athlete.user.firstName} {athlete.user.lastName}</TableRowColumn>
         <TableRowColumn>{athlete.user.email}</TableRowColumn>
         <TableRowColumn>
-        <RaisedButton label="Invite" onTouchTap={()=>this.approveTeam(index)} primary={true} />
+        <RaisedButton label="Invite" disabled={this.state.invites.includes(index) ? true : false} onTouchTap={()=>this.approveTeam(index)} primary={true} />
         </TableRowColumn>
       </TableRow>
       ))
     }
     </TableBody>
   </Table>
-            </CenteredSection> : <Loading />
+            </CenteredSection> : <div>No Athletes Available To Invite </div> ): <Loading />
     );
   }
 }
@@ -83,7 +95,7 @@ const approveTeamMutation = gql`
   }
 `
 
-const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: ID) {
+const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: ID, $athleteIds: [ID!]) {
     allAthletes(
     filter:{
       atheletTeams_none:{
@@ -92,7 +104,8 @@ const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: ID) {
           sport:{
             id: $sportId
           }
-        } 
+        }
+        id_not_in: $athleteIds
       }
     }
   ){
@@ -104,7 +117,7 @@ const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: ID) {
 const NotificationData = compose(
   graphql(approveTeamMutation, {name: 'approveTeam'}),
   graphql(AthleteDataQuery, {name: 'athletesList'}, {
-  options: (props) => ({ variables: { sportId: props.activeTeam.sport ? props.activeTeam.sport.id : '' } }),
+  options: (props) => ({ variables: {sportId: props.sportId, athleteIds: props.athleteIds } }),
 }))(CoachInviteModal);
 
 

@@ -11,6 +11,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Notifications, {notify} from 'react-notify-toast';
 import {GridList, GridTile} from 'material-ui/GridList';
+import {removeExtraChar} from '../Global/GlobalFun';
 
 
 const errors = {}
@@ -42,7 +43,7 @@ class LoginForm extends Component {
   submitLoginForm = async () => {
     await this.props.LoginUser({variables: {email: this.props.Email,
                     password: this.props.Password}
-                 }).then((res)=>localStorage.setItem('token', res.data.signinUser.token)).then(()=> this.props.GoToHome()).then(()=>location.reload()).catch((res)=>alert(JSON.stringify(res.message)))
+                 }).then((res)=>localStorage.setItem('token', res.data.signinUser.token)).then(()=> this.props.GoToHome()).then(()=>location.reload()).catch((res)=>alert(removeExtraChar(res)))
   }
 
   render() {

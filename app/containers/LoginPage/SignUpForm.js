@@ -12,6 +12,7 @@ import gql from 'graphql-tag';
 import { push } from 'react-router-redux';
 import Notifications, {notify} from 'react-notify-toast';
 import {GridList, GridTile} from 'material-ui/GridList';
+import {removeExtraChar} from '../Global/GlobalFun';
 
 const errors = {}
 
@@ -54,7 +55,7 @@ class SignUpForm extends Component {
                     lastName: this.props.LastName,
                     email: this.props.Email,
                    password: this.props.Password}
-                 }).then(()=> alert('Congratulation! You have successfully signed up for Athliche Sports! Please click on the link in the email that was sent to you in order to complete your registration.')).then(()=> location.reload()).catch((res)=>notify.show(JSON.stringify(res.message), 'error'))
+                 }).then(()=> alert('Congratulation! You have successfully signed up for Athliche Sports! Please click on the link in the email that was sent to you in order to complete your registration.')).then(()=> location.reload()).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
 

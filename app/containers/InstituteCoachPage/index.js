@@ -74,7 +74,6 @@ export class InstituteCoachPage extends React.Component { // eslint-disable-line
       </div>
       <div style={{"float": "left","marginLeft": "50px","marginRight": "50px","marginBottom": "50px"}}>
         <Table
-          height={"350px"}
           fixedHeader={true}
           selectable={false}
           multiSelectable={false}>
