@@ -95,14 +95,14 @@ const approveTeamMutation = gql`
   }
 `
 
-const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: ID, $athleteIds: [ID!]) {
+const AthleteDataQuery = gql`query AthleteDataQuery ($athleteIds: [ID!]) {
     allAthletes(
     filter:{
       atheletTeams_none:{
         status_in:[ COACHPENDING MANAGERPENDING INSTITUTEPENDING APPROVEDBYATHLETE APPROVEDBYCOACH APPROVEDBYINSTITUTE ATHLETEPENDING]
         team:{
           sport:{
-            id: $sportId
+            id: ""
           }
         }
         id_not_in: $athleteIds
@@ -117,7 +117,7 @@ const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: ID, $athleteIds: 
 const NotificationData = compose(
   graphql(approveTeamMutation, {name: 'approveTeam'}),
   graphql(AthleteDataQuery, {name: 'athletesList'}, {
-  options: (props) => ({ variables: {sportId: props.sportId, athleteIds: props.athleteIds } }),
+  options: (props) => ({ variables: { athleteIds: props.athleteIds } }),
 }))(CoachInviteModal);
 
 
