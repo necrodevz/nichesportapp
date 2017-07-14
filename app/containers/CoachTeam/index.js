@@ -14,9 +14,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
 
-
 export class CoachTeam extends React.Component { // eslint-disable-line react/prefer-stateless-function
-
   render() {
     return (
       <div>

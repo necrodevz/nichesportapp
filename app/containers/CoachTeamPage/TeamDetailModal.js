@@ -33,13 +33,21 @@ export class TeamDetailModal extends React.Component { // eslint-disable-line re
     this.state={
       showInvitationDialog: false,
       activeIndex: 0,
-      activeTeam: null
+      athleteIds: []
     }
   }
 
   toggleInviteDialog(value, index) {
     var activeTeam = this.props.activeTeam; 
     this.setState({ showInvitationDialog: !value, activeIndex: index, activeTeam: activeTeam })
+  }
+
+  componentDidMount() {
+    let data = [];
+    this.props.activeTeam.atheletTeams.length > 0 ? this.props.activeTeam.atheletTeams.map(athlete=>{
+     data.push(athlete.athlete.id);
+    }) : '';
+   this.setState({ athleteIds: data});
   }
 
 
@@ -66,7 +74,7 @@ export class TeamDetailModal extends React.Component { // eslint-disable-line re
           open={this.state.showInvitationDialog}
           onRequestClose={()=>this.toggleInviteDialog(this.state.showInvitationDialog)}
         >
-          <CoachInviteModal activeTeam={this.state.activeTeam} toggleInviteDialog={()=>this.toggleInviteDialog()} />
+          <CoachInviteModal TeamsList={this.props.TeamsList} sportId={activeTeam.sport.id} athleteIds={this.state.athleteIds} activeTeam={activeTeam} toggleInviteDialog={()=>this.toggleInviteDialog()} />
         </Dialog>
       <GridList cols={4} cellHeight={50} padding={1} >
         <GridTile><b>Team Name:</b></GridTile>

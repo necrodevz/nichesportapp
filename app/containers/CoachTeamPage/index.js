@@ -55,7 +55,7 @@ export class CoachTeamPage extends React.Component { // eslint-disable-line reac
     return (
       <div>
         <Dialog
-          title="Team Details"
+          title="Team Detail"
           autoScrollBodyContent={true}
           actions={actions}
           modal={false}
@@ -63,7 +63,7 @@ export class CoachTeamPage extends React.Component { // eslint-disable-line reac
           open={this.state.showTeamDetailDialog}
           onRequestClose={()=>this.toggleTeamDetailDialog(this.state.showTeamDetailDialog)}
         >
-          <TeamDetailModal activeTeam={this.props.TeamsList.allTeams[this.state.activeIndex]} />
+          <TeamDetailModal TeamsList={this.props.TeamsList} activeTeam={this.props.TeamsList.allTeams[this.state.activeIndex]} />
         </Dialog>
         <div style={{"margin":"50px"}}>
            <Table

@@ -28,7 +28,7 @@ export class CoachInviteModal extends React.Component { // eslint-disable-line r
   constructor(props) {
     super(props);
     this.state = {
-      invites: [ ]
+      invites: []
     }
   }
 
@@ -46,13 +46,13 @@ export class CoachInviteModal extends React.Component { // eslint-disable-line r
   approveTeam = async (index) => {
     await this.props.approveTeam({variables: {teamId: this.props.activeTeam.id,
       athleteId: this.props.athletesList.allAthletes[index].id}
-                 }).then(()=>notify.show('Athlete Invited Successfully', 'success')).then(()=>this.disableInvitesList(index)).catch((res)=>notify.show(removeExtraChar(res), 'error'))
+                 }).then(()=>notify.show('Athlete Invited Successfully', 'success')).then(()=>this.disableInvitesList(index)).then(()=>this.props.TeamsList.refetch()).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   render() {
     const{activeTeam, athletesList}=this.props;
     return (
-      athletesList.allAthletes ? <CenteredSection>
+      athletesList.allAthletes ? (athletesList.allAthletes.length > 0 ? <CenteredSection>
       <Notifications />
             <Table>
     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
@@ -77,7 +77,7 @@ export class CoachInviteModal extends React.Component { // eslint-disable-line r
     }
     </TableBody>
   </Table>
-            </CenteredSection> : <Loading />
+            </CenteredSection> : <div>No Athletes Available To Invite </div> ): <Loading />
     );
   }
 }
@@ -95,7 +95,7 @@ const approveTeamMutation = gql`
   }
 `
 
-const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: ID) {
+const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: ID, $athleteIds: [ID!]) {
     allAthletes(
     filter:{
       atheletTeams_none:{
@@ -104,7 +104,8 @@ const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: ID) {
           sport:{
             id: $sportId
           }
-        } 
+        }
+        id_not_in: $athleteIds
       }
     }
   ){
@@ -116,7 +117,7 @@ const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: ID) {
 const NotificationData = compose(
   graphql(approveTeamMutation, {name: 'approveTeam'}),
   graphql(AthleteDataQuery, {name: 'athletesList'}, {
-  options: (props) => ({ variables: { sportId: props.activeTeam.sport ? props.activeTeam.sport.id : '' } }),
+  options: (props) => ({ variables: {sportId: props.sportId, athleteIds: props.athleteIds } }),
 }))(CoachInviteModal);
 
 
