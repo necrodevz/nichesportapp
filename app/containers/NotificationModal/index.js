@@ -23,8 +23,10 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
   }
 
   componentDidMount() {
+    // this.props.status.refetch();
     this.props.updateNotification({ variables : { notificationId: this.props.notification.id }})
   }
+
 
   approveTeam = async (index) => {
     await this.props.approveTeam({variables: {notificationId: this.props.notification.typeId,
@@ -49,6 +51,7 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
       console.log(data.error)
       return (<div>An unexpected error occurred</div>)
     }
+
     return (
       data.AtheletTeam ? <CenteredSection>
       <Notifications />
@@ -62,8 +65,14 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
                <br/>
               </h4>
               <div>
+              {data.AtheletTeam.status == "PENDING" ?
+              <div>
               <RaisedButton label="Approve" onTouchTap={()=>this.approveTeam()} primary={true} />
               <RaisedButton label="Reject" onTouchTap={()=>this.rejectTeam()} secondary={true} />
+              </div>
+              :
+              data.AtheletTeam.status
+              }
               </div>
             </CenteredSection> : <div>This Notification is Already Acknowledged</div>
     );
@@ -77,8 +86,7 @@ const approveTeamMutation = gql`
   {
     id
   }
-  }
-`
+}`
 
 const rejectTeamMutation = gql`
   mutation rejectTeam ($notificationId: ID!, $status: ATHELET_TEAM_STATUS){
@@ -86,11 +94,11 @@ const rejectTeamMutation = gql`
   {
     id
   }
-  }
-`
+}`
 
 const NotificationDataQuery = gql`query NotificationDataQuery ($notificationId: ID) {
   AtheletTeam(id: $notificationId){
+  status
   team{
     id
     name
@@ -100,7 +108,6 @@ const NotificationDataQuery = gql`query NotificationDataQuery ($notificationId: 
     approvedNumberOfAthelets
     atheletTeams {
       id
-      status
       athleteMessage
       athlete{
         user{
@@ -118,6 +125,13 @@ const NotificationDataQuery = gql`query NotificationDataQuery ($notificationId: 
   }
 }`
 
+const StatusQuery = gql`query StatusQuery($notificationId: ID){
+  AtheletTeam(id: $notificationId)
+  {    
+    status
+  } 
+}`
+
 const updateNotification = gql`
   mutation updateNotification ($notificationId: ID!){
     updateNotification(
@@ -133,9 +147,13 @@ const NotificationData = compose(
   graphql(updateNotification, {name: 'updateNotification'}),
   graphql(approveTeamMutation, {name: 'approveTeam'}),
   graphql(rejectTeamMutation, {name: 'rejectTeam'}),
+  graphql(StatusQuery, {
+  options: (props) => ({ variables: { notificationId: props.notification.typeId } }),
+  }),
   graphql(NotificationDataQuery, {
   options: (props) => ({ variables: { notificationId: props.notification.typeId } }),
-}))(NotificationModal);
+  }),
+)(NotificationModal);
 
 
 export default NotificationData;

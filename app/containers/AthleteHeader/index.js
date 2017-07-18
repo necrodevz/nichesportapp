@@ -94,7 +94,7 @@ export class AthleteHeader extends React.Component { // eslint-disable-line reac
           autoDetectWindowHeight={true}
           open={this.state.showNotificationDialog}
           onRequestClose={()=>this.toggleNotificationDialog(this.state.showNotificationDialog)}
-        >
+           >
           <NotificationModal toggleNotificationDialog={(value)=>this.toggleNotificationDialog(value)} notification={data.allNotifications[this.state.activeIndex]} />
         </Dialog>
           </Badge>
