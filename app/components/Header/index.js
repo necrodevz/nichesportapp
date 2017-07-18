@@ -7,6 +7,8 @@ import FlatButton from 'material-ui/FlatButton';
 import { push } from 'react-router-redux';
 import AthleteHeader from 'containers/AthleteHeader';
 import CoachHeader from 'containers/CoachHeader';
+import LogoImg from '../../images/ns.png';
+
 
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -33,7 +35,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
   render() {
     return (
       <MuiThemeProvider>
-        <AppBar title="Athliche Sports" style={{"height":"70px"}} titleStyle={{"cursor": "pointer","width":"20px"}} showMenuIconButton={false} onRightIconButtonTouchTap={()=>this.logout()} onTitleTouchTap={()=>window.location.assign("/") }>
+        <AppBar title={<img src={LogoImg} style={{"height":"54px","width":"64px","margin-left":"25px"}}/>} style={{"height":"70px"}} showMenuIconButton={false} onRightIconButtonTouchTap={()=>this.logout()} onTitleTouchTap={()=>window.location.assign("/") }>
           {this.state.loggedIn && this.props.location.state && this.props.location.state.role =='ATHLETE' ? <AthleteHeader /> : ''}
           {this.state.loggedIn && this.props.location.state && this.props.location.state.role =='COACH' ? <CoachHeader /> : ''}
           {this.state.loggedIn ? <FlatButton onClick={()=>this.logout()} label='LogOut'  style={{"marginTop":"15px","color":"white"}} /> : ''}
