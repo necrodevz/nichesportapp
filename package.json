@@ -1,16 +1,16 @@
 {
-  "name": "react-boilerplate",
-  "version": "3.4.0",
-  "description": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
+  "name": "athliche",
+  "version": "0.0.1",
+  "description": "The Social network for Sports",
   "repository": {
     "type": "git",
-    "url": "git://github.com/react-boilerplate/react-boilerplate.git"
+    "url": "git://github.com/necrodevz/nichesportsapp.git"
   },
   "engines": {
-    "npm": ">=3",
-    "node": ">=5"
+    "npm": ">=5",
+    "node": ">=8"
   },
-  "author": "Max Stoiber",
+  "author": "Athliche Ltd",
   "license": "MIT",
   "scripts": {
     "heroku-postbuild": "npm run build",
