@@ -87,6 +87,7 @@ class AthleteProfileForm extends Component {
     updateUser: React.PropTypes.func,
     updateAthlete: React.PropTypes.func,
     updateAthleteSport: React.PropTypes.func,
+    createAthleteSport: React.PropTypes.func,
     initialize: React.PropTypes.func.isRequired,
     deleteCertificate: React.PropTypes.func
   }
@@ -176,11 +177,17 @@ class AthleteProfileForm extends Component {
   }
 
   submitSportForm = async () => {
-    await this.props.updateAthleteSport({variables: {sportPlayed: this.props.sportPlayed,
+    await this.props.userData.athlete.athleteSports.length > 0 ? this.props.updateAthleteSport({variables: {
+       sportPlayedId: this.props.userData.athlete.athleteSports[this.props.userData.athlete.athleteSports.length-1].id,
+                    practiceYear: this.props.practiceYear
+                     }
+                 }).then(()=>notify.show('Sports History Saved Successfully', 'success')).then(()=>this.props.data.refetch()).catch((res)=>notify.show(removeExtraChar(res), 'error')) :
+                  this.props.createAthleteSport({variables: {
+       sportPlayed: this.props.sportPlayed,
                     practiceYear: this.props.practiceYear,
                     athleteId: this.props.userData.athlete.id,
                      }
-                 }).then(()=>notify.show('Sports History Saved Successfully', 'success')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
+                 }).then(()=>notify.show('Sports History Saved Successfully', 'success')).then(()=>this.props.data.refetch()).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   componentDidMount() {
@@ -190,7 +197,7 @@ class AthleteProfileForm extends Component {
       mobileNumber: userData.mobileNumber, timezone: userData.timeZone, height: userData.height, weight: userData.weight, bio: userData.bio,
       graduationName: userData.athlete.graduation, graduationProgramLength: userData.athlete.graduationProgramLength,
       graduationUniversity: userData.athlete.graduationUniversity, graduationYear: userData.athlete.graduationYear,
-      highSchoolName: userData.athlete.hightSchool, highschoolLength: userData.athlete.hightProgramLength, highSchoolUniversity: userData.athlete.hightSchoolUniversity, highSchoolYear: userData.athlete.hightSchoolYear, sportPlayed: userData.athlete.athleteSports[0] ? userData.athlete.athleteSports[0].sport.id : '', practiceYear: userData.athlete.athleteSports[0] ? new Date(userData.athlete.athleteSports[0].participateStartDate) : '' })
+      highSchoolName: userData.athlete.hightSchool, highschoolLength: userData.athlete.hightProgramLength, highSchoolUniversity: userData.athlete.hightSchoolUniversity, highSchoolYear: userData.athlete.hightSchoolYear, sportPlayed: userData.athlete.athleteSports.length > 0 ? userData.athlete.athleteSports[userData.athlete.athleteSports.length-1].sport.id : '', practiceYear: userData.athlete.athleteSports[0] ? new Date(userData.athlete.athleteSports[0].participateStartDate) : '' })
   }
 
   render() {
@@ -519,7 +526,7 @@ class AthleteProfileForm extends Component {
                 open={this.state.showSportsCertificateForm}
                 onRequestClose={()=>this.toggleSportsCertificateForm(this.state.showSportsCertificateForm)}
               >
-      <SportsCertificateForm refetchAthlete={this.props.data} toggleSportsCertificateForm={(value)=>this.toggleSportsCertificateForm(value)} athleteSports={this.state.athleteSports} />
+      <SportsCertificateForm refetchAthlete={this.props.data} toggleSportsCertificateForm={(value)=>this.toggleSportsCertificateForm(value)} athleteSportId={this.props.userData.athlete.athleteSports.length > 0 ?this.props.userData.athlete.athleteSports[this.props.userData.athlete.athleteSports.length - 1].id : ''} />
       </Dialog>
       <div style={{"margin": "50px"}}>
          <Table 
@@ -616,7 +623,16 @@ const updateEducationInfoMutation = gql`
 `
 
 const updateSportInfoMutation = gql`
-  mutation updateAthleteSport ($sportPlayed: ID!, $practiceYear: DateTime!, $athleteId: ID!) {
+  mutation updateAthleteSport ($sportPlayedId: ID!, $practiceYear: DateTime!) {
+    updateAthleteSport(id: $sportPlayedId, participateStartDate: $practiceYear) {
+    id
+  }
+  }
+`
+
+
+const createSportInfoMutation = gql`
+  mutation createAthleteSport ($sportPlayed: ID!, $practiceYear: DateTime!, $athleteId: ID!) {
     createAthleteSport(athleteId: $athleteId, sportId: $sportPlayed, participateStartDate: $practiceYear) {
     id
   }
@@ -634,6 +650,7 @@ const deleteSportCertificate = gql`
 const AthleteFormMutation = compose(
   graphql(updateProfileInfoMutation, {name: 'updateUser'}),
   graphql(updateEducationInfoMutation, {name: 'updateAthlete'}),
+  graphql(createSportInfoMutation, {name: 'createAthleteSport'}),
   graphql(updateSportInfoMutation, {name: 'updateAthleteSport'}),
   graphql(deleteSportCertificate, {name: 'deleteCertificate'})
 )(AthleteProfileForm)
