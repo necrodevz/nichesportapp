@@ -20,14 +20,6 @@ import {removeExtraChar} from '../Global/GlobalFun';
 
 const errors = {}
 
-// validation functions
-const required = value => (value == null ? 'Required' : undefined);
-
-const validate = values => {
-  errors.sportsCertificatesSport = required(values.sportsCertificatesSport)
-  return errors
-}
-
 class SportsCertificateForm extends Component {
   static propTypes = {
     submitSportsCertificates: React.PropTypes.func
@@ -72,6 +64,7 @@ class SportsCertificateForm extends Component {
   }
 
   render() {
+    console.log('111111', this.props);
     const {handleSubmit, pristine, reset, submitting, athleteSports} = this.props;
     return (
           <form onSubmit={handleSubmit}>
@@ -87,16 +80,6 @@ class SportsCertificateForm extends Component {
               {this.state.certificateUrl &&
                 <a target="_blank" href={this.state.certificateUrl}>{this.state.certificateUrl}</a>
               }
-              {this.props.SportsList.allSports ? <Field
-                name="sportsCertificatesSport"
-                maxHeight={200}
-                validate={required}
-                component={SelectField}
-                hintText="Sport"
-                floatingLabelText="Sport"
-              >
-              {athleteSports.map(sport => (<MenuItem value={sport.id} primaryText={sport.id} key={sport.id} />))}
-              </Field> : '' }     
             <GridList cols={5} cellHeight={90} padding={1}>
             <GridTile>
               <RaisedButton disabled={this.state.certificateUrl == null || errors.sportsCertificatesSport != null} label="Save" onClick={()=>this.submitSportsCertificateForm()} primary={true} />
@@ -113,14 +96,8 @@ class SportsCertificateForm extends Component {
 const selector = formValueSelector('sportsCertificateForm');
 
 SportsCertificateForm = reduxForm({
-  form: 'sportsCertificateForm',
-  validate
+  form: 'sportsCertificateForm'
 })(SportsCertificateForm);
-
-SportsCertificateForm = connect(state => ({
-  athleteSportId: selector(state, 'sportsCertificatesSport')
-}))(SportsCertificateForm);
-
 
 const sportsMutation = gql`
   mutation submitSportsCertificates ($athleteSportId : ID, $certificateUrl: String!){
