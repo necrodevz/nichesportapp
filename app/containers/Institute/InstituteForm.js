@@ -44,18 +44,19 @@ class InstituteForm extends Component {
   static propTypes = {
     createInstitute: React.PropTypes.func
   }
-
    submitInstituteForm = async () => {
     for(var i = 0; i < this.props.InstituteSports.length; i++){
-      sportsObject.push({"sportId": this.props.InstituteSports[i]})
+      sportsObject.push({sportId: this.props.InstituteSports[i]})
     }
-
+    
+    var sports_list = JSON.stringify(sportsObject)
+  
     await this.props.createInstitute({variables: {name: this.props.InstituteName,
                     country: this.props.InstituteCountry,
                     typeOfInstitute: this.props.InstituteType,
                     email: this.props.InstituteEmail,
                     password: this.props.InstitutePassword,
-                    sport: sportsObject}
+                    instituteSport: sportsObject}
                  }).then(()=>notify.show('Institute Created', 'success')).then(()=>this.props.toggleInstituteForm('false')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
@@ -168,13 +169,31 @@ InstituteForm = reduxForm({
   validate
 })(InstituteForm);
 
+
 const addMutation = gql`
-  mutation createInstitute ($email: String!, $password: String!, $country: String!, $name: String!, $typeOfInstitute: String!) {
-  createUser(authProvider: {email: {email: $email, password: $password}}, firstName: $name, lastName: $name, role: OWNER, instituteOwner: {country: $country, name: $name, typeOfInstitute: $typeOfInstitute, instituteSport: [{sportId: "cj32w829hbqfo01565f0zeimp"}]}) {
-    id
-  }
-  }
-`
+    mutation createInstitute (
+                            $email: String!, 
+                            $password: String!,
+                            $country: String!, 
+                            $name: String!, 
+                            $typeOfInstitute: String!,
+                            $instituteSport: [UserinstituteOwnerInstituteinstituteSportInstituteSport!]) 
+{
+  createUser(
+   authProvider: 
+   {email: {email: $email, password: $password}}, 
+   firstName: $name,lastName: $name, role: OWNER, 
+   instituteOwner: {country: $country, name: $name, 
+                    typeOfInstitute: $typeOfInstitute, 
+                     instituteSport: $instituteSport
+                   }) 
+                {
+                  id
+                }
+}`
+
+
+
 const GetSportsQuery = gql`query GetSportsQuery {
   allSports {
     id
