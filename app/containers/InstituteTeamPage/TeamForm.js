@@ -35,8 +35,9 @@ class TeamForm extends Component {
     createTeam: React.PropTypes.func
   }
 
+
   submitTeamForm = async () => {
-    await this.props.createTeam({variables: {name: this.props.TeamName,
+        await this.props.createTeam({variables: {name: this.props.TeamName,
                     ageGroup: this.props.AgeGroup,
                    instituteId: this.props.instituteId,
                    teamSport: this.props.TeamSport,
@@ -147,12 +148,19 @@ TeamForm = reduxForm({
 })(TeamForm);
 
 const addMutation = gql`
-  mutation createTeam ($name: String!, $instituteId: ID! ,$teamSport: ID!, $ageGroup: String!, $teamCoach: ID!, $playerCount: Int!) {
-   createTeam(instituteId: $instituteId, sportId: $teamSport, coachId: $teamCoach, managerId: "cj32whu1xpomj01800euaosy8", name: $name, season: 2015, ageGroup: $ageGroup, totalNumberOfAthelets: $playerCount) {
+  mutation createTeam ($name: String!, $instituteId: ID! ,$teamSport: ID!, 
+                       $ageGroup: String!,
+                       $teamCoach: ID!, $playerCount: Int!) {
+  
+   createTeam(instituteId: $instituteId, sportId: $teamSport, 
+              coachId: $teamCoach,name: $name, season: 2015, ageGroup: $ageGroup,
+              totalNumberOfAthelets: $playerCount) 
+  {
     id
   }
   }
 `
+
 const GetCoachListQuery = gql`query GetCoachListQuery ($instituteId: ID!) {
   allCoaches(filter: {institute: {id: $instituteId}}) {
     id

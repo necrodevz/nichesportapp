@@ -46,7 +46,7 @@ class CoachForm extends Component {
                     email: this.props.Email,
                     instituteId: this.props.instituteId,
                    password: this.props.Password }
-                 }).then(()=>notify.show('Coach Created Successfully', 'success')).then(()=>this.props.toggleCoachForm('false')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
+                 }).then(()=>notify.show('Coach Created Successfully', 'success')).then(()=>this.props.data.refetch()).then(()=>this.props.toggleCoachForm('false')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   render() {
