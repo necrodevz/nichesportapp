@@ -35,6 +35,7 @@ class TeamForm extends Component {
     createTeam: React.PropTypes.func
   }
 
+
   submitTeamForm = async () => {
     await this.props.createTeam({variables: {name: this.props.TeamName,
                     ageGroup: this.props.AgeGroup,
