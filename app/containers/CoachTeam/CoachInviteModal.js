@@ -96,7 +96,8 @@ const approveTeamMutation = gql`
 `
 
 
-const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: [ID!], $athleteIds: [ID!]){
+const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: [ID!], $athleteIds: [ID!])
+{
   allAthletes(filter: 
     {
      AND: [
@@ -105,11 +106,14 @@ const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: [ID!], $athleteId
       }      
      },
       {       
-      id_not_in: $athleteIds      
+      id_not_in:$athleteIds   
      },
       {athleteSports_some:   
         {    
-        id_in: $sportId
+          sport:{
+            id_in: $sportId 
+          }
+          
         }
       }
      ]
@@ -126,9 +130,6 @@ const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: [ID!], $athleteId
        }
       athleteSports{
         id
-      }
-      atheletTeams{
-        status
       }
       }
   }`
