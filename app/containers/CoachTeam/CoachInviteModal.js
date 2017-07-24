@@ -102,7 +102,7 @@ const AthleteDataQuery = gql`query AthleteDataQuery ($sportId: [ID!], $athleteId
     {
      AND: [
       {atheletTeams_every:{
-        status_in:[APPROVEDBYCOACH, MANAGERPENDING, INSTITUTEPENDING, APPROVEDBYATHLETE, APPROVEDBYCOACH, APPROVEDBYINSTITUTE, ATHLETEPENDING]
+        status_in:[APPROVEDBYCOACH, MANAGERPENDING, INSTITUTEPENDING, APPROVEDBYATHLETE, APPROVEDBYCOACH, APPROVEDBYINSTITUTE]
       }      
      },
       {       

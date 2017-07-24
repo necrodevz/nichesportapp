@@ -13,6 +13,7 @@ import CenteredSection from '../../containers/HomePage/CenteredSection';
 import Notifications, {notify} from 'react-notify-toast';
 import Loading from 'components/LoadingIndicator';
 import {removeExtraChar} from '../Global/GlobalFun';
+
 const userRole = localStorage.getItem('role');
 
 export class NotificationModal extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -31,13 +32,13 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
   approveTeam = async (index) => {
     await this.props.approveTeam({variables: {notificationId: this.props.notification.typeId,
       status: `APPROVEDBY`+`${userRole}`}
-                 }).then(()=>notify.show('Approved', 'success')).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>alert(removeExtraChar(res)))
+                 }).then(()=>notify.show('Approved', 'success')).then(() => this.props.data.refetch()).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>alert(removeExtraChar(res)))
   }
 
   rejectTeam = async (index) => {
     await this.props.rejectTeam({variables: {notificationId: this.props.notification.typeId,
       status: `REJECTEDBY`+`${userRole}`}
-                 }).then(()=>notify.show('Rejected', 'success')).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>alert(removeExtraChar(res)))
+                 }).then(()=>notify.show('Rejected', 'success')).then(() => this.props.data.refetch()).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>alert(removeExtraChar(res)))
   }
 
   render() {
@@ -65,7 +66,7 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
                <br/>
               </h4>
               <div>
-              {data.AtheletTeam.status == "PENDING" ?
+              {data.AtheletTeam.status === "PENDING" || data.AtheletTeam.status === "ATHLETEPENDING"  ?
               <div>
               <RaisedButton label="Approve" onTouchTap={()=>this.approveTeam()} primary={true} />
               <RaisedButton label="Reject" onTouchTap={()=>this.rejectTeam()} secondary={true} />
