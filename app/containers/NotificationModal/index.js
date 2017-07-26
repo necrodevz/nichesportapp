@@ -34,14 +34,14 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
     userRole=this.props.role ? this.props.role : localStorage.getItem('role');
     await this.props.approveTeam({variables: {notificationId: this.props.notification.typeId,
       status: `APPROVEDBY`+`${userRole}`}
-                 }).then(()=>notify.show('Approved', 'success')).then(() => this.props.data.refetch()).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>alert(removeExtraChar(res)))
+                 }).then(()=>notify.show('Approved', 'success')).then(() => this.props.data.refetch()).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   rejectTeam = async (index) => {
     userRole=this.props.role ? this.props.role : localStorage.getItem('role');
     await this.props.rejectTeam({variables: {notificationId: this.props.notification.typeId,
       status: `REJECTEDBY`+`${userRole}`}
-                 }).then(()=>notify.show('Rejected', 'success')).then(() => this.props.data.refetch()).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>alert(removeExtraChar(res)))
+                 }).then(()=>notify.show('Rejected', 'success')).then(() => this.props.data.refetch()).then(()=>this.props.toggleNotificationDialog('false')).catch((res)=>notify.show(removeExtraChar(res), 'error'))
   }
 
   render() {

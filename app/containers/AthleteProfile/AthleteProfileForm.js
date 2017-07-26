@@ -197,7 +197,7 @@ class AthleteProfileForm extends Component {
       mobileNumber: userData.mobileNumber, timezone: userData.timeZone, height: userData.height, weight: userData.weight, bio: userData.bio,
       graduationName: userData.athlete.graduation, graduationProgramLength: userData.athlete.graduationProgramLength,
       graduationUniversity: userData.athlete.graduationUniversity, graduationYear: userData.athlete.graduationYear,
-      highSchoolName: userData.athlete.hightSchool, highschoolLength: userData.athlete.hightProgramLength, highSchoolUniversity: userData.athlete.hightSchoolUniversity, highSchoolYear: userData.athlete.hightSchoolYear, sportPlayed: userData.athlete.athleteSports.length > 0 ? userData.athlete.athleteSports[userData.athlete.athleteSports.length-1].sport.id : null, practiceYear: userData.athlete.athleteSports[0] ? new Date(userData.athlete.athleteSports[0].participateStartDate) : null })
+      highSchoolName: userData.athlete.hightSchool, highschoolLength: userData.athlete.hightProgramLength, highSchoolUniversity: userData.athlete.hightSchoolUniversity, highSchoolYear: userData.athlete.hightSchoolYear, sportPlayed: userData.athlete.athleteSports.length > 0 ? userData.athlete.athleteSports[userData.athlete.athleteSports.length-1].sport.id : null, practiceYear: userData.athlete.athleteSports.length > 0 ? new Date(userData.athlete.athleteSports[userData.athlete.athleteSports.length-1].participateStartDate) : null })
   }
 
   render() {
@@ -549,10 +549,9 @@ class AthleteProfileForm extends Component {
               deselectOnClickaway={false}
               showRowHover={true}
               >
-          {this.props.userData.athlete.athleteSports.map(sport=>(
-            <TableRow key={sport.id}>
+            <TableRow>
               <TableRowColumn style={{textAlign: 'center'}}>
-              {sport.athleteAcadmicCertificates.map((certificate, index)=> (
+              {this.props.userData.athlete.athleteSports[this.props.userData.athlete.athleteSports.length-1].athleteAcadmicCertificates.map((certificate, index)=> (
                 <div key={certificate.id}><a target="_blank" href={certificate.url}>{certificate.url}</a>
                   <IconButton tooltip={'Delete Certificate'} onTouchTap={() => this.deleteCertificate(certificate.id)}><DeleteIcon /></IconButton>
                 </div>
@@ -561,7 +560,6 @@ class AthleteProfileForm extends Component {
               </TableRowColumn>
             </TableRow>
             ))
-          }
           </TableBody>
         </Table>
       </div>

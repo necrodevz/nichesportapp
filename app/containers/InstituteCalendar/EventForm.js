@@ -113,17 +113,17 @@ console.log('startTime', this.props.startTime);
 
   handleSelectTeamsChange() {
     var that = this;
-    n = errors.teamCount != null && this.props.teamsSelected ? Math.ceil((that.props.teamsSelected.length+1)/2) : 1;
+    n = errors.teamCount != null && that.props.teamsSelected ? Math.ceil((that.props.teamsSelected.length+1)/2) : 1;
     //console.log("handle Select Teams change", that.props);
     //console.log('value of n', n);
     this.props.initialize({
       eventName: this.props.eventName,
       address: this.props.address,
       sport: this.props.sport,
-      teamsSelected: this.props.teamsSelected,
+      teamsSelected: that.props.teamsSelected,
       startDate: this.props.startDate,
-      teamCount: this.props.teamsSelected ? that.props.teamsSelected.length+1 : 0,
-      matchesCount: this.props.teamsSelected ? (that.props.teamsSelected.length+1 == 2 ? 1 : (that.props.teamsSelected.length+1 >= 6 ? (n*(n-1))+3 : (n*(n-1)) ) ): 0
+      teamCount: that.props.teamsSelected ? that.props.teamsSelected.length+1 : 0,
+      matchesCount: that.props.teamsSelected ? (that.props.teamsSelected.length+1 == 2 ? 1 : (this.props.teamsSelected.length+1 >= 6 ? (n*(n-1))+3 : (n*(n-1))+1 ) ): 0
     })
     endDateAddendum = ((n*(n-1))/2)-1+3+3;
   }

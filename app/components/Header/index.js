@@ -35,7 +35,7 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
   render() {
     return (
       <MuiThemeProvider>
-        <AppBar title={<img src={LogoImg} style={{"height":"54px","width":"64px","margin-left":"25px"}}/>} style={{"height":"70px"}} showMenuIconButton={false} onRightIconButtonTouchTap={()=>this.logout()} onTitleTouchTap={()=>window.location.assign("/") }>
+        <AppBar title={<img src={LogoImg} style={{"height":"54px","width":"64px","marginLeft":"25px"}}/>} style={{"height":"70px"}} showMenuIconButton={false} onRightIconButtonTouchTap={()=>this.logout()} onTitleTouchTap={()=>window.location.assign("/") }>
           {this.state.loggedIn && this.props.location.state && this.props.location.state.role =='ATHLETE' ? <AthleteHeader /> : ''}
           {this.state.loggedIn && this.props.location.state && this.props.location.state.role =='COACH' ? <CoachHeader /> : ''}
           {this.state.loggedIn ? <FlatButton onClick={()=>this.logout()} label='LogOut'  style={{"marginTop":"15px","color":"white"}} /> : ''}

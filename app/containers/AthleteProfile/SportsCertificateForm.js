@@ -64,7 +64,6 @@ class SportsCertificateForm extends Component {
   }
 
   render() {
-    console.log('111111', this.props);
     const {handleSubmit, pristine, reset, submitting, athleteSports} = this.props;
     return (
           <form onSubmit={handleSubmit}>
