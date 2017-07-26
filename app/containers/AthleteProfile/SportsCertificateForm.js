@@ -81,7 +81,7 @@ class SportsCertificateForm extends Component {
               }
             <GridList cols={5} cellHeight={90} padding={1}>
             <GridTile>
-              <RaisedButton disabled={this.state.certificateUrl == null || errors.sportsCertificatesSport != null} label="Save" onClick={()=>this.submitSportsCertificateForm()} primary={true} />
+              <RaisedButton disabled={this.state.certificateUrl == ""} label="Save" onClick={()=>this.submitSportsCertificateForm()} primary={true} />
               <IconButton>
                 <DeleteIcon onTouchTap={() => this.resetFile()} />
               </IconButton>
