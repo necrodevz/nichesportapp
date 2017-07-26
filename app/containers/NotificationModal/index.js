@@ -69,7 +69,7 @@ export class NotificationModal extends React.Component { // eslint-disable-line 
                <br/>
               </h4>
               <div>
-              {data.AtheletTeam.status === "PENDING" || data.AtheletTeam.status === "ATHLETEPENDING"  ?
+              {data.AtheletTeam.status === "PENDING" || data.AtheletTeam.status === "ATHLETEPENDING" || data.AtheletTeam.status === "COACHPENDING"  ?
               <div>
               <RaisedButton label="Approve" onTouchTap={()=>this.approveTeam()} primary={true} />
               <RaisedButton label="Reject" onTouchTap={()=>this.rejectTeam()} secondary={true} />
