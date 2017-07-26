@@ -197,7 +197,7 @@ class AthleteProfileForm extends Component {
       mobileNumber: userData.mobileNumber, timezone: userData.timeZone, height: userData.height, weight: userData.weight, bio: userData.bio,
       graduationName: userData.athlete.graduation, graduationProgramLength: userData.athlete.graduationProgramLength,
       graduationUniversity: userData.athlete.graduationUniversity, graduationYear: userData.athlete.graduationYear,
-      highSchoolName: userData.athlete.hightSchool, highschoolLength: userData.athlete.hightProgramLength, highSchoolUniversity: userData.athlete.hightSchoolUniversity, highSchoolYear: userData.athlete.hightSchoolYear, sportPlayed: userData.athlete.athleteSports.length > 0 ? userData.athlete.athleteSports[userData.athlete.athleteSports.length-1].sport.id : '', practiceYear: userData.athlete.athleteSports[0] ? new Date(userData.athlete.athleteSports[0].participateStartDate) : '' })
+      highSchoolName: userData.athlete.hightSchool, highschoolLength: userData.athlete.hightProgramLength, highSchoolUniversity: userData.athlete.hightSchoolUniversity, highSchoolYear: userData.athlete.hightSchoolYear, sportPlayed: userData.athlete.athleteSports.length > 0 ? userData.athlete.athleteSports[userData.athlete.athleteSports.length-1].sport.id : null, practiceYear: userData.athlete.athleteSports[0] ? new Date(userData.athlete.athleteSports[0].participateStartDate) : null })
   }
 
   render() {

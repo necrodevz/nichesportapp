@@ -90,7 +90,7 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
           open={this.state.showNotificationDialog}
           onRequestClose={()=>this.toggleNotificationDialog(this.state.showNotificationDialog)}
         >
-          <NotificationModal toggleNotificationDialog={(value)=>this.toggleNotificationDialog(value)} notification={data.allNotifications[this.state.activeIndex]} />
+          <NotificationModal role={this.props.coachProfile.user ? this.props.coachProfile.user.role : ''} toggleNotificationDialog={(value)=>this.toggleNotificationDialog(value)} notification={data.allNotifications[this.state.activeIndex]} />
         </Dialog>
           </Badge>
           <Badge
@@ -108,7 +108,7 @@ export class CoachHeader extends React.Component { // eslint-disable-line react/
 }
 
 const coachQuery = gql`query coachQuery {
-   user { id firstName lastName
+   user { id firstName lastName role
     athlete {
       id
     }
