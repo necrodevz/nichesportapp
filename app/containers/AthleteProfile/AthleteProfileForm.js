@@ -179,6 +179,7 @@ class AthleteProfileForm extends Component {
   submitSportForm = async () => {
     await this.props.userData.athlete.athleteSports.length > 0 ? this.props.updateAthleteSport({variables: {
        sportPlayedId: this.props.userData.athlete.athleteSports[this.props.userData.athlete.athleteSports.length-1].id,
+       sportPlayed: this.props.sportPlayed,
                     practiceYear: this.props.practiceYear
                      }
                  }).then(()=>notify.show('Sports History Saved Successfully', 'success')).then(()=>this.props.data.refetch()).catch((res)=>notify.show(removeExtraChar(res), 'error')) :
@@ -551,12 +552,12 @@ class AthleteProfileForm extends Component {
               >
             <TableRow>
               <TableRowColumn style={{textAlign: 'center'}}>
-              {this.props.userData.athlete.athleteSports[this.props.userData.athlete.athleteSports.length-1].athleteAcadmicCertificates.map((certificate, index)=> (
+              {this.props.userData.athlete.athleteSports.length > 0 ? this.props.userData.athlete.athleteSports[this.props.userData.athlete.athleteSports.length-1].athleteAcadmicCertificates.map((certificate, index)=> (
                 <div key={certificate.id}><a target="_blank" href={certificate.url}>{certificate.url}</a>
                   <IconButton tooltip={'Delete Certificate'} onTouchTap={() => this.deleteCertificate(certificate.id)}><DeleteIcon /></IconButton>
                 </div>
               ))
-              }
+              : 'No certificates Available, Please Upload'}
               </TableRowColumn>
             </TableRow>
             ))
@@ -621,8 +622,8 @@ const updateEducationInfoMutation = gql`
 `
 
 const updateSportInfoMutation = gql`
-  mutation updateAthleteSport ($sportPlayedId: ID!, $practiceYear: DateTime!) {
-    updateAthleteSport(id: $sportPlayedId, participateStartDate: $practiceYear) {
+  mutation updateAthleteSport ($sportPlayedId: ID!, $sportPlayed: ID!, $practiceYear: DateTime!) {
+    updateAthleteSport(id: $sportPlayedId, sportId: $sportPlayed, participateStartDate: $practiceYear) {
     id
   }
   }
