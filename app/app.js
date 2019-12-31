@@ -54,7 +54,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 
 const networkInterface = createNetworkInterface({
-  uri: process.env.GRAPHCOOL_API_URL //'https://api.graph.cool/simple/v1/'+`${process.env.GRAPHCOOL_PROJECTID}`,
+  uri: 'https://api.graph.cool/simple/v1/athliche'//+`${process.env.GRAPHCOOL_PROJECTID}`,
 });
 
 networkInterface.use([{
