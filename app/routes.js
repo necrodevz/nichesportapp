@@ -35,7 +35,7 @@ export default function createRoutes(store) {
     {
       path: '/',
       name: 'home',
-      onEnter: requireAuth,
+      // onEnter: requireAuth,
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/HomePage/reducer'),
@@ -58,7 +58,7 @@ export default function createRoutes(store) {
     {
       path: '/adminDashboard',
       name: 'dashboardPage',
-      onEnter: requireAuth,
+      // onEnter: requireAuth,
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/DashboardPage/reducer'),
@@ -79,7 +79,7 @@ export default function createRoutes(store) {
     }, {
       path: '/authorization',
       name: 'authorization',
-      onEnter: requireAuth,
+      // onEnter: requireAuth,
       getComponent(location, cb) {
         import('containers/Authorization')
           .then(loadModule(cb))
@@ -88,7 +88,7 @@ export default function createRoutes(store) {
     }, {
       path: '/instituteDashboard',
       name: 'instituteDashboard',
-      onEnter: requireAuth,
+      // onEnter: requireAuth,
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/InstituteDashboard/reducer'),
@@ -109,7 +109,7 @@ export default function createRoutes(store) {
     }, {
       path: '/athleteDashboard',
       name: 'athleteDashboard',
-      onEnter: requireAuth,
+      // onEnter: requireAuth,
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/AthleteDashboard/reducer'),
@@ -130,7 +130,7 @@ export default function createRoutes(store) {
     }, {
       path: '/login',
       name: 'loginPage',
-      onEnter: isloggedIn,
+      // onEnter: isloggedIn,
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/LoginPage/reducer'),
@@ -151,7 +151,7 @@ export default function createRoutes(store) {
     }, {
       path: '/coachDashboard',
       name: 'coachDashboard',
-      onEnter: requireAuth,
+      // onEnter: requireAuth,
       getComponent(location, cb) {
         import('containers/CoachDashboard')
           .then(loadModule(cb))

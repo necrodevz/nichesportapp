@@ -73,7 +73,7 @@ const client = new ApolloClient({
   networkInterface,
 });
 
-
+localStorage.setItem('token', 'e51414');
 injectTapEventPlugin();
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
