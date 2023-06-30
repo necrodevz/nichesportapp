@@ -1,7 +1,13 @@
-# project: cj32ti8u8khzz0122jd4cwzh6
-# version: 104
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
-type AdminSetting implements Node {
+generator client {
+  provider = "prisma-client-js"
+}
+
+model AdminSetting  {
   createdAt: DateTime!
   dayInvitePendingByCoach: Int! @defaultValue(value: 3)
   id: ID! @isUnique
@@ -15,8 +21,8 @@ enum AthleteStatus {
   MANAGER_PENDING
 }
 
-type File implements Node {
-  contentType: String!
+model File  {
+  contentmodel: String!
   createdAt: DateTime!
   id: ID! @isUnique
   name: String!
@@ -26,7 +32,7 @@ type File implements Node {
   url: String! @isUnique
 }
 
-type Institute implements Node {
+model Institute  {
   coach: [Coach!]! @relation(name: "CoachOnInstitute")
   country: String
   createdAt: DateTime!
@@ -36,7 +42,7 @@ type Institute implements Node {
   name: String!
   owner: User @relation(name: "InstituteOnUser")
   status: InstituteStatus! @defaultValue(value: ACTIVE)
-  typeOfInstitute: String
+  modelOfInstitute: String
   updatedAt: DateTime!
   coachAcadmic: [CoachAcadmic!]! @relation(name: "CoachAcadmicOnSInstitute")
   athleteAcadmic: [AthleteAcadmic!]! @relation(name: "AthleteAcadmicOnSInstitute")
@@ -45,7 +51,7 @@ type Institute implements Node {
   trainings: [Training!]! @relation(name: "InstituteOnTraining")
 }
 
-type InstituteSport implements Node {
+model InstituteSport  {
   createdAt: DateTime!
   id: ID! @isUnique
   institute: Institute! @relation(name: "InstituteSportOnInstitute")
@@ -59,7 +65,7 @@ enum InstituteStatus {
   DEACTIVATE
 }
 
-type Manager implements Node {
+model Manager  {
   createdAt: DateTime!
   id: ID! @isUnique
   institute: Institute @relation(name: "ManagerOnInstitute")
@@ -68,7 +74,7 @@ type Manager implements Node {
   teams: [Team!]! @relation(name: "TeamOnManager")
 }
 
-type Sport implements Node {
+model Sport  {
   createdAt: DateTime!
   id: ID! @isUnique
   instituteSport: [InstituteSport!]! @relation(name: "SportOnInstitute")
@@ -82,7 +88,7 @@ type Sport implements Node {
   events: [Event!]! @relation(name: "SportOnEvent")
 }
 
-type User implements Node {
+model User  {
   address: String
   athlete: Athlete @relation(name: "UserOnAthlete")
   bio: String
@@ -131,7 +137,7 @@ enum UserRole {
   ADMIN
 }
 
-type Coach implements Node {
+model Coach  {
   createdAt: DateTime!
   id: ID! @isUnique
   institute: Institute @relation(name: "CoachOnInstitute")
@@ -152,7 +158,7 @@ type Coach implements Node {
   trainings: [Training!]! @relation(name: "CoachOnTraining")
 }
 
-type CoachSport implements Node {
+model CoachSport  {
   createdAt: DateTime!
   id: ID! @isUnique
   coach: Coach! @relation(name: "CoachOnCoachSport")
@@ -162,7 +168,7 @@ type CoachSport implements Node {
   coachAcadmicCertificates: [CoachAcadmicCertificate!]! @relation(name: "CoachSportOnCoachAcadmicCertificate")
 }
 
-type CoachAcadmic implements Node {
+model CoachAcadmic  {
   createdAt: DateTime!
   id: ID! @isUnique
   coach: Coach @relation(name: "CoachAcadmicHistory")
@@ -172,7 +178,7 @@ type CoachAcadmic implements Node {
   academicYear: Int
 }
 
-type CoachAcadmicCertificate implements Node {
+model CoachAcadmicCertificate  {
   createdAt: DateTime!
   id: ID! @isUnique
   coachSport: CoachSport! @relation(name: "CoachSportOnCoachAcadmicCertificate")
@@ -181,7 +187,7 @@ type CoachAcadmicCertificate implements Node {
   updatedAt: DateTime!
 }
 
-type Athlete implements Node {
+model Athlete  {
   createdAt: DateTime!
   createdBy: User @relation(name: "CreatedAthlete")
   graduation: String
@@ -201,7 +207,7 @@ type Athlete implements Node {
   atheletTeams: [AtheletTeam!]! @relation(name: "AthleteOnAtheletTeam")
 }
 
-type AthleteSport implements Node {
+model AthleteSport  {
   createdAt: DateTime!
   id: ID! @isUnique
   athlete: Athlete @relation(name: "AthleteOnAthleteSport")
@@ -211,7 +217,7 @@ type AthleteSport implements Node {
   athleteAcadmicCertificates: [AthleteAcadmicCertificate!]! @relation(name: "AthleteSportOnCoachAcadmicCertificate")
 }
 
-type AthleteAcadmic implements Node {
+model AthleteAcadmic  {
   createdAt: DateTime!
   id: ID! @isUnique
   athlete: Athlete @relation(name: "AthleteAcadmicHistory")
@@ -221,7 +227,7 @@ type AthleteAcadmic implements Node {
   academicYear: Int
 }
 
-type AthleteAcadmicCertificate implements Node {
+model AthleteAcadmicCertificate  {
   createdAt: DateTime!
   id: ID! @isUnique
   athleteSport: AthleteSport! @relation(name: "AthleteSportOnCoachAcadmicCertificate")
@@ -230,7 +236,7 @@ type AthleteAcadmicCertificate implements Node {
   updatedAt: DateTime!
 }
 
-type Team implements Node {
+model Team  {
   id: ID! @isUnique
   institute: Institute @relation(name: "TeamOnInstitute")
   sport: Sport @relation(name: "TeamOnSport")
@@ -251,7 +257,7 @@ type Team implements Node {
   eventDatesB: [EventDate!]! @relation(name: "TeamBOnEventDate")
 }
 
-type AtheletTeam implements Node {
+model AtheletTeam  {
   id: ID! @isUnique
   athlete: Athlete @relation(name: "AthleteOnAtheletTeam")
   team: Team @relation(name: "TeamOnAtheletTeam")
@@ -274,11 +280,11 @@ enum AtheletTeamStatus {
   ATHLETEPENDING
 }
 
-type Notification implements Node {
+model Notification  {
   id: ID! @isUnique
   user: User @relation(name: "UserOnNotification")
-  type: String
-  typeId: String
+  model: String
+  modelId: String
   title: String
   description: String
   isRead: Boolean! @defaultValue(value: false)
@@ -286,12 +292,12 @@ type Notification implements Node {
   updatedAt: DateTime!
 }
 
-type Video implements Node {
+model Video  {
   id: ID! @isUnique
   user: User @relation(name: "UserOnVideo")
   title: String
   url: String
-  type: VideoType
+  model: Videomodel
   description: String
   location: String
   privacy: VideoVrivacy
@@ -299,7 +305,7 @@ type Video implements Node {
   updatedAt: DateTime!
 }
 
-enum VideoType {
+enum Videomodel {
   GAME
   PRACTICE
   SCOUT
@@ -311,7 +317,7 @@ enum VideoVrivacy {
   PRIVATE
 }
 
-type Event implements Node {
+model Event  {
   id: ID! @isUnique
   name: String
   institute: Institute @relation(name: "InstituteOnEvent")
@@ -324,14 +330,14 @@ type Event implements Node {
   endDate: DateTime
   time: String
   coach: Coach @relation(name: "CoachOnEvent")
-  type: String
+  model: String
   createdAt: DateTime!
   updatedAt: DateTime!
   teams: [EventTeam!]! @relation(name: "EventOnEventTeam")
   eventDates: [EventDate!]! @relation(name: "EventOnEventDate")
 }
 
-type EventTeam implements Node {
+model EventTeam  {
   id: ID! @isUnique
   event: Event @relation(name: "EventOnEventTeam")
   team: Team @relation(name: "TeamOnEventTeam")
@@ -339,25 +345,25 @@ type EventTeam implements Node {
   updatedAt: DateTime!
 }
 
-enum MatchType {
+enum Matchmodel {
   POOLA
   POOLB
   SEMIFINAL
   FINAL
 }
 
-type EventDate implements Node {
+model EventDate  {
   id: ID! @isUnique
   event: Event @relation(name: "EventOnEventDate")
   teamA: Team @relation(name: "TeamAOnEventDate")
   teamB: Team @relation(name: "TeamBOnEventDate")
-  matchType: MatchType!
+  matchmodel: Matchmodel!
   date: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
-type Training implements Node {
+model Training  {
   id: ID! @isUnique
   institute: Institute @relation(name: "InstituteOnTraining")
   dateTime: DateTime
@@ -370,7 +376,7 @@ type Training implements Node {
   trainingDates: [TrainingDate!]! @relation(name: "TrainingOnTrainingDate")
 }
 
-type TrainingTeam implements Node {
+model TrainingTeam  {
   id: ID! @isUnique
   training: Training @relation(name: "TrainingOnTrainingTeam")
   team: Team @relation(name: "TeamOnTrainingTeam")
@@ -378,7 +384,7 @@ type TrainingTeam implements Node {
   updatedAt: DateTime!
 }
 
-type TrainingDate implements Node {
+model TrainingDate  {
   id: ID! @isUnique
   training: Training @relation(name: "TrainingOnTrainingDate")
   date: DateTime
@@ -386,7 +392,7 @@ type TrainingDate implements Node {
   updatedAt: DateTime!
 }
 
-type Message implements Node {
+model Message  {
   id: ID! @isUnique
   sender: User @relation(name: "MessageSender")
   reciver: User @relation(name: "MessageReciver")
@@ -396,7 +402,7 @@ type Message implements Node {
   updatedAt: DateTime!
 }
 
-type MessageConversation implements Node {
+model MessageConversation  {
   id: ID! @isUnique
   sender: User @relation(name: "MessageConversationSender")
   reciver: User @relation(name: "MessageConversationReciver")
