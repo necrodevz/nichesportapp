@@ -1,0 +1,460 @@
+// This is your Prisma schema file,
+// learn more about it in the docs https//pris.ly/d/prisma-schema
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model AdminSetting {
+  createdAt               DateTime
+  dayInvitePendingByCoach Int      @default(3)
+  id                      Int      @id @default(autoincrement())
+  maxTeamsCanAssign       Int      @default(1)
+  termsAndCondition       String
+  updatedAt               DateTime
+}
+
+enum AthleteStatus {
+  APPROVED
+  MANAGER_PENDING
+}
+
+model File {
+  contentmodel String
+  createdAt    DateTime
+  id           Int      @id @default(autoincrement())
+  name         String
+  secret       String
+  size         Int
+  updatedAt    DateTime
+  url          String
+}
+
+model Institute {
+  coach            Coach[]          @relation(name: "CoachOnInstitute")
+  country          String
+  createdAt        DateTime
+  id               Int              @id @default(autoincrement())
+  instituteSport   InstituteSport[] @relation(name: "InstituteSportOnInstitute")
+  manager          Manager[]        @relation(name: "ManagerOnInstitute")
+  name             String
+  owner            User             @relation(name: "InstituteOnUser", fields: [ownerId], references: [id])
+  ownerId          Int              @unique
+  status           InstituteStatus  @default(ACTIVE)
+  modelOfInstitute String
+  updatedAt        DateTime
+  coachAcadmic     CoachAcadmic[]   @relation(name: "CoachAcadmicOnSInstitute")
+  athleteAcadmic   AthleteAcadmic[] @relation(name: "AthleteAcadmicOnSInstitute")
+  teams            Team[]           @relation(name: "TeamOnInstitute")
+  events           Event[]          @relation(name: "InstituteOnEvent")
+  trainings        Training[]       @relation(name: "InstituteOnTraining")
+}
+
+model InstituteSport {
+  createdAt   DateTime
+  id          Int       @id @default(autoincrement())
+  institute   Institute @relation(name: "InstituteSportOnInstitute", references: [id], map: "InstituteSportOnInstitute", fields: [instituteId])
+  sport       Sport     @relation(name: "SportOnInstitute", references: [id], fields: [sportId])
+  updatedAt   DateTime
+  instituteId Int
+  sportId     Int
+}
+
+enum InstituteStatus {
+  ACTIVE
+  PENDING
+  DEACTIVATE
+}
+
+model Manager {
+  createdAt   DateTime
+  id          Int       @id @default(autoincrement())
+  institute   Institute @relation(references: [id], name: "ManagerOnInstitute", map: "ManagerOnInstitute", fields: [instituteId])
+  updatedAt   DateTime
+  user        User      @relation(fields: [userId], name: "ManagerOnUser", references: [id])
+  userId      Int       @unique
+  teams       Team[]    @relation(name: "TeamOnManager")
+  instituteId Int
+}
+
+model Sport {
+  createdAt      DateTime
+  id             Int              @id @default(autoincrement())
+  instituteSport InstituteSport[] @relation(name: "SportOnInstitute")
+  name           String
+  updatedAt      DateTime
+  coachAcadmic   CoachAcadmic[]   @relation(name: "CoachAcadmicOnSport")
+  athleteAcadmic AthleteAcadmic[] @relation(name: "AthleteAcadmicOnSport")
+  athleteSports  AthleteSport[]   @relation(name: "SportOnAthleteSport")
+  coachSports    CoachSport[]     @relation(name: "SportOnCoachSport")
+  teams          Team[]           @relation(name: "TeamOnSport")
+  events         Event[]          @relation(name: "SportOnEvent")
+}
+
+model User {
+  address                     String
+  athlete                     Athlete?              @relation(name: "UserOnAthlete")
+  bio                         String
+  coach                       Coach?                @relation(name: "CoachOnUser")
+  country                     String
+  createdAt                   DateTime
+  createdAthletes             Athlete[]             @relation(name: "CreatedAthlete")
+  dob                         DateTime
+  emailVerified               Boolean               @default(false)
+  firstName                   String
+  gender                      String
+  height                      Float
+  id                          Int                   @id @default(autoincrement())
+  instituteOwner              Institute?            @relation(name: "InstituteOnUser")
+  isActive                    Boolean               @default(false)
+  isFirstTimeLogin            Boolean               @default(false)
+  lastName                    String
+  manager                     Manager?              @relation(name: "ManagerOnUser")
+  messageCount                Int                   @default(0)
+  mobileNumber                String
+  mobileVerificationCode      String
+  mobileVerified              Boolean               @default(false)
+  nationality                 String
+  notificationCount           Int                   @default(0)
+  profileImage                String
+  resetPasswordToken          String
+  role                        UserRole
+  timeZone                    String
+  updatedAt                   DateTime
+  weight                      Float
+  email                       String
+  password                    String
+  notifications               Notification[]        @relation(name: "UserOnNotification")
+  videos                      Video[]               @relation(name: "UserOnVideo")
+  sentMessages                Message[]             @relation(name: "MessageSender")
+  recivedMessages             Message[]             @relation(name: "MessageReciver")
+  sentMessageConversations    MessageConversation[] @relation(name: "MessageConversationSender")
+  recivedMessageConversations MessageConversation[] @relation(name: "MessageConversationReciver")
+}
+
+enum UserRole {
+  ATHLETE
+  OWNER
+  COACH
+  MANAGER
+  ADMIN
+}
+
+model Coach {
+  createdAt               DateTime
+  id                      Int            @id @default(autoincrement())
+  institute               Institute      @relation(references: [id], name: "CoachOnInstitute", fields: [instituteId])
+  updatedAt               DateTime
+  user                    User           @relation(fields: [userId], references: [id], name: "CoachOnUser")
+  userId                  Int            @unique
+  graduation              String
+  graduationProgramLength String
+  graduationUniversity    String
+  graduationYear          Int
+  hightSchool             String
+  hightSchoolUniversity   String
+  hightProgramLength      String
+  hightSchoolYear         Int
+  coachAcadmic            CoachAcadmic[] @relation(name: "CoachAcadmicHistory")
+  coachSports             CoachSport[]   @relation(name: "CoachOnCoachSport")
+  teams                   Team[]         @relation(name: "TeamOnCoach")
+  events                  Event[]        @relation(name: "CoachOnEvent")
+  trainings               Training[]     @relation(name: "CoachOnTraining")
+  instituteId             Int
+}
+
+model CoachSport {
+  createdAt                DateTime
+  id                       Int                       @id @default(autoincrement())
+  coach                    Coach                     @relation(references: [id], name: "CoachOnCoachSport", map: "CoachonCoachSport", fields: [coachId])
+  sport                    Sport                     @relation(references: [id], name: "SportOnCoachSport", fields: [sportId])
+  updatedAt                DateTime
+  participateStartDate     DateTime
+  coachAcadmicCertificates CoachAcadmicCertificate[] @relation(name: "CoachSportOnCoachAcadmicCertificate")
+  coachId                  Int
+  sportId                  Int
+}
+
+model CoachAcadmic {
+  createdAt    DateTime
+  id           Int       @id @default(autoincrement())
+  coach        Coach     @relation(references: [id], name: "CoachAcadmicHistory", map: "CoachAcademicHistory", fields: [coachId])
+  institute    Institute @relation(references: [id], name: "CoachAcadmicOnSInstitute", map: "CoachAcademicOnSInstitute", fields: [instituteId])
+  sport        Sport     @relation(references: [id], name: "CoachAcadmicOnSport", fields: [sportId])
+  updatedAt    DateTime
+  academicYear Int
+  coachId      Int
+  instituteId  Int
+  sportId      Int
+}
+
+model CoachAcadmicCertificate {
+  createdAt    DateTime
+  id           Int        @id @default(autoincrement())
+  coachSport   CoachSport @relation(references: [id], name: "CoachSportOnCoachAcadmicCertificate", fields: [coachSportId])
+  url          String
+  name         String
+  updatedAt    DateTime
+  coachSportId Int
+}
+
+model Athlete {
+  createdAt               DateTime
+  createdBy               User             @relation(references: [id], fields: [userId], name: "CreatedAthlete")
+  userId                  Int              @unique
+  graduation              String
+  graduationProgramLength String
+  graduationUniversity    String
+  graduationYear          Int
+  hightSchool             String
+  hightSchoolUniversity   String
+  hightSchoolYear         Int
+  hightProgramLength      String
+  id                      Int              @id @default(autoincrement())
+  status                  AthleteStatus    @default(APPROVED)
+  updatedAt               DateTime
+  user                    User             @relation(fields: [userId], name: "UserOnAthlete", map: "UserOnAthlete", references: [id])
+  athleteSports           AthleteSport[]   @relation(name: "AthleteOnAthleteSport")
+  athletAcadmic           AthleteAcadmic[] @relation(name: "AthleteAcadmicHistory")
+  atheletTeams            AtheletTeam[]    @relation(name: "AthleteOnAtheletTeam")
+}
+
+model AthleteSport {
+  createdAt                  DateTime
+  id                         Int                         @id @default(autoincrement())
+  athlete                    Athlete                     @relation(references: [id], name: "AthleteOnAthleteSport", map: "AthleteOnAthleteSport", fields: [athleteId])
+  sport                      Sport                       @relation(references: [id], name: "SportOnAthleteSport", fields: [sportId])
+  updatedAt                  DateTime
+  participateStartDate       DateTime
+  athleteAcadmicCertificates AthleteAcadmicCertificate[] @relation(name: "AthleteSportOnCoachAcadmicCertificate")
+  athleteId                  Int
+  sportId                    Int
+}
+
+model AthleteAcadmic {
+  createdAt    DateTime
+  id           Int       @id @default(autoincrement())
+  athlete      Athlete   @relation(references: [id], name: "AthleteAcadmicHistory", map: "AthleteAcadmicHistory", fields: [athleteId])
+  institute    Institute @relation(references: [id], name: "AthleteAcadmicOnSInstitute", map: "AthleteAcadmicOnSInstitute", fields: [instituteId])
+  sport        Sport     @relation(references: [id], name: "AthleteAcadmicOnSport", fields: [sportId])
+  updatedAt    DateTime
+  academicYear Int
+  athleteId    Int
+  instituteId  Int
+  sportId      Int
+}
+
+model AthleteAcadmicCertificate {
+  createdAt      DateTime
+  id             Int          @id @default(autoincrement())
+  athleteSport   AthleteSport @relation(references: [id], name: "AthleteSportOnCoachAcadmicCertificate", fields: [athleteSportId])
+  url            String
+  name           String
+  updatedAt      DateTime
+  athleteSportId Int
+}
+
+model Team {
+  id                       Int            @id @default(autoincrement())
+  institute                Institute      @relation(references: [id], name: "TeamOnInstitute", map: "TeamOnInstitute", fields: [instituteId])
+  sport                    Sport          @relation(references: [id], name: "TeamOnSport", map: "TeamOnSport", fields: [sportId])
+  coach                    Coach          @relation(references: [id], name: "TeamOnCoach", map: "TeamOnCoach", fields: [coachId])
+  manager                  Manager        @relation(references: [id], name: "TeamOnManager", fields: [managerId])
+  createdAt                DateTime
+  updatedAt                DateTime
+  name                     String
+  season                   Int
+  ageGroup                 Int
+  totalNumberOfAthelets    Int            @default(0)
+  approvedNumberOfAthelets Int            @default(0)
+  rules                    String
+  atheletTeams             AtheletTeam[]  @relation(name: "TeamOnAtheletTeam")
+  trainingTeams            TrainingTeam[] @relation(name: "TeamOnTrainingTeam")
+  eventTeams               EventTeam[]    @relation(name: "TeamOnEventTeam")
+  eventDatesA              EventDate[]    @relation(name: "TeamAOnEventDate")
+  eventDatesB              EventDate[]    @relation(name: "TeamBOnEventDate")
+  instituteId              Int
+  sportId                  Int
+  coachId                  Int
+  managerId                Int
+}
+
+model AtheletTeam {
+  id             Int               @id @default(autoincrement())
+  athlete        Athlete           @relation(references: [id], name: "AthleteOnAtheletTeam", map: "AthleteOnAthletTeam", fields: [athleteId])
+  team           Team              @relation(references: [id], name: "TeamOnAtheletTeam", fields: [teamId])
+  status         AtheletTeamStatus @default(MANAGERPENDING)
+  athleteMessage String
+  createdAt      DateTime
+  updatedAt      DateTime
+  athleteId      Int
+  teamId         Int
+}
+
+enum AtheletTeamStatus {
+  COACHPENDING
+  MANAGERPENDING
+  INSTITUTEPENDING
+  APPROVEDBYATHLETE
+  APPROVEDBYCOACH
+  APPROVEDBYINSTITUTE
+  REJECTEDBYINSTITUTE
+  REJECTEDBYATHLETE
+  REJECTEDBYCOACH
+  ATHLETEPENDING
+}
+
+model Notification {
+  id          Int      @id @default(autoincrement())
+  user        User     @relation(references: [id], name: "UserOnNotification", fields: [userId])
+  model       String
+  modelId     String
+  title       String
+  description String
+  isRead      Boolean  @default(false)
+  createdAt   DateTime
+  updatedAt   DateTime
+  userId      Int
+}
+
+model Video {
+  id          Int          @id @default(autoincrement())
+  user        User         @relation(references: [id], name: "UserOnVideo", fields: [userId])
+  title       String
+  url         String
+  model       Videomodel
+  description String
+  location    String
+  privacy     VideoVrivacy
+  createdAt   DateTime
+  updatedAt   DateTime
+  userId      Int
+}
+
+enum Videomodel {
+  GAME
+  PRACTICE
+  SCOUT
+  PLAYLIST
+}
+
+enum VideoVrivacy {
+  PUBLIC
+  PRIVATE
+}
+
+model Event {
+  id               Int         @id @default(autoincrement())
+  name             String
+  institute        Institute   @relation(references: [id], name: "InstituteOnEvent", map: "Institute", fields: [instituteId])
+  sport            Sport       @relation(references: [id], name: "SportOnEvent", map: "SportOnEvent", fields: [sportId])
+  numberOfFixtures Int
+  numberOfTeams    Int
+  numberOfMatches  Int
+  address          String
+  startDate        DateTime
+  endDate          DateTime
+  time             String
+  coach            Coach       @relation(references: [id], name: "CoachOnEvent", fields: [coachId])
+  model            String
+  createdAt        DateTime
+  updatedAt        DateTime
+  teams            EventTeam[] @relation(name: "EventOnEventTeam")
+  eventDates       EventDate[] @relation(name: "EventOnEventDate")
+  instituteId      Int
+  sportId          Int
+  coachId          Int
+}
+
+model EventTeam {
+  id        Int      @id @default(autoincrement())
+  event     Event    @relation(references: [id], name: "EventOnEventTeam", map: "EventOnEventTeam", fields: [eventId])
+  team      Team     @relation(references: [id], name: "TeamOnEventTeam", fields: [teamId])
+  createdAt DateTime
+  updatedAt DateTime
+  eventId   Int
+  teamId    Int
+}
+
+enum Matchmodel {
+  POOLA
+  POOLB
+  SEMIFINAL
+  FINAL
+}
+
+model EventDate {
+  id         Int        @id @default(autoincrement())
+  event      Event      @relation(references: [id], name: "EventOnEventDate", map: "EventOnEventdate", fields: [eventId])
+  teamA      Team       @relation(fields: [teamAId], references: [id], name: "TeamAOnEventDate", map: "TeamAOnEventDate")
+  teamB      Team       @relation(fields: [teamBId], references: [id], name: "TeamBOnEventDate", map: "TeamBOnEventDate")
+  teamAId    Int
+  teamBId    Int
+  matchmodel Matchmodel
+  date       DateTime
+  createdAt  DateTime
+  updatedAt  DateTime
+  eventId    Int
+}
+
+model Training {
+  id               Int            @id @default(autoincrement())
+  institute        Institute      @relation(references: [id], name: "InstituteOnTraining", map: "InstituteOnTraining", fields: [instituteId])
+  dateTime         DateTime
+  coach            Coach          @relation(references: [id], name: "CoachOnTraining", fields: [coachId])
+  address          String
+  numberOfSessions Int
+  createdAt        DateTime
+  updatedAt        DateTime
+  trainingTeams    TrainingTeam[] @relation(name: "TrainingOnTrainingTeam")
+  trainingDates    TrainingDate[] @relation(name: "TrainingOnTrainingDate")
+  instituteId      Int
+  coachId          Int
+}
+
+model TrainingTeam {
+  id         Int      @id @default(autoincrement())
+  training   Training @relation(references: [id], name: "TrainingOnTrainingTeam", map: "TrainingOnTrainingTeam", fields: [trainingId])
+  team       Team     @relation(references: [id], name: "TeamOnTrainingTeam", map: "TeamOnTrainingTeam", fields: [teamId])
+  createdAt  DateTime
+  updatedAt  DateTime
+  trainingId Int
+  teamId     Int
+}
+
+model TrainingDate {
+  id         Int      @id @default(autoincrement())
+  training   Training @relation(references: [id], name: "TrainingOnTrainingDate", fields: [trainingId])
+  date       DateTime
+  createdAt  DateTime
+  updatedAt  DateTime
+  trainingId Int
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  sender     User     @relation(fields: [senderId], references: [id], name: "MessageSender", map: "MessageSender")
+  reciver    User     @relation(fields: [receiverId], references: [id], name: "MessageReciver", map: "MessageReceiver")
+  senderId   Int
+  receiverId Int
+  msg        String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime
+  updatedAt  DateTime
+}
+
+model MessageConversation {
+  id         Int      @id @default(autoincrement())
+  sender     User     @relation(fields: [senderId], references: [id], name: "MessageConversationSender", map: "MessageConversationSender")
+  reciver    User     @relation(fields: [receiverId], references: [id], name: "MessageConversationReciver", map: "MessageConversationReciver")
+  senderId   Int
+  receiverId Int
+  lastMsg    String
+  count      Int      @default(1)
+  createdAt  DateTime
+  updatedAt  DateTime
+}
